@@ -1,7 +1,11 @@
 import {useState} from "react";
+import {useRegister} from "../hooks/useRegister.jsx";
+import {useNavigate} from "react-router-dom";
 
 const Register = () => {
     const [formData, setFormData] = useState({username: "", email: "", password: "", repeatPassword: ""});
+    const {isLoading, register} = useRegister();
+    const navigate = useNavigate();
 
     const handleFormChange = (event) => {
         const {name, value} = event.target;
@@ -9,11 +13,51 @@ const Register = () => {
         setFormData((prevState) => ({...prevState, [name]: value}));
     }
 
-    const handleRegister = (event) => {
+    const handleRegister = async (event) => {
         // In order for the page not to refresh, do the following
         event.preventDefault();
 
         // Check inputs and make request to server
+        if (formData.username.length === 0) {
+            // Display error message
+            return;
+        }
+
+        if (formData.email.length === 0) {
+            // Display error message
+            return;
+        }
+        if (formData.password.length === 0) {
+            // Display error message
+            return;
+        }
+        if (formData.repeatPassword.length === 0) {
+            // Display error message
+            return;
+        }
+
+        if (formData.password !== formData.repeatPassword) {
+            // Display error message
+            return;
+        }
+
+        if (!validateEmail(formData.email)) {
+            // Display error message
+            return;
+        }
+
+        if (!validatePassword(formData.password)) {
+            // Display error message
+            return;
+        }
+
+        const response = await register(formData.username, formData.email, formData.password, formData.repeatPassword);
+
+        if (response === true) {
+            navigate("/login");
+        } else {
+            // Display error message
+        }
     }
 
     return (
