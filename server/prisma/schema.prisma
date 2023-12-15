@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Follower {
+  follower_id                              Int       @id @default(autoincrement())
+  follower_user_id                         Int?
+  following_user_id                        Int?
+  created_at                               DateTime? @default(now()) @db.Timestamp(6)
+  users_followers_follower_user_idTousers  users?    @relation("followers_follower_user_idTousers", fields: [follower_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  users_followers_following_user_idTousers users?    @relation("followers_following_user_idTousers", fields: [following_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Like {
+  like_id    Int       @id @default(autoincrement())
+  user_id    Int?
+  repost_id  Int?
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  reposts    reposts?  @relation(fields: [repost_id], references: [repost_id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Post {
+  post_id    Int       @id @default(autoincrement())
+  user_id    Int?
+  content    String
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  replies    replies[]
+  reposts    reposts[]
+}
+
+model Reply {
+  reply_id   Int       @id @default(autoincrement())
+  user_id    Int?
+  post_id    Int?
+  content    String
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Repost {
+  repost_id  Int       @id(map: "retposts_pkey") @default(autoincrement())
+  user_id    Int?
+  post_id    Int?
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  likes      likes[]
+  posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  user_id                                      Int         @id @default(autoincrement())
+  username                                     String      @unique @db.VarChar(50)
+  email                                        String      @unique @db.VarChar(100)
+  password_hash                                String      @db.VarChar(100)
+  isadmin                                      Boolean?    @default(false)
+  created_at                                   DateTime?   @default(now()) @db.Timestamp(6)
+  followers_followers_follower_user_idTousers  followers[] @relation("followers_follower_user_idTousers")
+  followers_followers_following_user_idTousers followers[] @relation("followers_following_user_idTousers")
+  likes                                        likes[]
+  posts                                        posts[]
+  replies                                      replies[]
+  reposts                                      reposts[]
+}
