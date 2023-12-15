@@ -1,0 +1,129 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Για dark theme */
+  --primary-color: #1f1d2b;
+  --secondary-color: #252836;
+  --accent-color: #2f3142;
+  --text-color: #ffffff;
+  --border-color: #3b3e4b;
+
+  --base-border: 1px solid var(--border-color);
+  --base-border-radius: 10px;
+  --small-border-radius: 8px;
+  --round-border-radius: 500px;
+
+  --base-gap: 10px;
+  --big-gap: 20px;
+
+  --base-padding: 8px 12px;
+
+  /* Typography */
+  --font-size-s: 14px;
+  --font-size-m: 16px;
+  --font-size-l: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+  --font-size-xxxl: 32px;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: var(--primary-color);
+  color: var(--text-color);
+}
+
+h2 {
+  font-size: var(--font-size-xxxl);
+}
+
+label {
+  align-items: flex-start;
+}
+
+label > span {
+  opacity: 0.37;
+}
+
+label > input {
+  width: 100%;
+}
+
+input {
+  border: var(--base-border);
+  border-width: 2px;
+  background: none;
+  border-radius: var(--base-border-radius);
+
+  color: var(--text-color);
+  font-size: var(--font-size-l);
+
+  height: 2.75em;
+  padding: var(--base-padding);
+  box-sizing: border-box;
+
+  transition: 0.15s ease-in-out border-color;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--text-color);
+}
+
+button {
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+
+  border-radius: var(--round-border-radius);
+  font-size: var(--font-size-l);
+
+  background: var(--accent-color);
+  color: var(--text-color);
+
+  padding: var(--base-padding);
+  transition: 0.15s transform ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.02, 1.02);
+}
+
+button:active {
+  transform: scale(1, 1);
+}
+
+.Vertical-Flex-Container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-gap);
+}
+
+.Panel {
+  height: auto;
+  width: 600px;
+  padding: 40px 80px;
+
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--secondary-color);
+
+  box-sizing: border-box;
+  gap: var(--big-gap);
+}
+
+.register-or-tag {
+  opacity: 0.37;
+}
