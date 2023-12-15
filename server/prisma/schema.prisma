@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Follower {
+model followers {
   follower_id                              Int       @id @default(autoincrement())
   follower_user_id                         Int?
   following_user_id                        Int?
@@ -16,7 +16,7 @@ model Follower {
   users_followers_following_user_idTousers users?    @relation("followers_following_user_idTousers", fields: [following_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Like {
+model likes {
   like_id    Int       @id @default(autoincrement())
   user_id    Int?
   repost_id  Int?
@@ -25,7 +25,7 @@ model Like {
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Post {
+model posts{
   post_id    Int       @id @default(autoincrement())
   user_id    Int?
   content    String
@@ -35,7 +35,7 @@ model Post {
   reposts    reposts[]
 }
 
-model Reply {
+model replies {
   reply_id   Int       @id @default(autoincrement())
   user_id    Int?
   post_id    Int?
@@ -45,7 +45,7 @@ model Reply {
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Repost {
+model reposts {
   repost_id  Int       @id(map: "retposts_pkey") @default(autoincrement())
   user_id    Int?
   post_id    Int?
@@ -55,7 +55,7 @@ model Repost {
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model User {
+model users {
   user_id                                      Int         @id @default(autoincrement())
   username                                     String      @unique @db.VarChar(50)
   email                                        String      @unique @db.VarChar(100)
