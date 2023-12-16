@@ -1,15 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require('path');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const appConfig = require('./config/app-config');
 
 const app = express();
 const PORT = appConfig.port;
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 app.use(bodyParser.json());
+app.use(cors());
+app.use(cookieParser());
 
+app.use(authRoutes);
 app.get("", (req, res) => {
     res.send("Hello world!");
 });
