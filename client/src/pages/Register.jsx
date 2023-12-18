@@ -50,11 +50,13 @@ const Register = () => {
             return;
         }
 
-        // if (!validatePassword(formData.password)) {
-        //     // Display error message
-        //     console.log("Password too weak")
-        //     return;
-        // }
+        const validatedPasswordResponse = validatePassword(formData.password)
+
+        if (validatedPasswordResponse !== true) {
+            // Display error message
+            console.log(validatedPasswordResponse);
+            return;
+        }
 
         const response = await register(formData.username, formData.email, formData.password);
 
@@ -62,6 +64,7 @@ const Register = () => {
             navigate("/login");
         } else {
             // Display error message
+            console.log("Failed to register account")
         }
     }
 
