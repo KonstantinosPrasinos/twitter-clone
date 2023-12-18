@@ -4,11 +4,15 @@ export const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     // Returns true if request was made correctly and the error message otherwise
-    const register = async (username, email, password, repeatPassword) => {
+    const register = async (username, email, password) => {
         setIsLoading(true);
         let responseMessage = true;
 
-        const response = await fetch({});
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
+            method: 'POST',
+            body: JSON.stringify({username, email, password}),
+            headers: {'Content-Type': 'application/json'}
+        });
 
         if (!response.ok) {
             responseMessage = await response.text();

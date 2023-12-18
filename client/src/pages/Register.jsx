@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {useRegister} from "../hooks/useRegister.jsx";
 import {useNavigate} from "react-router-dom";
+import {validateEmail} from "../functions/validateEmail.js";
+import {validatePassword} from "../functions/validatePassword.js";
 
 const Register = () => {
     const [formData, setFormData] = useState({username: "", email: "", password: "", repeatPassword: ""});
@@ -38,20 +40,23 @@ const Register = () => {
 
         if (formData.password !== formData.repeatPassword) {
             // Display error message
+            console.log("Password and Repeat Password must match")
             return;
         }
 
         if (!validateEmail(formData.email)) {
             // Display error message
+            console.log("Email must be valid")
             return;
         }
 
-        if (!validatePassword(formData.password)) {
-            // Display error message
-            return;
-        }
+        // if (!validatePassword(formData.password)) {
+        //     // Display error message
+        //     console.log("Password too weak")
+        //     return;
+        // }
 
-        const response = await register(formData.username, formData.email, formData.password, formData.repeatPassword);
+        const response = await register(formData.username, formData.email, formData.password);
 
         if (response === true) {
             navigate("/login");
@@ -74,11 +79,11 @@ const Register = () => {
                 </label>
                 <label className={"Vertical-Flex-Container"}>
                     <span>Password</span>
-                    <input type={"text"} name={"password"} onChange={handleFormChange} />
+                    <input type={"password"} name={"password"} onChange={handleFormChange} />
                 </label>
                 <label className={"Vertical-Flex-Container"}>
                     <span>Repeat Password</span>
-                    <input type={"text"} name={"repeatPassword"} onChange={handleFormChange} />
+                    <input type={"password"} name={"repeatPassword"} onChange={handleFormChange} />
                 </label>
             </form>
             <button type={"submit"} form={"register-form"}>Register</button>

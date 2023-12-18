@@ -40,7 +40,6 @@ const signupController = async (req, res) => {
   } finally {
     await prisma.$disconnect();
   }
-
-
-
 };
+
+module.exports = signupController;
