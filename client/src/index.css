@@ -11,7 +11,7 @@
   /* Για dark theme */
   --primary-color: #1f1d2b;
   --secondary-color: #252836;
-  --accent-color: #645c9b;
+  --accent-color: #2f3142;
   --text-color: #ffffff;
   --border-color: #3b3e4b;
 
@@ -37,8 +37,7 @@
 body {
   margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 
@@ -48,7 +47,6 @@ body {
 
 h2 {
   font-size: var(--font-size-xxxl);
-  text-align: center;
 }
 
 label {
@@ -65,7 +63,6 @@ label > input {
 
 input {
   border: var(--base-border);
-  border-color: var(--accent-color);
   border-width: 2px;
   background: none;
   border-radius: var(--base-border-radius);
@@ -129,5 +126,4 @@ button:active {
 
 .register-or-tag {
   opacity: 0.37;
-  text-align: center;
 }
