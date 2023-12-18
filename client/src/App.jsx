@@ -1,4 +1,3 @@
-import './App.css'
 import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
 import userContext from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";

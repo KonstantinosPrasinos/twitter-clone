@@ -62,7 +62,8 @@ const Register = () => {
 
     return (
         <div className={"Panel Vertical-Flex-Container"}>
-            <h2>ΤΣΙΟΥ</h2>
+            <h2>Register for ΤΣΙΟΥ</h2>
+            <div>Create a new account by providing an email, a username and a password</div>
             <form onSubmit={handleRegister} className={"Vertical-Flex-Container"} id={"register-form"}>
                 <label className={"Vertical-Flex-Container"}>
                     <span>Username</span>
