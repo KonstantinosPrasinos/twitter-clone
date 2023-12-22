@@ -5,6 +5,7 @@ const config = {
   supabaseApiKey: process.env.SUPABASE_API_KEY,
   connectionString: process.env.DATABASE_URL,
   port: process.env.PORT,
+  secretKey: process.env.SECRET
 };
 
 module.exports=config;
