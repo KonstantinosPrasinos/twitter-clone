@@ -2,13 +2,13 @@ function validation(values) {
 
     let error = {}
 
-    if(values.username === "" ) {
+    if(username === "" ) {
         error.username = "Name field should not be empty"
     }else {
         error.username = ""
     }
 
-    if(values.password === "") {
+    if(password === "") {
         error.password = "Password field should not be empty"
     }else {
         error.password = ""
