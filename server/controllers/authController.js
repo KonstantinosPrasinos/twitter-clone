@@ -1,9 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
+const util = require('util');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const secretKey = 'your-secret-key';
-
+const appConfig = require('../config/app-config');
+const compareAsync = util.promisify(bcrypt.compare);
 const prisma = new PrismaClient();
+
 async function findUserByCredential(credential) {
   if (credential)
   {
@@ -28,7 +30,7 @@ async function findUserByCredential(credential) {
   }
   else console.error("credential given is undefined");
 }
-const maxTokenAge = 2 * 24 * 60 * 60; //2 days
+const maxTokenAge = '2d'; //2 days
 function createToken(user) {
   const payload = {
     userId: user.id,
@@ -37,22 +39,27 @@ function createToken(user) {
   const options = {
     expiresIn: maxTokenAge, 
   };
-  return jwt.sign(payload, secretKey, options);
+  return jwt.sign(payload, appConfig.secretKey, options);
 }
 
 async function login_post(req, res) {
   const { username, password } = req.body;
   try {
-    const user = await findUserByCredential(username);
-    //await bcrypt.compare(password, user.password_hash)
-    if (user && user.password_hash === password) 
+    const userFound = await findUserByCredential(username);
+    if (userFound) 
     {
-      const token = createToken(user);
-      res.cookie('jwt', token, { httpOnly: true, maxTokenAge:  maxTokenAge* 1000 });
-      res.status(200).json({ message: 'Login successful', user });
+      const isMatch = await compareAsync(password, userFound.password_hash);
+      if (isMatch) {
+        const token = createToken(userFound);
+        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000 });
+        res.status(200).json({ message: 'Login successful', token});
+      } else {
+        res.status(401).json({ message: 'Invalid credentials' });
+      }
     }
-    else 
-      res.status(401).json({ message: 'Wrong Credentials'});
+    else {
+      res.status(404).json({ message: 'Invalid credentials' });
+    }
   } 
   catch (error) 
   {
