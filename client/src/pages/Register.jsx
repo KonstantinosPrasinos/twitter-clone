@@ -23,41 +23,37 @@ const Register = () => {
 
         // Check inputs and make request to server
         if (formData.username.length === 0) {
-            // Display error message
-            alertContext.addAlert("Username is missing");
+            alertContext.addAlert("You must input a username");
             return;
         }
 
         if (formData.email.length === 0) {
-            // Display error message
+            alertContext.addAlert("You must input an email");
             return;
         }
         if (formData.password.length === 0) {
-            // Display error message
+            alertContext.addAlert("You must input a password");
             return;
         }
         if (formData.repeatPassword.length === 0) {
-            // Display error message
+            alertContext.addAlert("You must repeat your password");
             return;
         }
 
         if (formData.password !== formData.repeatPassword) {
-            // Display error message
-            console.log("Password and Repeat Password must match")
+            alertContext.addAlert("Your password and repeat password must match");
             return;
         }
 
         if (!validateEmail(formData.email)) {
-            // Display error message
-            console.log("Email must be valid")
+            alertContext.addAlert("Your email must be valid e.g. name@domain.com");
             return;
         }
 
         const validatedPasswordResponse = validatePassword(formData.password)
 
         if (validatedPasswordResponse !== true) {
-            // Display error message
-            console.log(validatedPasswordResponse);
+            alertContext.addAlert(validatedPasswordResponse);
             return;
         }
 
@@ -65,9 +61,9 @@ const Register = () => {
 
         if (response === true) {
             navigate("/login");
+            alertContext.addAlert("Account created successfully!");
         } else {
-            // Display error message
-            console.log("Failed to register account")
+            alertContext.addAlert("Failed to register your account");
         }
     }
 
