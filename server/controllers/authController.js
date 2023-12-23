@@ -13,12 +13,8 @@ async function findUserByCredential(credential) {
       const user = await prisma.users.findFirst({
         where: {
           OR: [
-            {
-              username: credential,
-            },
-            {
-              email: credential,
-            },
+            {username: { equals: credential },},
+            {email:  { equals: credential },},
           ],
         },
       });
@@ -58,7 +54,7 @@ async function login_post(req, res) {
       }
     }
     else {
-      res.status(404).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: 'Invalid credentials' });
     }
   } 
   catch (error) 
