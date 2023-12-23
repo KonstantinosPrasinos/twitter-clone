@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const util = require('util');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const appConfig = require('../config/app-config');
+const {appConfig} = require('../config/app-config');
 const compareAsync = util.promisify(bcrypt.compare);
 const prisma = new PrismaClient();
 
@@ -51,7 +51,7 @@ async function login_post(req, res) {
       const isMatch = await compareAsync(password, userFound.password_hash);
       if (isMatch) {
         const token = createToken(userFound);
-        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000 });
+        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000, path: '/' });
         res.status(200).json({ message: 'Login successful', token});
       } else {
         res.status(401).json({ message: 'Invalid credentials' });
