@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import {LoginApp} from "../functions/LoginApp.jsx";
+import {UserContext} from "../context/UserContext.jsx";
+
 
 
 const Login = (props) => {
@@ -8,17 +10,16 @@ const Login = (props) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const  login = LoginApp();
-    
-   
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
 
       event.preventDefault();
 
       const response = await login(username, password);
 
         if (response === true) {
-            navigate("/register");
+            navigate("/home");
+            
         } else {
             console.log("Failed to Login")
         }
