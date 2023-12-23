@@ -10,6 +10,10 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, appConfig.secretKey, (err, decoded) => {
     if (err) {
+      if (err.name === 'TokenExpiredError') {
+        return res.status(403).json({ message: 'Forbidden: Token has expired' });
+      }
+      console.error('JWT verification error:', err);
       return res.status(403).json({ message: 'Forbidden: Invalid token' });
     }
 
