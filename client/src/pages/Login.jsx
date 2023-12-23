@@ -1,42 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Validation from '../functions/LoginValidation.js'
+import {LoginApp} from "../functions/LoginApp.jsx";
+
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errors,SetErrors]=useState({});
     const navigate = useNavigate();
+    const  login = LoginApp();
     
    
 
     const handleLogin = async () => {
 
-        event.preventDefault();
-        /*SetErrors(Validation(values));*/
+      event.preventDefault();
 
-        try{
-            const response = await fetch("http://localhost:3000/api/login", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-            });
-            if (response.ok) {
-                const responseData = await response.json();
-                localStorage.setItem('jwt', responseData.token);
-                navigate('/register');
-            } else {
-                const errorData = await response.json();
-                console.error("Login failed: ", errorData.message);
-            }
+      const response = await login(username, password);
+
+        if (response === true) {
+            navigate("/register");
+        } else {
+            console.log("Failed to Login")
         }
-        catch(error)
-        {
-            console.error("Error during login: ",error);
-        }
-        
+    
 
         
 
@@ -55,10 +41,8 @@ const Login = (props) => {
             <form  className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                 <label htmlFor="Username">Username or Email</label>
                 <input value={username} onChange={(e) => setUsername(e.target.value)}type="username" id="username" name="username" required />
-                {errors.username && <span className="error"> {errors.username} </span>}
                 <label htmlFor="Password">Password</label>
                 <input value={password} onChange={(e) => setPassword(e.target.value)}type="password" id="password" name="password" required />
-                {errors.password && <span className="error"> {errors.password} </span>}
                 <button type="Login">Log In</button>  
             </form>
             <button onClick={handleClick}>Don't have an account register here.</button>
