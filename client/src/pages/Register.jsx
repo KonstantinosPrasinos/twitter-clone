@@ -1,13 +1,15 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useRegister} from "../hooks/useRegister.jsx";
 import {useNavigate} from "react-router-dom";
 import {validateEmail} from "../functions/validateEmail.js";
 import {validatePassword} from "../functions/validatePassword.js";
+import {AlertContext} from "../context/AlertContext.jsx";
 
 const Register = () => {
     const [formData, setFormData] = useState({username: "", email: "", password: "", repeatPassword: ""});
     const {isLoading, register} = useRegister();
     const navigate = useNavigate();
+    const alertContext = useContext(AlertContext);
 
     const handleFormChange = (event) => {
         const {name, value} = event.target;
@@ -22,6 +24,7 @@ const Register = () => {
         // Check inputs and make request to server
         if (formData.username.length === 0) {
             // Display error message
+            alertContext.addAlert("Username is missing");
             return;
         }
 
@@ -68,6 +71,10 @@ const Register = () => {
         }
     }
 
+    const handleLogin = () => {
+        navigate('/login')
+    }
+
     return (
         <div className={"Panel Vertical-Flex-Container"}>
             <h2>ΤΣΙΟΥ</h2>
@@ -91,7 +98,7 @@ const Register = () => {
             </form>
             <button type={"submit"} form={"register-form"}>Register</button>
             <div className={"register-or-tag"}>or</div>
-            <button>Log in</button>
+            <button onClick={handleLogin}>Log in</button>
         </div>
     );
 };
