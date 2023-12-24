@@ -3,11 +3,12 @@ import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-route
 import userContext from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
+import Login from "./pages/Login.jsx";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
   if (!userContext.state?.id)
-    return <Navigate to={"/login"} replace />
+    return <Navigate to={"/Login"} replace />
 
   // When we want to have certain elements that always stay visible, like a navigation bar, we add it below
   return (
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />
+  },
+
+  {
+    path: '/Login',
+    element: <Login />
   }
 ]);
 
@@ -47,3 +53,4 @@ function App() {
 }
 
 export default App;
+

@@ -25,7 +25,7 @@ model likes {
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model posts {
+model posts{
   post_id    Int       @id @default(autoincrement())
   user_id    Int?
   content    String

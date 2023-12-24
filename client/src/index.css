@@ -127,6 +127,12 @@ button:active {
   opacity: 0.37;
 }
 
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: left;
+} 
+
 .alert-container {
   position: fixed;
   top: 0;
@@ -154,7 +160,7 @@ button:active {
   padding: var(--base-padding);
   background-color: var(--accent-color);
   border-radius: var(--base-border-radius);
-
+  
   text-wrap: normal;
   overflow: hidden;
 
