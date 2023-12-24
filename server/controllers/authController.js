@@ -48,7 +48,16 @@ async function login_post(req, res) {
       if (isMatch) {
         const token = createToken(userFound);
         res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000, path: '/' });
-        res.status(200).json({ message: 'Login successful', token});
+        res.status(200).json({
+          message: 'Login successful',
+          token,
+          user: {
+            user_id: userFound.user_id,
+            username: userFound.username,
+            email: userFound.email,
+            isAdmin: userFound.isadmin
+          }
+        });
       } else {
         res.status(401).json({ message: 'Invalid credentials' });
       }
