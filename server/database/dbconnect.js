@@ -1,4 +1,4 @@
-const appConfig = require('../config/app-config');
+const {appConfig} = require('../config/app-config');
 
 const { createClient } = require('@supabase/supabase-js');
 
