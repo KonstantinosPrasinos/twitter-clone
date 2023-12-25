@@ -7,8 +7,9 @@ import Login from "./pages/Login.jsx";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
-  if (!userContext.state?.id)
-    return <Navigate to={"/Login"} replace />
+  // temp because log in doesn't work
+  // if (!userContext.state?.id)
+  //   return <Navigate to={"/Login"} replace />
 
   // When we want to have certain elements that always stay visible, like a navigation bar, we add it below
   return (

@@ -175,3 +175,9 @@ button:active {
 .alert-container > div.alert-hidden {
   opacity: 0;
 }
+
+textarea {
+  resize: none;
+  height: auto;
+  overflow: hidden;
+}
