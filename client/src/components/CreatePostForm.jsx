@@ -32,11 +32,11 @@ const CreatePostForm = () => {
     }, []);
 
     return (
-        <div>
-            <div>{userContext.state?.username ?? "JohnCena"}</div>
-            <textarea value={postContent} rows={1} onChange={handleChange} ref={textAreaRef} />
-            <div>
-                <button onClick={handlePost}>Post</button>
+        <div className={"create-post-container"}>
+            <div className={"create-post-username"}>{userContext.state?.username ?? "JohnCena"}</div>
+            <textarea placeholder={"Make a post"} value={postContent} rows={1} onChange={handleChange} ref={textAreaRef} />
+            <div className={"create-post-button-container"}>
+                <button disabled={postContent.length === 0 || postContent.length > maxPostLength} onClick={handlePost}>Post</button>
             </div>
         </div>
     );

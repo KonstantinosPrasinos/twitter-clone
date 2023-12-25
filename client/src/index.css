@@ -20,6 +20,7 @@
   --small-border-radius: 8px;
   --round-border-radius: 500px;
 
+  --small-gap: 5px;
   --base-gap: 10px;
   --big-gap: 20px;
 
@@ -93,15 +94,20 @@ button {
   color: var(--text-color);
 
   padding: var(--base-padding);
-  transition: 0.15s transform ease-in-out;
+  transition: 0.15s transform ease-in-out, filter 0.2s ease-in-out;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   transform: scale(1.02, 1.02);
 }
 
-button:active {
+button:active:not(:disabled) {
   transform: scale(1, 1);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  filter: brightness(0.6);
 }
 
 .Vertical-Flex-Container {
@@ -180,4 +186,57 @@ textarea {
   resize: none;
   height: auto;
   overflow: hidden;
+
+  background: none;
+  border: none;
+
+  color: var(--text-color);
+  font-size: var(--font-size-l);
+  padding: 0;
+
+  box-sizing: border-box;
+  align-self: center;
+
+  transition: 0.15s ease-in-out border-color;
+}
+
+textarea:focus {
+  border: none;
+  outline: none;
+}
+
+.create-post-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  gir-template-rows: auto auto;
+  column-gap: var(--base-gap);
+  row-gap: 0;
+
+  width: 100%;
+
+  padding-bottom: 20px;
+  border-bottom: var(--base-border);
+}
+
+.create-post-username {
+  grid-row-start: 1;
+  grid-column-start: span 2;
+
+  text-align: left;
+
+  opacity: 0.87;
+}
+
+.create-post-button-container {
+  grid-row: 2;
+  grid-column: 2;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+.create-post-button-container > button {
+  flex-grow: 0;
+  /*height: 38px;*/
+  /*padding: 8px 14px;*/
 }
