@@ -15,6 +15,9 @@
   --text-color: #ffffff;
   --border-color: #3b3e4b;
 
+  --error-color: #FF3040;
+  --warning-color: #fc9403;
+
   --base-border: 1px solid var(--border-color);
   --base-border-radius: 10px;
   --small-border-radius: 8px;
@@ -182,7 +185,39 @@ button:disabled {
   opacity: 0;
 }
 
-textarea {
+/* Create post styles */
+.create-post-content-container {
+  position: relative;
+  height: auto;
+  width: auto;
+
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.create-post-content-container > div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  font-size: var(--font-size-l);
+  padding: 0;
+
+  box-sizing: border-box;
+  align-self: center;
+  text-align: left;
+
+  overflow: hidden;
+  text-wrap: normal;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.dummy-text-area {
+  color: var(--text-color);
+}
+
+.textarea {
   resize: none;
   height: auto;
   overflow: hidden;
@@ -190,25 +225,26 @@ textarea {
   background: none;
   border: none;
 
-  color: var(--text-color);
-  font-size: var(--font-size-l);
-  padding: 0;
-
-  box-sizing: border-box;
-  align-self: center;
-
   transition: 0.15s ease-in-out border-color;
+  z-index: 1;
+
+  background: transparent;
+  color: transparent;
+
+  caret-color: var(--accent-color);
+
+  min-height: 1.5em;
 }
 
-textarea:focus {
+.textarea:focus {
   border: none;
   outline: none;
 }
 
 .create-post-container {
   display: grid;
-  grid-template-columns: auto auto;
-  gir-template-rows: auto auto;
+  grid-template-columns: auto 4em;
+  grid-template-rows: auto auto;
   column-gap: var(--base-gap);
   row-gap: 0;
 
@@ -216,15 +252,23 @@ textarea:focus {
 
   padding-bottom: 20px;
   border-bottom: var(--base-border);
+  align-items: center;
+}
+
+.dummy-highlighted {
+  color: var(--accent-color);
+}
+
+.dummy-placeholder {
+  opacity: 0.6;
 }
 
 .create-post-username {
-  grid-row-start: 1;
-  grid-column-start: span 2;
+  grid-row: 1;
+  grid-column: 1;
 
   text-align: left;
-
-  opacity: 0.87;
+  font-weight: bold;
 }
 
 .create-post-button-container {
@@ -233,10 +277,25 @@ textarea:focus {
 
   display: flex;
   align-items: flex-end;
+  align-self: flex-end;
 }
 
 .create-post-button-container > button {
   flex-grow: 0;
-  /*height: 38px;*/
-  /*padding: 8px 14px;*/
+}
+
+.create-post-remaining-characters {
+  grid-row: 1;
+  grid-column: 2;
+  color: var(--warning-color);
+}
+
+.create-post-remaining-characters.create-post-remaining-characters-zero {
+  color: red;
+}
+
+/* Home styles */
+
+.mainContainer {
+  width: 450px;
 }
