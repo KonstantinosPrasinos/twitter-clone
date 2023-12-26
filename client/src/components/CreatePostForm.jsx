@@ -13,9 +13,11 @@ const restoreSelection = (node, offset) => {
     const selection = window.getSelection();
     selection.removeAllRanges();
 
+    const localOffset = offset > 280 ? 280 : offset;
+
     const range = document.createRange();
-    range.setStart(node.childNodes[0], offset);
-    range.setEnd(node.childNodes[0], offset);
+    range.setStart(node.childNodes[0], localOffset);
+    range.setEnd(node.childNodes[0], localOffset);
 
     selection.addRange(range);
 }
@@ -29,7 +31,7 @@ const CreatePostForm = () => {
     const contentContainerRef = useRef();
 
     const handleInput = (event) => {
-        const text = event.target.innerText;
+        let text = event.target.innerText;
 
         if (text.length <= maxPostLength) {
             setPostContent(text);
@@ -41,25 +43,25 @@ const CreatePostForm = () => {
             event.target.style.height = `${scrollHeight}px`;
             dummyTextAreaRef.current.style.height = `${scrollHeight}px`;
             contentContainerRef.current.style.height = `${scrollHeight}px`;
-
-            if (text.length === 0) {
-                // If text is empty then add placeholder
-                dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>';
-            } else {
-                // Replace all @ or # tags with highlighted text
-                dummyTextAreaRef.current.innerHTML = text.replace(/@[a-zA-Z]+|#\w+/, (value) => {
-                    return `<span class="dummy-highlighted">${value}</span>`
-                });
-            }
         } else {
             // Get caret position
             const offset = saveSelection();
 
             // Change the text
-            event.target.innerText = event.target.innerText.substring(0, maxPostLength);
+            event.target.innerText = text = event.target.innerText.substring(0, maxPostLength);
 
             // Restore the caret to end of text
             restoreSelection(textAreaRef.current, offset);
+        }
+
+        if (text.length === 0) {
+            // If text is empty then add placeholder
+            dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>';
+        } else {
+            // Replace all @ or # tags with highlighted text
+            dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z]+|#\w+/gi, (value) => {
+                return `<span class="dummy-highlighted">${value}</span>`
+            });
         }
     }
 
@@ -73,6 +75,7 @@ const CreatePostForm = () => {
     const handlePost = () => {}
 
     useEffect(() => {
+        // The input div height is based on the user input. So initialize it as the base height.
         if (textAreaRef.current) {
             textAreaRef.current.style.height = "0px";
             const scrollHeight = textAreaRef.current.scrollHeight;
