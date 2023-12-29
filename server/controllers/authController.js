@@ -26,7 +26,7 @@ async function findUserByCredential(credential) {
   }
   else console.error("credential given is undefined");
 }
-const maxTokenAge = '30m'; //30 minutes
+const maxTokenAge = '60m'; //60 minutes
 function createToken(user) {
   const payload = {
     userId: user.id,
@@ -47,7 +47,7 @@ const login_post = async (req, res) => {
       const isMatch = await compareAsync(password, userFound.password_hash);
       if (isMatch) {
         const token = createToken(userFound);
-        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000, path: '/' });
+        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge, path: '/' });
         res.status(200).json({
           message: 'Login successful',
           token,
