@@ -1,8 +1,8 @@
 const express = require('express');
-const postController = require('../controllers/postController');
+const createPost = require('../controllers/postController');
 const authenticateToken = require('../middleware/authenticateToken'); //protects routes
 const router = express.Router();
 
-router.post('/api/posts', authenticateToken, postController.createPost);
+router.post('/api/posts', authenticateToken, createPost);
 
 module.exports = router;
