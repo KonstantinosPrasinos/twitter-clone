@@ -1,6 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-
 const createPost = async (req,res) => {
     const {userId,postContent} = req.body;
     if (postContent)
@@ -26,5 +25,4 @@ const createPost = async (req,res) => {
     }
 
 }
-
 module.exports = createPost;
