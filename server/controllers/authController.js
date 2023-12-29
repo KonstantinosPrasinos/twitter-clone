@@ -38,7 +38,7 @@ function createToken(user) {
   return jwt.sign(payload, appConfig.secretKey, options);
 }
 
-async function login_post(req, res) {
+const login_post = async (req, res) => {
   const { username, password } = req.body;
   try {
     const userFound = await findUserByCredential(username);
