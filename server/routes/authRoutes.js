@@ -6,5 +6,5 @@ const {login_post,logoutController}  = require('../controllers/authController');
 
 router.post('/signup', signupController);
 router.post('/api/login', login_post);
-router.post('/logout', logoutController);
+router.get('/logout', authenticateToken,logoutController);
 module.exports = router;

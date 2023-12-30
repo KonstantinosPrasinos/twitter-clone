@@ -78,7 +78,6 @@ async function login_post(req, res) {
 }
 const logoutController = (req, res) => {
   try {
-    // Clear the authentication token on the server side
     const options = {
       expires: new Date(0),
       httpOnly: true,
