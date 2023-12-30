@@ -1,7 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback,useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../context/UserContext';
 const useLogout = () => {
   const navigate  = useNavigate();
+  const userContext = useContext(UserContext);
   const logout = useCallback(async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
@@ -10,6 +12,7 @@ const useLogout = () => {
         credentials: 'include'
       });
       if (response.ok) {
+        userContext.dispatch({type: 'REMOVE_USER'});
         navigate('/Login');
       } else {
         const errorData = await response.json();
