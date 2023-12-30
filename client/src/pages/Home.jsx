@@ -7,6 +7,7 @@ const Home = () => {
         </div>
         <div>
             This is the home page.
+            <LogoutButton />
         </div>
     </div>
 };
