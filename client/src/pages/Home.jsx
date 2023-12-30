@@ -1,5 +1,5 @@
 import React from 'react';
-
+import LogoutButton from '../components/LogoutButton';
 const Home = () => {
     return <div className="mainContainer">
         <div className={"titleContainer"}>
@@ -7,8 +7,8 @@ const Home = () => {
         </div>
         <div>
             This is the home page.
-            <LogoutButton />
         </div>
+        <LogoutButton />
     </div>
 };
 
