@@ -26,14 +26,14 @@ async function findUserByCredential(credential) {
   }
   else console.error("credential given is undefined");
 }
-const maxTokenAge = '2d'; //2 days
+const maxTokenAge = 60 * 60 * 1000; //1 hour
 function createToken(user) {
   const payload = {
     userId: user.id,
     username: user.username,
   };
   const options = {
-    expiresIn: maxTokenAge, 
+    expiresIn: maxTokenAge / 1000, 
   };
   return jwt.sign(payload, appConfig.secretKey, options);
 }
@@ -47,7 +47,7 @@ async function login_post(req, res) {
       const isMatch = await compareAsync(password, userFound.password_hash);
       if (isMatch) {
         const token = createToken(userFound);
-        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000, path: '/' });
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxTokenAge, path: '/' });
         res.status(200).json({
           message: 'Login successful',
           token,
