@@ -26,7 +26,7 @@ async function findUserByCredential(credential) {
   }
   else console.error("credential given is undefined");
 }
-const maxTokenAge = '60m'; //60 minutes
+const maxTokenAge = 60 * 60 * 1000; //1 hour
 function createToken(user) {
   const payload = {
     userId: user.id,
