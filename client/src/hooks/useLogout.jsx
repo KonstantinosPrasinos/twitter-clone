@@ -10,7 +10,7 @@ const useLogout = () => {
         credentials: 'include'
       });
       if (response.ok) {
-        navigate('/login');
+        navigate('/Login');
       } else {
         const errorData = await response.json();
         console.error('Logout failed:', errorData);
