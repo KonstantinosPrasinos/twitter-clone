@@ -33,7 +33,7 @@ function createToken(user) {
     username: user.username,
   };
   const options = {
-    expiresIn: maxTokenAge, 
+    expiresIn: maxTokenAge / 1000, 
   };
   return jwt.sign(payload, appConfig.secretKey, options);
 }
