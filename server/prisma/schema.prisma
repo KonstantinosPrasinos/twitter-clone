@@ -45,11 +45,10 @@ model replies {
 }
 
 model reposts {
-  repost_id  Int       @id(map: "retposts_pkey") @default(autoincrement())
+  repost_id  Int       @id @default(autoincrement())
   user_id    Int?
   post_id    Int?
   created_at DateTime? @default(now()) @db.Timestamp(6)
-  likes      likes[]
   posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
