@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {UserContext} from "../context/UserContext.jsx";
+import {AlertContext} from "../context/AlertContext.jsx";
 
 const maxPostLength = 280;
 
@@ -24,6 +25,7 @@ const restoreSelection = (node, offset) => {
 
 const CreatePostForm = () => {
     const userContext = useContext(UserContext);
+    const alertContext = useContext(AlertContext);
     const [postContent, setPostContent] = useState("");
 
     const textAreaRef = useRef();
@@ -72,7 +74,20 @@ const CreatePostForm = () => {
         return "";
     }, [postContent])
 
-    const handlePost = () => {}
+    const handlePost = async () => {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts`, {
+            method: 'POST',
+            body: JSON.stringify({userId: userContext.state?.id, postContent}),
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        if (!response.ok) {
+            alertContext.addAlert("You must input an email");
+        } else {
+            alertContext.addAlert("Post created successfully");
+            setPostContent("");
+        }
+    }
 
     useEffect(() => {
         // The input div height is based on the user input. So initialize it as the base height.
