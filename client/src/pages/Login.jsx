@@ -1,60 +1,53 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {LoginApp} from "../functions/LoginApp.jsx";
+
+
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const handleLogin = async () => {
-        try{
-            const response = await fetch("http://localhost:3000/api/login", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username, password }),
-            });
-            if (response.ok) {
-                const responseData = await response.json();
-                localStorage.setItem('jwt', responseData.token);
-                navigate('/register');
-            } else {
-                const errorData = await response.json();
-                console.error("Login failed: ", errorData.message);
-            }
+    const  login = LoginApp();
+    
+   
+
+    const handleLogin = async (event) => {
+
+      event.preventDefault();
+
+      const response = await login(username, password);
+
+        if (response === true) {
+            navigate("/home");
+        } else {
+            console.log("Failed to Login")
         }
-        catch(error)
-        {
-            console.error("Error during login: ",error);
-        }
+    
+
+        
+
     };
+
+
+    const handleClick = () => {
+        navigate("/Register");
+    };
+
+      
+
     return (
-        <div className={"Panel Vertical-FLex-Container"}>
-            {
-            (
-                <div>
-                    <h1>Login to TSIOY</h1>
-                    <label>
-                        Username or Email:
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Password:
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <button onClick={handleLogin}>Login</button>
-                </div>
-            )}
-        </div>
+        <div className={"Panel Vertical-Flex-Container"}>
+            <h2>Login to TSIOY</h2>
+            <form  className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
+                <label htmlFor="Username">Username or Email</label>
+                <input value={username} onChange={(e) => setUsername(e.target.value)}type="username" id="username" name="username" required />
+                <label htmlFor="Password">Password</label>
+                <input value={password} onChange={(e) => setPassword(e.target.value)}type="password" id="password" name="password" required />
+                <button type="Login">Log In</button>  
+            </form>
+            <button onClick={handleClick}>Don't have an account register here.</button>
+            
+        </div>    
     );
 }
 

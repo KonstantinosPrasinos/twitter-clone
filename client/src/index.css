@@ -11,7 +11,7 @@
   /* Για dark theme */
   --primary-color: #1f1d2b;
   --secondary-color: #252836;
-  --accent-color: #2f3142;
+  --accent-color: #645c9b;
   --text-color: #ffffff;
   --border-color: #3b3e4b;
 
@@ -127,3 +127,11 @@ button:active {
 .register-or-tag {
   opacity: 0.37;
 }
+
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: left;
+} 
+
+
