@@ -1,6 +1,7 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import React, {useContext, useState} from "react";
 import {LoginApp} from "../functions/LoginApp.jsx";
+import {UserContext} from "../context/UserContext.jsx";
 
 
 const Login = () => {
@@ -8,13 +9,15 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const login = LoginApp();
+    const userContext = useContext(UserContext);
 
     const handleLogin = async (event) => {
       event.preventDefault();
 
       const response = await login(username, password);
-      if (response) {
-          navigate("/home");
+      if (typeof response !== 'string') {
+        userContext.dispatch({type: 'REMOVE_USER', payload: response});
+        navigate("/home");
       } else {
           console.log("Failed to Login")
       }
