@@ -26,19 +26,19 @@ async function findUserByCredential(credential) {
   }
   else console.error("credential given is undefined");
 }
-const maxTokenAge = '2d'; //2 days
+const maxTokenAge = 60 * 60 * 1000; //1 hour
 function createToken(user) {
   const payload = {
     userId: user.id,
     username: user.username,
   };
   const options = {
-    expiresIn: maxTokenAge, 
+    expiresIn: maxTokenAge / 1000, 
   };
   return jwt.sign(payload, appConfig.secretKey, options);
 }
 
-async function login_post(req, res) {
+const login_post = async (req, res) => {
   const { username, password } = req.body;
   try {
     const userFound = await findUserByCredential(username);
@@ -47,7 +47,7 @@ async function login_post(req, res) {
       const isMatch = await compareAsync(password, userFound.password_hash);
       if (isMatch) {
         const token = createToken(userFound);
-        res.cookie('jwt', token, { httpOnly: true, maxTokenAge: maxTokenAge * 1000, path: '/' });
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxTokenAge, path: '/' });
         res.status(200).json({
           message: 'Login successful',
           token,
@@ -76,4 +76,18 @@ async function login_post(req, res) {
     await prisma.$disconnect();
   }
 }
-module.exports = { login_post, findUserByCredential};
+const logoutController = (req, res) => {
+  try {
+    const options = {
+      expires: new Date(0),
+      httpOnly: true,
+    };
+    // Clear the authentication cookie
+    res.cookie('jwt', '', options);
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).json({ error: 'Internal server error during logout' });
+  }
+};
+module.exports = { login_post, findUserByCredential,logoutController};

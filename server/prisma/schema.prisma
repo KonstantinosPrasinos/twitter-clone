@@ -15,17 +15,15 @@ model followers {
   users_followers_follower_user_idTousers  users?    @relation("followers_follower_user_idTousers", fields: [follower_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   users_followers_following_user_idTousers users?    @relation("followers_following_user_idTousers", fields: [following_user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
-
 model likes {
   like_id    Int       @id @default(autoincrement())
   user_id    Int?
-  repost_id  Int?
+  post_id    Int?
   created_at DateTime? @default(now()) @db.Timestamp(6)
-  reposts    reposts?  @relation(fields: [repost_id], references: [repost_id], onDelete: NoAction, onUpdate: NoAction)
+  posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
-
-model posts{
+model posts {
   post_id    Int       @id @default(autoincrement())
   user_id    Int?
   content    String
@@ -33,6 +31,7 @@ model posts{
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   replies    replies[]
   reposts    reposts[]
+  likes      likes[]   
 }
 
 model replies {
@@ -46,11 +45,10 @@ model replies {
 }
 
 model reposts {
-  repost_id  Int       @id(map: "retposts_pkey") @default(autoincrement())
+  repost_id  Int       @id @default(autoincrement())
   user_id    Int?
   post_id    Int?
   created_at DateTime? @default(now()) @db.Timestamp(6)
-  likes      likes[]
   posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
