@@ -43,6 +43,7 @@ const createFeed = async (req, res) => {
                   username: true,
                 },
               },
+              content: true,
               created_at: true,
             },
           },
@@ -91,6 +92,7 @@ const createFeed = async (req, res) => {
           replies: post.replies.map(reply => ({
             user_id: reply.user_id,
             username: reply.users.username,
+            content: reply.content,
             created_at: reply.created_at,
           })),
           isRepost: false,
