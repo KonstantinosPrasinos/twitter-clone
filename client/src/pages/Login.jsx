@@ -9,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const login = LoginApp();
+    const userContext = useContext(UserContext);
     
   
     const handleLogin = async (event) => {
@@ -17,7 +18,7 @@ const Login = () => {
       const response = await login(username, password);
       
       if (typeof response !== 'string') {
-            userContext.dispatch({type: 'REMOVE_USER', payload: response});
+            userContext.dispatch({type: 'SET_USER', payload: response.user});
             navigate("/home");
         } else {
             console.log("Failed to Login")

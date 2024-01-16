@@ -1,14 +1,16 @@
 import './App.css'
 import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
-import userContext from "./context/UserContext.jsx";
+import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import {useContext} from "react";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
-  // temp because log in doesn't work
-  if (!userContext.state?.id)
+  const userContext = useContext(UserContext);
+
+  if (!userContext?.state?.user_id)
     return <Navigate to={"/Login"} replace />
 
   // When we want to have certain elements that always stay visible, like a navigation bar, we add it below

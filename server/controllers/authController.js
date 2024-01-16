@@ -45,6 +45,7 @@ const login_post = async (req, res) => {
     if (userFound) 
     {
       const isMatch = await compareAsync(password, userFound.password_hash);
+
       if (isMatch) {
         const token = createToken(userFound);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxTokenAge, path: '/' });
