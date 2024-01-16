@@ -18,7 +18,7 @@ const Login = () => {
         const response = await login(username, password);
 
         if (typeof response !== 'string') {
-            userContext.dispatch({ type: 'SET_USER', payload: response });
+            userContext.dispatch({ type: 'REMOVE_USER', payload: response });
             navigate("/home");
         } else {
             console.log("Failed to Login")
