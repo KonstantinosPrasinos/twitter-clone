@@ -1,14 +1,9 @@
 import React from 'react';
-import LogoutButton from '../components/LogoutButton';
+import ViewPostsForm from "../components/ViewPostsForm.jsx";
+
 const Home = () => {
     return <div className="mainContainer">
-        <div className={"titleContainer"}>
-            <div>Welcome!</div>
-        </div>
-        <div>
-            This is the home page.
-        </div>
-        <LogoutButton />
+        <ViewPostsForm />
     </div>
 };
 

@@ -175,3 +175,11 @@ button:active {
 .alert-container > div.alert-hidden {
   opacity: 0;
 }
+
+.feed-container {
+  position: top;
+  height: auto;
+  width: auto;
+
+
+}
