@@ -7,8 +7,10 @@ export const UserContext = createContext({});
 export const userReducer = (state, action) => {
     switch (action.type) {
         case 'SET_USER':
+            localStorage.setItem("user", JSON.stringify(action.payload))
             return action.payload;
         case 'REMOVE_USER':
+            localStorage.removeItem("user")
             return {};
         default:
             return state;

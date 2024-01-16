@@ -77,15 +77,18 @@ const CreatePostForm = () => {
     const handlePost = async () => {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/posts`, {
             method: 'POST',
-            body: JSON.stringify({userId: userContext.state?.id, postContent}),
-            headers: {'Content-Type': 'application/json'}
+            body: JSON.stringify({userId: userContext.state?.user_id, postContent}),
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
         });
 
         if (!response.ok) {
-            alertContext.addAlert("You must input an email");
+            alertContext.addAlert("Failed to create post");
         } else {
             alertContext.addAlert("Post created successfully");
             setPostContent("");
+            textAreaRef.current.innerHTML = '';
+            dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>'
         }
     }
 
