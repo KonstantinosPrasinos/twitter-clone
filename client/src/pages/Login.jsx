@@ -9,15 +9,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const login = LoginApp();
-    const userContext = useContext(UserContext);
-
-
+    
+  
     const handleLogin = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        const response = await login(username, password);
-
-        if (typeof response !== 'string') {
+      const response = await login(username, password);
+      
+      if (typeof response !== 'string') {
             userContext.dispatch({type: 'REMOVE_USER', payload: response});
             navigate("/home");
         } else {
@@ -25,13 +24,12 @@ const Login = () => {
         }
     };
 
-
     const handleClick = () => {
         navigate("/Register");
     };
 
-
-    return (<div className={"Panel Vertical-Flex-Container"}>
+    return (
+        <div className={"Panel Vertical-Flex-Container"}>
             <h2>Login to TSIOY</h2>
             <form className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                 <label htmlFor="Username">Username or Email</label>

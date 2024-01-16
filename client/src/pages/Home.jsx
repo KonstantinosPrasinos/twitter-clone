@@ -1,11 +1,6 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
-
+import LogoutButton from '../components/LogoutButton';
 const Home = () => {
-
-    const { loggedIn, email } = props
-    const navigate = useNavigate();
-
     return <div className="mainContainer">
         <div className={"titleContainer"}>
             <div>Welcome!</div>
@@ -13,6 +8,7 @@ const Home = () => {
         <div>
             This is the home page.
         </div>
+        <LogoutButton />
     </div>
 };
 
