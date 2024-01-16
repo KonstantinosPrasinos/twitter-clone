@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {LoginApp} from "../functions/LoginApp.jsx";
 import {UserContext} from "../context/UserContext.jsx";
@@ -10,6 +10,12 @@ const Login = () => {
     const navigate = useNavigate();
     const login = LoginApp();
     const userContext = useContext(UserContext);
+
+    useEffect(() => {
+        if (userContext?.state?.user_id) {
+            navigate("/")
+        }
+    }, [userContext]);
     
   
     const handleLogin = async (event) => {
@@ -17,7 +23,7 @@ const Login = () => {
 
       const response = await login(username, password);
       
-      if (typeof response !== 'string') {
+      if (typeof response !== 'string' && response?.user) {
             userContext.dispatch({type: 'SET_USER', payload: response.user});
             navigate("/home");
         } else {

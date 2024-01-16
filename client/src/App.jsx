@@ -4,7 +4,7 @@ import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
@@ -48,6 +48,21 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+    // Get user from local storage, in order to keep them logged in after refresh
+    const localStorageUser = localStorage.getItem("user");
+
+    if (!localStorageUser) return
+
+    const userObject = JSON.parse(localStorageUser)
+
+    if (!userObject?.user_id) return;
+
+    userContext.dispatch({type: 'SET_USER', payload: userObject});
+  }, []);
+
   return (
     <>
       <RouterProvider router={router} />
