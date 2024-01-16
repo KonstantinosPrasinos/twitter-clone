@@ -76,4 +76,18 @@ const login_post = async (req, res) => {
     await prisma.$disconnect();
   }
 }
-module.exports = { login_post, findUserByCredential};
+const logoutController = (req, res) => {
+  try {
+    const options = {
+      expires: new Date(0),
+      httpOnly: true,
+    };
+    // Clear the authentication cookie
+    res.cookie('jwt', '', options);
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).json({ error: 'Internal server error during logout' });
+  }
+};
+module.exports = { login_post, findUserByCredential,logoutController};

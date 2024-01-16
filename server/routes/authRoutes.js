@@ -3,7 +3,10 @@ const router = express.Router();
 const signupController = require('../controllers/signupController');
 const {login_post}  = require('../controllers/authController');
 
+const authenticateToken = require('../middleware/authenticateToken'); //protects routes
+const {login_post,logoutController}  = require('../controllers/authController');
+
 router.post('/signup', signupController);
 router.post('/api/login', login_post);
-
+router.get('/logout', authenticateToken,logoutController);
 module.exports = router;
