@@ -7,6 +7,7 @@ import Login from "./pages/Login.jsx";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
+  // temp because log in doesn't work
   if (!userContext.state?.id)
     return <Navigate to={"/Login"} replace />
 
