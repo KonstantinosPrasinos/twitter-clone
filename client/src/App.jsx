@@ -1,14 +1,17 @@
 import './App.css'
 import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
-import userContext from "./context/UserContext.jsx";
+import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import {useContext, useEffect} from "react";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
-  if (!userContext.state?.id)
-    //return <Navigate to={"/Login"} replace />
+  const userContext = useContext(UserContext);
+
+  if (!userContext?.state?.user_id)
+    return <Navigate to={"/Login"} replace />
 
   // When we want to have certain elements that always stay visible, like a navigation bar, we add it below
   return (
@@ -45,6 +48,21 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+    // Get user from local storage, in order to keep them logged in after refresh
+    const localStorageUser = localStorage.getItem("user");
+
+    if (!localStorageUser) return
+
+    const userObject = JSON.parse(localStorageUser)
+
+    if (!userObject?.user_id) return;
+
+    userContext.dispatch({type: 'SET_USER', payload: userObject});
+  }, []);
+
   return (
     <>
       <RouterProvider router={router} />
@@ -53,4 +71,3 @@ function App() {
 }
 
 export default App;
-

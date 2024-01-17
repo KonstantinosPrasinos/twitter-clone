@@ -1,7 +1,8 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {LoginApp} from "../functions/LoginApp.jsx";
 import {UserContext} from "../context/UserContext.jsx";
+import {AlertContext} from "../context/AlertContext.jsx";
 
 
 const Login = () => {
@@ -10,28 +11,34 @@ const Login = () => {
     const navigate = useNavigate();
     const login = LoginApp();
     const userContext = useContext(UserContext);
+    const alertContext = useContext(AlertContext);
 
-
+    useEffect(() => {
+        if (userContext?.state?.user_id) {
+            navigate("/")
+        }
+    }, [userContext]);
+    
+  
     const handleLogin = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        const response = await login(username, password);
-
-        if (typeof response !== 'string') {
-            userContext.dispatch({ type: 'REMOVE_USER', payload: response });
+      const response = await login(username, password);
+      
+      if (typeof response !== 'string' && response?.user) {
+            userContext.dispatch({type: 'SET_USER', payload: response.user});
             navigate("/home");
         } else {
             console.log("Failed to Login")
         }
     };
 
-
     const handleClick = () => {
         navigate("/Register");
     };
 
-
-    return (<div className={"Panel Vertical-Flex-Container"}>
+    return (
+        <div className={"Panel Vertical-Flex-Container"}>
             <h2>Login to TSIOY</h2>
             <form className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                 <label htmlFor="Username">Username or Email</label>

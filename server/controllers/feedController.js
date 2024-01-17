@@ -124,11 +124,11 @@ const createFeed = async (req, res) => {
       res.status(201).json({ success: true, message: 'Followers posts', posts: formattedFeed });
     } catch (error) {
       console.error('Error fetching posts:', error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
+      res.status(500).json({ success: false, message: 'Internal server error 1' });
     }
   } catch (error) {
     console.error('Error fetching followers:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Internal server error 2' });
   } finally {
     await prisma.$disconnect();
   }

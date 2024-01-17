@@ -1,29 +1,30 @@
-import React, { useContext,useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { AlertContext } from "../context/AlertContext.jsx";
 import {UserContext} from "../context/UserContext.jsx";
-import {AlertContext} from "../context/AlertContext.jsx";
 
-const ViewgetsComponent = () => {
-  const [FormattedFeed, setFeed] = useState([]);
+const ViewPostsForm = () => {
+  const [formattedFeed, setFormattedFeed] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userContext = useContext(UserContext);
   const alertContext = useContext(AlertContext);
-  const userId = userContext.state?.id || '';
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
     const fetchFeed = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feed`, {
           method: 'GET',
-          /*body: JSON.stringify({userId: userContext.state?.id, formattedFeed}),*/
-          headers: { 'Content-Type': 'application/json', },
-          credentials: 'include'
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userContext.state.user_id}`,
+          },
+          credentials: 'include',
         });
 
         if (response.ok) {
           const data = await response.json();
-          setFeed(data.gets);
+          setFormattedFeed(data.posts);
         } else {
-            alertContext.addAlert("Failed to fetch feed");
+          alertContext.addAlert("Failed to fetch feed");
         }
       } catch (error) {
         console.error('Error fetching feed:', error);
@@ -34,7 +35,7 @@ const ViewgetsComponent = () => {
     };
 
     fetchFeed();
-  }, [userContext.state?.id, FormattedFeed]);
+  }, [alertContext]);
 
   return (
     <div>
@@ -43,11 +44,11 @@ const ViewgetsComponent = () => {
         <p>Loading...</p>
       ) : (
         <div>
-          {FormattedFeed.map((get) => (
-            <div key={get.isReget ? get.reget_id : get.get_id}>
-              <h2>{get.username}</h2>
-              <p>{get.content}</p>
-              {get.isReget && <p>Regeted by: {get.regeted_username}</p>}
+          {formattedFeed.map((post) => (
+            <div key={post.isRepost ? post.repost_id : post.post_id}>
+              <h2>{post.isRepost ? post.reposted_username : post.username}</h2>
+              <p>{post.content}</p>
+              {post.isRepost && <p>Original User: {post.original_username}</p>}
             </div>
           ))}
         </div>
@@ -56,4 +57,4 @@ const ViewgetsComponent = () => {
   );
 };
 
-export default ViewgetsComponent;
+export default ViewPostsForm;
