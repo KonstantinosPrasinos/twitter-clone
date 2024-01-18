@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
-
+const maxQueryLength = 50;
+const minQueryLength = 2;
 const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
@@ -9,7 +10,7 @@ const Search = () => {
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
-        if (withinLimits(inputQuery,2,50))
+        if (withinLimits(inputQuery,minQueryLength,maxQueryLength))
         {
             setSearchQuery(inputQuery);
             setError(null);
@@ -40,7 +41,7 @@ const Search = () => {
         }
     };
     useEffect(() => {
-        if (withinLimits(searchQuery, 2, 50)) {
+        if (withinLimits(searchQuery, minQueryLength, maxQueryLength)) {
             handleSearch();
             setError(null);
         }
@@ -53,7 +54,7 @@ const Search = () => {
         type="text"
         value={searchQuery}
         onChange={handleInput}
-        placeholder="Search Twitter..."
+        placeholder="Awesome Search... "
       />
 
       <button onClick={handleSearch}>Search</button>
