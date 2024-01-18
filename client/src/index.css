@@ -187,9 +187,6 @@ button:active {
   background: var(--secondary-color);
   box-sizing: content-box;
   gap: var(--big-gap);
-
-
-
 }
 
 .Post-Container {
@@ -205,7 +202,7 @@ button:active {
 
   padding: 10px 20px;
   border: var(--base-border);
-  border-radius: var(--base-border-radius);
+  border-radius: var(--small-border-radius);
   background: var(--feed-color);
   text-align: left;
   font-size: medium;
