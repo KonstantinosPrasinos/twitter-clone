@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
 const maxQueryLength = 50;
-const minQueryLength = 2;
+const minQueryLength = 0;
 const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
@@ -15,14 +15,14 @@ const Search = () => {
             setSearchQuery(inputQuery);
             setError(null);
         }
-        else setError('Search query must be between 2 and 50 characters.');
+        else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
 
     };
 
     const handleSearch = async () =>{
         try{
-            const response = await fetch('/api/search', {
-                method: 'POST',
+            const response =  await fetch(`${import.meta.env.VITE_BACKEND_URL}/search`, {
+                method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
                 },
@@ -45,7 +45,7 @@ const Search = () => {
             handleSearch();
             setError(null);
         }
-        else setError('Search query must be between 2 and 50 characters.');
+        else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
     }, [searchQuery]);
 
   return (
