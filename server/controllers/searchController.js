@@ -8,13 +8,29 @@ const searchController = async (req,res) => {
             const userResults = await prisma.users.findMany({
                 where: {
                   OR: [
-                    { username: { contains: searchQuery, mode: 'insensitive' } },
-                    { email: { contains: searchQuery, mode: 'insensitive'} },
+                    { username: { contains: searchQuery, mode: 'insensitive' } }
                   ],
                 },
             });
+            
+            const postResults = await prisma.posts.findMany({
+                where: {
+                    OR: [
+                      { content: { contains: searchQuery, mode: 'insensitive' } },
+                      {
+                        users: {
+                            username: { contains: searchQuery, mode: 'insensitive' },
+                        },
+                      },
+                    ],
+                  },
+                  include: {
+                    users: true, 
+                  },
+            });
             res.json({
-                users:userResults
+                users:userResults,
+                posts:postResults
             });
         }
         catch(error)
