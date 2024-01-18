@@ -9,9 +9,8 @@ const Home = () => {
             <div>Welcome!</div>
         </div>
         <div>
-            This is the home page.
+            <Search />
         </div>
-        <Search />
         <LogoutButton />
     </div>
 };
