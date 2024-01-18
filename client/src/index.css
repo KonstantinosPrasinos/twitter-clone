@@ -14,6 +14,7 @@
   --accent-color: #645c9b;
   --text-color: #ffffff;
   --border-color: #3b3e4b;
+  --feed-color: #1f1d2b52;
 
   --base-border: 1px solid var(--border-color);
   --base-border-radius: 10px;
@@ -176,10 +177,37 @@ button:active {
   opacity: 0;
 }
 
-.feed-container {
-  position: top;
+.Feed {
   height: auto;
-  width: auto;
+  width: 800px;
+  padding: 40px 80px;
 
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--secondary-color);
+  box-sizing: content-box;
+  gap: var(--big-gap);
+
+
+
+}
+
+.Post-Container {
+  
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-gap);
+  opacity: 0.80;
+  text-align: left;
+}
+
+.Single-Post-Container {
+
+  padding: 10px 20px;
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--feed-color);
+  text-align: left;
+  font-size: medium;
 
 }

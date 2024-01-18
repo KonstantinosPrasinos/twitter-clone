@@ -39,22 +39,24 @@ const ViewPostsForm = () => {
 
   return (
     <div>
-      <h1>Feed</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          {formattedFeed.map((post) => (
-            <div key={post.isRepost ? post.repost_id : post.post_id}>
-              <h2>{post.isRepost ? post.reposted_username : post.username}</h2>
-              <p>{post.content}</p>
-              {post.isRepost && <p>Original User: {post.original_username}</p>}
+      <h1>Recommended Posts</h1>
+      <div className="Feed Post-Container">
+        {formattedFeed.map((post) => (
+          <div key={post.isRepost ? `repost_${post.repost_id}` : `post_${post.post_id}`}>
+            <div className="Single-Post-Container">
+              <div>
+                <h2>{post.isRepost ? post.reposted_username : post.username}</h2>
+                <p style={{ fontSize: '16px', fontStyle: 'italic' }}>Said:</p>
+                <p>{post.content}</p>
+                {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>Repost by: {post.original_username}</p>}
+              </div>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
 export default ViewPostsForm;
+
