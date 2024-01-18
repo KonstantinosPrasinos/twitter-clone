@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 const {appConfig,corsConfig} = require('./config/app-config');
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(cors({
 }));
 
 app.use(authRoutes);
-
+app.use(searchRoutes);
 app.use(postRoutes);
 
 app.get("", (req, res) => {
