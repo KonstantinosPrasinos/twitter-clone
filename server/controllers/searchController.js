@@ -8,8 +8,8 @@ const searchController = async (req,res) => {
             const userResults = await prisma.users.findMany({
                 where: {
                   OR: [
-                    { username: { contains: searchQuery } },
-                    { email: { contains: searchQuery} },
+                    { username: { contains: searchQuery, mode: 'insensitive' } },
+                    { email: { contains: searchQuery, mode: 'insensitive'} },
                   ],
                 },
             });
