@@ -54,11 +54,13 @@ function App() {
     // Get user from local storage, in order to keep them logged in after refresh
     const localStorageUser = localStorage.getItem("user");
 
-    if (!localStorageUser) return
+    if (!localStorageUser) return;
 
     const userObject = JSON.parse(localStorageUser)
 
     if (!userObject?.user_id) return;
+
+    if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) return;
 
     userContext.dispatch({type: 'SET_USER', payload: userObject});
   }, []);

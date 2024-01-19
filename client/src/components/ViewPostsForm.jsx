@@ -35,7 +35,7 @@ const ViewPostsForm = () => {
     };
 
     fetchFeed();
-  }, [alertContext]);
+  }, []);
 
   return (
     <div>
