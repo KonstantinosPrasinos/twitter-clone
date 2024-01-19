@@ -94,7 +94,7 @@ const Register = () => {
             </form>
             <button type={"submit"} form={"register-form"}>Register</button>
             <div className={"register-or-tag"}>or</div>
-            <button onClick={handleLogin}>Log in</button>
+            <button onClick={handleLogin}>Already have an account? Log in here</button>
         </div>
     );
 };

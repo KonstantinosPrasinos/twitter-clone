@@ -141,6 +141,7 @@ button:disabled {
 }
 
 .register-or-tag {
+  text-align: center;
   opacity: 0.37;
 }
 
