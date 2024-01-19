@@ -8,7 +8,7 @@ export const useRegister = () => {
         setIsLoading(true);
         let responseMessage = true;
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/signup`, {
             method: 'POST',
             body: JSON.stringify({username, email, password}),
             headers: {'Content-Type': 'application/json'}

@@ -38,13 +38,14 @@ function createToken(user) {
   return jwt.sign(payload, appConfig.secretKey, options);
 }
 
-async function login_post(req, res) {
+const login_post = async (req, res) => {
   const { username, password } = req.body;
   try {
     const userFound = await findUserByCredential(username);
     if (userFound) 
     {
       const isMatch = await compareAsync(password, userFound.password_hash);
+
       if (isMatch) {
         const token = createToken(userFound);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxTokenAge, path: '/' });

@@ -16,7 +16,6 @@ const signupController = async (req, res) => {
               password_hash: hash,
               isadmin: false,
               created_at: new Date()
-
             },
           });
 

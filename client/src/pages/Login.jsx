@@ -4,7 +4,6 @@ import {LoginApp} from "../functions/LoginApp.jsx";
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 
-
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -12,6 +11,7 @@ const Login = () => {
     const login = LoginApp();
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
+
 
     useEffect(() => {
         if (userContext?.state?.user_id) {
@@ -43,6 +43,7 @@ const Login = () => {
         } else {
             console.log("Failed to Login")
             alertContext.addAlert("Incorrect User Name or Password");
+
         }
     };
 
@@ -56,10 +57,10 @@ const Login = () => {
             <form className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                 <label htmlFor="Username">Username or Email</label>
                 <input value={username} onChange={(e) => setUsername(e.target.value)} type="username" id="username"
-                       name="username"/>
+                       name="username" required/>
                 <label htmlFor="Password">Password</label>
                 <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password"
-                       name="password"/>
+                       name="password" required/>
                 <button type="Login">Log In</button>
             </form>
             <button onClick={handleClick}>Don't have an account register here.</button>
