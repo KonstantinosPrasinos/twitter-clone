@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {LoginApp} from "../functions/LoginApp.jsx";
 import {UserContext} from "../context/UserContext.jsx";
-
+import {AlertContext} from "../context/AlertContext.jsx";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -10,6 +10,8 @@ const Login = () => {
     const navigate = useNavigate();
     const login = LoginApp();
     const userContext = useContext(UserContext);
+    const alertContext = useContext(AlertContext);
+
 
     useEffect(() => {
         if (userContext?.state?.user_id) {
@@ -21,6 +23,18 @@ const Login = () => {
     const handleLogin = async (event) => {
       event.preventDefault();
 
+      if (username.length === 0) {
+            alertContext.addAlert("You must input a username");
+            return;
+        }
+
+      if (password.length === 0) {
+            alertContext.addAlert("You must input a password");
+            return;
+        }
+
+
+
       const response = await login(username, password);
       
       if (typeof response !== 'string' && response?.user) {
@@ -28,6 +42,8 @@ const Login = () => {
             navigate("/home");
         } else {
             console.log("Failed to Login")
+            alertContext.addAlert("Incorrect User Name or Password");
+
         }
     };
 
