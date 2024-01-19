@@ -374,3 +374,7 @@ button:disabled {
 .logout-button {
   width: min-content;
 }
+
+.post-username {
+  margin: 0;
+}
