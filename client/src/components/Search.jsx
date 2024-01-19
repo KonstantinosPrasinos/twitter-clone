@@ -21,12 +21,11 @@ const Search = () => {
 
     const handleSearch = async () =>{
         try{
-            const response =  await fetch(`${import.meta.env.VITE_BACKEND_URL}/search`, {
+            const response =  await fetch(`${import.meta.env.VITE_BACKEND_URL}/search?searchQuery=${encodeURIComponent(searchQuery)}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ searchQuery }),
                 credentials: 'include'
             });
             if (!response.ok) {
@@ -54,10 +53,10 @@ const Search = () => {
         type="text"
         value={searchQuery}
         onChange={handleInput}
-        placeholder="Awesome Search... "
+        placeholder="Search Τσίου... "
       />
 
-      <button onClick={handleSearch}>Search</button>
+      <button>Search</button>
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
