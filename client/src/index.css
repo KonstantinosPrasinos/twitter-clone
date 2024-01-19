@@ -189,23 +189,25 @@ button:disabled {
 
 .Feed {
   height: auto;
-  width: 800px;
-  padding: 40px 80px;
+  padding: 1em;
+  width: 600px;
+  box-sizing: border-box;
 
   border: var(--base-border);
   border-radius: var(--base-border-radius);
   background: var(--secondary-color);
-  box-sizing: content-box;
   gap: var(--big-gap);
 }
 
 .Post-Container {
-  
   display: flex;
   flex-direction: column;
   gap: var(--base-gap);
   opacity: 0.80;
   text-align: left;
+
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .Single-Post-Container {

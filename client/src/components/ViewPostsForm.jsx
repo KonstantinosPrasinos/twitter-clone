@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AlertContext } from "../context/AlertContext.jsx";
 import {UserContext} from "../context/UserContext.jsx";
+import PostList from "./PostList.jsx";
 
 const ViewPostsForm = () => {
   const [formattedFeed, setFormattedFeed] = useState([]);
@@ -38,25 +39,10 @@ const ViewPostsForm = () => {
   }, []);
 
   return (
-    <div>
+    <div className={"Vertical-Flex-Container"}>
       <h2 style={{ textAlign: 'left' }}>Recommended Posts</h2>
       {loading && <p>Loading...</p>}
-      {!loading && (
-        <div className="Feed Post-Container">
-          {formattedFeed.map((post) => (
-            <div key={post.isRepost ? `repost_${post.repost_id}` : `post_${post.post_id}`}>
-              <div className="Single-Post-Container">
-                <div>
-                  <h2>{post.isRepost ? post.reposted_username : post.username}</h2>
-                  <p style={{ fontSize: '16px', fontStyle: 'italic' }}>Said:</p>
-                  <p>{post.content}</p>
-                  {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>Repost by: {post.original_username}</p>}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {!loading && <PostList posts={formattedFeed} />}
     </div>
   );
 };
