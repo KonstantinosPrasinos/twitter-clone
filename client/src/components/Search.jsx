@@ -7,6 +7,7 @@ const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
     const [error,setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('users');
 
     const handleInput = (e) =>
     {
@@ -50,7 +51,11 @@ const Search = () => {
             setError(null);
       }
       else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
-    }, [searchQuery]);
+  }, [searchQuery]);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <div>
@@ -68,25 +73,38 @@ const Search = () => {
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
       <div>
-        <h2>Users</h2>
-        <ul>
-          {searchResults.users.map((user) => (
-            <li key={user.id}>{user.username}</li>
-          ))}
-        </ul>
+        <div style={{ marginBottom: '10px' }}>
+          <button onClick={() => handleTabChange('users')} style={{ marginRight: '10px' }} disabled={activeTab === 'users'}>
+            Users
+          </button>
+          <button onClick={() => handleTabChange('posts')} disabled={activeTab === 'posts'}>
+            Posts
+          </button>
       </div>
-
-      <div>
-        <h2>Posts</h2>
-        <ul>
-          {searchResults.posts.map((post) => (
-            <li key={post.id}>
-              <p>{post.content}</p>
-              <p>Author: {post.users.username}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {activeTab === 'users' && (
+        <div>
+          <h2>People</h2>
+          <ul>
+            {searchResults.users.map((user) => (
+              <li key={user.id}>{user.username}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {activeTab === 'posts' && (
+        <div>
+          <h2>Posts</h2>
+          <ul>
+            {searchResults.posts.map((post) => (
+              <li key={post.id}>
+                <p>{post.content}</p>
+                <p>Author: {post.users.username}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
     </div>
   );
 };
