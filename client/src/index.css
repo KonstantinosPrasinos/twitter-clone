@@ -42,7 +42,7 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  /*place-items: center;*/
   min-width: 320px;
   min-height: 100vh;
 
@@ -120,6 +120,13 @@ button:disabled {
   gap: var(--base-gap);
 }
 
+.Horizontal-Flex-Container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--base-gap);
+  align-items: center;
+}
+
 .Panel {
   height: auto;
   width: 600px;
@@ -189,23 +196,25 @@ button:disabled {
 
 .Feed {
   height: auto;
-  width: 800px;
-  padding: 40px 80px;
+  padding: 1em;
+  width: 600px;
+  box-sizing: border-box;
 
   border: var(--base-border);
   border-radius: var(--base-border-radius);
   background: var(--secondary-color);
-  box-sizing: content-box;
   gap: var(--big-gap);
 }
 
 .Post-Container {
-  
   display: flex;
   flex-direction: column;
   gap: var(--base-gap);
   opacity: 0.80;
   text-align: left;
+
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .Single-Post-Container {
@@ -331,6 +340,33 @@ button:disabled {
 /* Home styles */
 
 .mainContainer {
-  width: 450px;
+  display: grid;
+  grid-template-columns: 1fr 33%;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+
+  width: 100%;
+  height: 100%;
+  padding: 4em;
+  box-sizing: border-box;
 }
 
+.mainContainer-left-bar {
+  grid-column-start: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mainContainer-left-bar > div {
+  width: 600px;
+}
+
+.mainContainer-right-bar {
+  grid-column-start: 2;
+  padding: 0 2em;
+}
+
+.logout-button {
+  width: min-content;
+}

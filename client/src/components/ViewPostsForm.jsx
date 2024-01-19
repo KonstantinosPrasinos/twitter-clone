@@ -38,7 +38,7 @@ const ViewPostsForm = () => {
   }, []);
 
   return (
-    <div>
+    <div className={"Vertical-Flex-Container"}>
       <h2 style={{ textAlign: 'left' }}>Recommended Posts</h2>
       {loading && <p>Loading...</p>}
       {!loading && (
