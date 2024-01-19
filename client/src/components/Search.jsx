@@ -1,7 +1,8 @@
 import React, { useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
+import { FaSearch } from 'react-icons/fa';
 const maxQueryLength = 50;
-const minQueryLength = 0;
+const minQueryLength = 1;
 const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
@@ -10,12 +11,12 @@ const Search = () => {
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
-        if (withinLimits(inputQuery,minQueryLength,maxQueryLength))
+        if (withinLimits(inputQuery,0,maxQueryLength))
         {
             setSearchQuery(inputQuery);
             setError(null);
         }
-        else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
+        else setError(`Search query can't be more than ${maxQueryLength} characters.`);
 
     };
 
@@ -40,11 +41,15 @@ const Search = () => {
         }
     };
     useEffect(() => {
-        if (withinLimits(searchQuery, minQueryLength, maxQueryLength)) {
+      if (searchQuery === "") {
+        setSearchResults({ users: [], posts: [] });
+        setError(null);
+      } 
+      else if (withinLimits(searchQuery, minQueryLength, maxQueryLength)) {
             handleSearch();
             setError(null);
-        }
-        else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
+      }
+      else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
     }, [searchQuery]);
 
   return (
@@ -56,7 +61,9 @@ const Search = () => {
         placeholder="Search Τσίου... "
       />
 
-      <button>Search</button>
+      <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleSearch} >
+        <FaSearch />
+      </button>
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
