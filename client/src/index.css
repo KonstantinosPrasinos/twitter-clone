@@ -290,12 +290,16 @@ button:disabled {
   grid-template-rows: auto auto;
   column-gap: var(--base-gap);
   row-gap: 0;
+  padding: 1em;
+  box-sizing: border-box;
 
   width: 100%;
-
-  padding-bottom: 20px;
-  border-bottom: var(--base-border);
   align-items: center;
+
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--secondary-color);
+  gap: var(--big-gap);
 }
 
 .dummy-highlighted {
