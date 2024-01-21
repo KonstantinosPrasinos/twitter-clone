@@ -2,19 +2,18 @@ import React from 'react';
 import CreatePostForm from "../components/CreatePostForm.jsx";
 import LogoutButton from '../components/LogoutButton';
 import ViewPostsForm from "../components/ViewPostsForm.jsx";
-import Navbar from "../components/Navbar.jsx";
 
 const Home = () => {
     return <div className="mainContainer">
-        <CreatePostForm />
-        <div className={"titleContainer"}>
-            <div>Welcome!</div>
+        <div className={"mainContainer-left-bar"}>
+            <div className={"Vertical-Flex-Container"}>
+                <CreatePostForm />
+                <ViewPostsForm />
+            </div>
         </div>
-        <div>
-            This is the home page.
+        <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
+            <LogoutButton />
         </div>
-        <LogoutButton />
-        <ViewPostsForm />
     </div>
 };
 

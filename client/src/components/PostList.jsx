@@ -1,5 +1,3 @@
-import React from 'react';
-
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
