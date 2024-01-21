@@ -48,4 +48,3 @@ const ViewPostsForm = () => {
 };
 
 export default ViewPostsForm;
-
