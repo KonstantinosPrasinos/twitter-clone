@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
 const feedRoutes = require('./routes/feedRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const {appConfig,corsConfig} = require('./config/app-config');
 
@@ -23,6 +24,7 @@ app.use(authRoutes);
 app.use(feedRoutes);
 
 app.use(postRoutes);
+app.use(userRoutes)
 
 app.get("", (req, res) => {
     res.send("Hello world!");
