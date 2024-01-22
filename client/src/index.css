@@ -427,14 +427,20 @@ h2 {
   border-radius: var(--round-border-radius);
 }
 
-.Tab-Navigation > div {
+.Tab-Navigation > button {
   flex-grow: 1;
   text-align: center;
   padding: var(--base-padding);
   cursor: pointer;
+  background: var(--secondary-color);
+  border-radius: var(--round-border-radius);
 }
 
 .Tab-Navigation-Selected-Tab {
-  background: var(--accent-color);
-  border-radius: var(--round-border-radius);
+  background: var(--accent-color) !important;
+}
+
+.Hover-Underline:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

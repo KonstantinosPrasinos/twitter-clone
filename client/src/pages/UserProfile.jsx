@@ -65,6 +65,14 @@ const UserProfile = () => {
         }
     }
 
+    const handleFollowerClick = () => {
+
+    }
+
+    const handleFollowingClick = () => {
+
+    }
+
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>
@@ -73,30 +81,30 @@ const UserProfile = () => {
                     <h2>{params.username}</h2>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
                         <div className={"Horizontal-Flex-Container"}>
-                            <div>
-                                <span className={"low-opacity"}>Following: </span>
+                            <div className={"Hover-Underline"} onClick={handleFollowerClick}>
+                                {"Following: "}
                                 {!isLoading ? formatNumber(userData.following.length) : "..."}
                             </div>
-                            <div>
-                                <span className={"low-opacity"}>Followers: </span>
+                            <div className={"Hover-Underline"} onClick={handleFollowingClick}>
+                                {"Followers: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>
                     <div className={"Tab-Navigation Horizontal-Flex-Container"}>
-                        <div
+                        <button
                             className={selectedTab === 'posts' ? "Tab-Navigation-Selected-Tab" : ""}
                             onClick={() => setSelectedTab('posts')}
-                        >Posts</div>
-                        <div
+                        >Posts</button>
+                        <button
                             className={selectedTab === 'replies' ? "Tab-Navigation-Selected-Tab" : ""}
                             onClick={() => setSelectedTab('replies')}
-                        >Replies</div>
-                        <div
+                        >Replies</button>
+                        <button
                             className={selectedTab === 'likes' ? "Tab-Navigation-Selected-Tab" : ""}
                             onClick={() => setSelectedTab('likes')}
-                        >Likes</div>
+                        >Likes</button>
                     </div>
                 </div>
 
