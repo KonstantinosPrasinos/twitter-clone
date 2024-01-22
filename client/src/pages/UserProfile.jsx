@@ -83,7 +83,8 @@ const UserProfile = () => {
                 </div>
 
                 {isLoading && <div>Loading...</div>}
-                {!isLoading && <PostList posts={userData.posts} />}
+                {!isLoading && selectedTab === 'posts' && <PostList posts={userData.posts} />}
+                {!isLoading && selectedTab === 'likes' && <PostList posts={userData.likedPosts} />}
             </div>
 
         </div>

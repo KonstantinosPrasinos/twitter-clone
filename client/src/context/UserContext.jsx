@@ -13,7 +13,12 @@ export const userReducer = (state, action) => {
             let expirationDate = new Date();
             expirationDate = new Date(expirationDate.getTime() + timeoutTime)
 
-            localStorage.setItem("user", JSON.stringify({...action.payload, validUntil: expirationDate}))
+            const storedUser = localStorage.getItem("user");
+
+            if (!storedUser) {
+                localStorage.setItem("user", JSON.stringify({...action.payload, validUntil: expirationDate}))
+            }
+
             return action.payload;
         case 'REMOVE_USER':
             localStorage.removeItem("user");
