@@ -53,6 +53,18 @@ const UserProfile = () => {
         fetchProfile();
     }, []);
 
+    function formatNumber(number) {
+        if (number >= 1000000) {
+            const formattedNumber = (number / 1000000).toFixed(1);
+            return formattedNumber.endsWith('.0') ? `${Math.floor(formattedNumber)}M` : `${formattedNumber}M`;
+        } else if (number >= 1000) {
+            const formattedNumber = (number / 1000).toFixed(1);
+            return formattedNumber.endsWith('.0') ? `${Math.floor(formattedNumber)}K` : `${formattedNumber}K`;
+        } else {
+            return `${number}`;
+        }
+    }
+
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>
@@ -63,11 +75,11 @@ const UserProfile = () => {
                         <div className={"Horizontal-Flex-Container"}>
                             <div>
                                 <span className={"low-opacity"}>Following: </span>
-                                {!isLoading && userData.following.length}
+                                {!isLoading ? formatNumber(userData.following.length) : "..."}
                             </div>
                             <div>
                                 <span className={"low-opacity"}>Followers: </span>
-                                {!isLoading && userData.followers.length}
+                                {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
