@@ -127,6 +127,10 @@ button:disabled {
   align-items: center;
 }
 
+.Space-Between {
+  justify-content: space-between;
+}
+
 .Panel {
   height: auto;
   width: 600px;
@@ -376,7 +380,7 @@ button:disabled {
   width: min-content;
 }
 
-.post-username {
+h2 {
   margin: 0;
 }
 
@@ -387,4 +391,50 @@ button:disabled {
 
 .clickable-username:hover {
   text-decoration: underline;
+}
+
+.Panel-Thin {
+  display: flex;
+  flex-direction: column;
+  opacity: 0.80;
+  text-align: left;
+
+  max-height: 100%;
+  overflow-y: auto;
+  width: 100%;
+
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--secondary-color);
+  gap: var(--big-gap);
+
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.profile-date {
+  align-self: flex-end;
+  opacity: 0.37;
+}
+
+.low-opacity {
+  opacity: 0.37;
+}
+
+.Tab-Navigation {
+  flex-direction: row;
+  border: var(--base-border);
+  border-radius: var(--round-border-radius);
+}
+
+.Tab-Navigation > div {
+  flex-grow: 1;
+  text-align: center;
+  padding: var(--base-padding);
+  cursor: pointer;
+}
+
+.Tab-Navigation-Selected-Tab {
+  background: var(--accent-color);
+  border-radius: var(--round-border-radius);
 }

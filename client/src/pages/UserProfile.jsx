@@ -5,12 +5,14 @@ import {AlertContext} from "../context/AlertContext.jsx";
 import CreatePostForm from "../components/CreatePostForm.jsx";
 import LogoutButton from "../components/LogoutButton.jsx";
 import {FaHome} from "react-icons/fa";
+import PostList from "../components/PostList.jsx";
 
 const UserProfile = () => {
     const params = useParams()
     const location = useLocation()
     const [userData, setUserData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedTab, setSelectedTab] = useState('posts')
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
 
@@ -55,8 +57,35 @@ const UserProfile = () => {
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>
                 <CreatePostForm initialInput={`@${params.username}`} />
-                {params.username}
+                <div className={"Panel-Thin"}>
+                    <h2>{params.username}</h2>
+                    <div className={"Horizontal-Flex-Container Space-Between"}>
+                        <div className={"Horizontal-Flex-Container"}>
+                            <span className={"low-opacity"}>Following: </span>
+                            <span className={"low-opacity"}>Followers: </span>
+                        </div>
+                        <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
+                    </div>
+                    <div className={"Tab-Navigation Horizontal-Flex-Container"}>
+                        <div
+                            className={selectedTab === 'posts' ? "Tab-Navigation-Selected-Tab" : ""}
+                            onClick={() => setSelectedTab('posts')}
+                        >Posts</div>
+                        <div
+                            className={selectedTab === 'replies' ? "Tab-Navigation-Selected-Tab" : ""}
+                            onClick={() => setSelectedTab('replies')}
+                        >Replies</div>
+                        <div
+                            className={selectedTab === 'likes' ? "Tab-Navigation-Selected-Tab" : ""}
+                            onClick={() => setSelectedTab('likes')}
+                        >Likes</div>
+                    </div>
+                </div>
+
+                {isLoading && <div>Loading...</div>}
+                {!isLoading && <PostList posts={userData.posts} />}
             </div>
+
         </div>
         <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
             <button className={"Horizontal-Flex-Container logout-button"} onClick={handleHomeClick}>
