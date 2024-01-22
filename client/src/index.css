@@ -253,7 +253,7 @@ button:disabled {
 
   overflow: hidden;
   text-wrap: normal;
-  white-space: normal;
+  white-space: pre-wrap;
   word-wrap: break-word;
 }
 

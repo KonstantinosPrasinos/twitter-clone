@@ -13,7 +13,11 @@ const PostList = ({ posts }) => {
           <div className="Single-Post-Container">
             <div>
               <h2 className={"post-username"}>
-                <Link className={"clickable-username"} to={`/user/${post.isRepost ? post.reposted_username : post.username}`}>
+                <Link
+                    className={"clickable-username"}
+                    to={`/user/${post.isRepost ? post.reposted_username : post.username}`}
+                    state={{user_id: post.isRepost ? post.reposted_user_id : post.user_id}}
+                >
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
               </h2>
