@@ -61,8 +61,14 @@ const UserProfile = () => {
                     <h2>{params.username}</h2>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
                         <div className={"Horizontal-Flex-Container"}>
-                            <span className={"low-opacity"}>Following: </span>
-                            <span className={"low-opacity"}>Followers: </span>
+                            <div>
+                                <span className={"low-opacity"}>Following: </span>
+                                {!isLoading && userData.following.length}
+                            </div>
+                            <div>
+                                <span className={"low-opacity"}>Followers: </span>
+                                {!isLoading && userData.followers.length}
+                            </div>
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>

@@ -71,9 +71,38 @@ const getUserProfile = async (req, res) => {
                 user_id: parseInt(user_id)
             },
             select: {
-                created_at: true
+                created_at: true,
+                followers_followers_follower_user_idTousers: true,
+                followers_followers_following_user_idTousers: true
             }
         })
+
+        const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.follower_user_id)
+        const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.following_user_id);
+
+        const followers = await prisma.users.findMany({
+            where: {
+                user_id: {
+                    in: followerIdArray
+                }
+            },
+            select: {
+                username: true,
+                user_id: true
+            }
+        });
+
+        const following = await prisma.users.findMany({
+            where: {
+                user_id: {
+                    in: followingIdArray
+                }
+            },
+            select: {
+                username: true,
+                user_id: true
+            }
+        });
 
         const likedPosts = await prisma.likes.findMany({
             where: {
@@ -228,7 +257,7 @@ const getUserProfile = async (req, res) => {
         // Sort the combined list by created_at
         formattedLikedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-        res.status(200).json({user, posts: formattedPosts, likedPosts: formattedLikedPosts})
+        res.status(200).json({user, posts: formattedPosts, likedPosts: formattedLikedPosts, followers, following})
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ success: false, message: 'Internal server error 1' });
