@@ -5,10 +5,13 @@ import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import {useContext, useEffect} from "react";
+import UserProfile from "./pages/UserProfile.jsx";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
   const userContext = useContext(UserContext);
+
+  console.log(userContext?.state?.user_id)
 
   if (!userContext?.state?.user_id)
     return <Navigate to={"/Login"} replace />
@@ -26,12 +29,16 @@ const router = createBrowserRouter([
     children: [
         // Add here all protected routes
       {
-        path: '/',
-        element: <Home />
+        path: '/user/:username',
+        element: <UserProfile />
       },
       {
         path: '/home',
         element: <Navigate to={"/"} />
+      },
+      {
+        path: '/',
+        element: <Home />
       }
     ]
   },

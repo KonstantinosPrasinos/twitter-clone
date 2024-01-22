@@ -379,3 +379,12 @@ button:disabled {
 .post-username {
   margin: 0;
 }
+
+.clickable-username {
+  color: inherit;
+  text-decoration: none;
+}
+
+.clickable-username:hover {
+  text-decoration: underline;
+}
