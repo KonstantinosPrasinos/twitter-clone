@@ -66,7 +66,7 @@ function App() {
     if (!userObject?.user_id) return;
 
     if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) {
-      userContext.dispatch({type: "REMOVE_USER"})
+      localStorage.removeItem("user");
     }
 
     userContext.dispatch({type: 'SET_USER', payload: userObject});

@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import CreatePostForm from "../components/CreatePostForm.jsx";
-import LogoutButton from "../components/LogoutButton.jsx";
-import {FaArrowRight, FaHome} from "react-icons/fa";
+import {FaArrowRight} from "react-icons/fa";
 import PostList from "../components/PostList.jsx";
 import Dialog from "../components/Dialog.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 const UserProfile = () => {
     const params = useParams()
@@ -21,12 +21,6 @@ const UserProfile = () => {
     const followInfoContainer = useRef();
 
     const {user_id} = location.state;
-
-    const navigate = useNavigate();
-
-    const handleHomeClick = () => {
-        navigate("/")
-    }
 
     useEffect(() => {
         // Reset everything in case of redirection to another user
@@ -133,12 +127,8 @@ const UserProfile = () => {
             </div>
 
         </div>
-        <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
-            <button className={"Horizontal-Flex-Container logout-button"} onClick={handleHomeClick}>
-                <FaHome />
-                Home
-            </button>
-            <LogoutButton />
+        <div className={"mainContainer-right-bar"}>
+            <Navbar />
         </div>
         {!isLoading && followerDialogVisible && <Dialog attachedElementRef={followInfoContainer} collapseDialogFunction={() => setFollowerDialogVisible(false)}>
             <h3>Followers: {userData.followers.length}</h3>

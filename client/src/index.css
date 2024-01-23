@@ -127,6 +127,10 @@ button:disabled {
   gap: var(--base-gap);
 }
 
+.Big-Gap {
+  gap: var(--big-gap);
+}
+
 .Horizontal-Flex-Container {
   display: flex;
   flex-direction: row;

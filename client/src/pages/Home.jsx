@@ -1,15 +1,10 @@
 import React from 'react';
 import CreatePostForm from "../components/CreatePostForm.jsx";
-import LogoutButton from '../components/LogoutButton';
 import ViewPostsForm from "../components/ViewPostsForm.jsx";
-import {useNavigate} from "react-router-dom";
-import {FaHome} from "react-icons/fa";
+import Navbar from "../components/Navbar.jsx";
 
 const Home = () => {
-    const navigate = useNavigate();
-    const handleHomeClick = () => {
-        navigate("/")
-    }
+
 
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
@@ -18,12 +13,8 @@ const Home = () => {
                 <ViewPostsForm />
             </div>
         </div>
-        <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
-            <button className={"Horizontal-Flex-Container logout-button"} onClick={handleHomeClick}>
-                <FaHome />
-                Home
-            </button>
-            <LogoutButton />
+        <div className={"mainContainer-right-bar"}>
+            <Navbar />
         </div>
     </div>
 };

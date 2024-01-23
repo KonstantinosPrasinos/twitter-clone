@@ -60,7 +60,7 @@ const CreatePostForm = ({initialInput = ""}) => {
             dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>';
         } else {
             // Replace all @ or # tags with highlighted text
-            dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z_]+|#\w+/gi, (value) => {
+            dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z_0-9]+|#\w+/gi, (value) => {
                 return `<span class="dummy-highlighted">${value}</span>`
             });
         }
