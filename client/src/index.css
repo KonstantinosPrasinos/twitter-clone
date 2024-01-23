@@ -30,6 +30,8 @@
 
   --base-padding: 8px 12px;
 
+  --base-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
   /* Typography */
   --font-size-s: 14px;
   --font-size-m: 16px;
@@ -52,6 +54,11 @@ body {
 
 h2 {
   font-size: var(--font-size-xxxl);
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
 }
 
 label {
@@ -380,10 +387,6 @@ button:disabled {
   width: min-content;
 }
 
-h2 {
-  margin: 0;
-}
-
 .clickable-username {
   color: inherit;
   text-decoration: none;
@@ -443,4 +446,53 @@ h2 {
 .Hover-Underline:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+@keyframes Expand_Floating_Component {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
+}
+
+/* Dialog styles */
+.Dialog-Container {
+  position: fixed;
+  width: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: var(--base-box-shadow);
+
+  /* In case the position can't be set dynamically, move it off the screen */
+  top: -1000px;
+  left: -1000px;
+  opacity: 1;
+
+  animation: 0.2s Expand_Floating_Component ease-in-out;
+}
+
+.Dialog-Option {
+  padding: var(--base-padding);
+  border-radius: var(--base-border-radius);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.Dialog-Option:hover {
+  background-color: var(--feed-color);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.hidden-right-arrow {
+  opacity: 0;
+}
+
+.Dialog-Option:hover > .hidden-right-arrow {
+  opacity: 0.67;
+  transition: opacity 0.15s ease-in-out;
 }

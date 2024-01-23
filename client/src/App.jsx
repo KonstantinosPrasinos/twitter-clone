@@ -11,8 +11,6 @@ function ProtectedLayout() {
   // If the user is not connected, navigate to log in
   const userContext = useContext(UserContext);
 
-  console.log(userContext?.state?.user_id)
-
   if (!userContext?.state?.user_id)
     return <Navigate to={"/Login"} replace />
 
@@ -67,7 +65,9 @@ function App() {
 
     if (!userObject?.user_id) return;
 
-    if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) return;
+    if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) {
+      userContext.dispatch({type: "REMOVE_USER"})
+    }
 
     userContext.dispatch({type: 'SET_USER', payload: userObject});
   }, []);

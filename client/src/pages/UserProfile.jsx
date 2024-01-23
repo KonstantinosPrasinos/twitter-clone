@@ -1,11 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import CreatePostForm from "../components/CreatePostForm.jsx";
 import LogoutButton from "../components/LogoutButton.jsx";
-import {FaHome} from "react-icons/fa";
+import {FaArrowRight, FaHome} from "react-icons/fa";
 import PostList from "../components/PostList.jsx";
+import Dialog from "../components/Dialog.jsx";
 
 const UserProfile = () => {
     const params = useParams()
@@ -13,8 +14,11 @@ const UserProfile = () => {
     const [userData, setUserData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [selectedTab, setSelectedTab] = useState('posts')
+    const [followerDialogVisible, setFollowerDialogVisible] = useState(false);
+    const [followingDialogVisible, setFollowingDialogVisible] = useState(false);
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
+    const followInfoContainer = useRef();
 
     const {user_id} = location.state;
 
@@ -25,6 +29,11 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
+        // Reset everything in case of redirection to another user
+        setIsLoading(true);
+        setFollowingDialogVisible(false);
+        setFollowerDialogVisible(false);
+
         const fetchProfile = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${user_id}`, {
@@ -51,7 +60,7 @@ const UserProfile = () => {
         };
 
         fetchProfile();
-    }, []);
+    }, [params]);
 
     function formatNumber(number) {
         if (number >= 1000000) {
@@ -65,12 +74,18 @@ const UserProfile = () => {
         }
     }
 
-    const handleFollowerClick = () => {
-
+    const handleFollowerClick = (event) => {
+        if (isLoading || userData?.followers?.length === 0) return;
+        event.stopPropagation()
+        if (followingDialogVisible) setFollowingDialogVisible(false)
+        setFollowerDialogVisible(current => !current);
     }
 
-    const handleFollowingClick = () => {
-
+    const handleFollowingClick = (event) => {
+        if (isLoading || userData?.following?.length === 0) return;
+        event.stopPropagation()
+        if (followerDialogVisible) setFollowerDialogVisible(false);
+        setFollowingDialogVisible(current => !current)
     }
 
     return <div className="mainContainer">
@@ -80,12 +95,12 @@ const UserProfile = () => {
                 <div className={"Panel-Thin"}>
                     <h2>{params.username}</h2>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
-                        <div className={"Horizontal-Flex-Container"}>
-                            <div className={"Hover-Underline"} onClick={handleFollowerClick}>
+                        <div className={"Horizontal-Flex-Container"} ref={followInfoContainer}>
+                            <div className={"Hover-Underline"} onClick={handleFollowingClick}>
                                 {"Following: "}
                                 {!isLoading ? formatNumber(userData.following.length) : "..."}
                             </div>
-                            <div className={"Hover-Underline"} onClick={handleFollowingClick}>
+                            <div className={"Hover-Underline"} onClick={handleFollowerClick}>
                                 {"Followers: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
@@ -109,8 +124,12 @@ const UserProfile = () => {
                 </div>
 
                 {isLoading && <div>Loading...</div>}
-                {!isLoading && selectedTab === 'posts' && <PostList posts={userData.posts} />}
-                {!isLoading && selectedTab === 'likes' && <PostList posts={userData.likedPosts} />}
+                {!isLoading && selectedTab === 'posts' &&
+                    (userData.posts.length > 0 ? <PostList posts={userData.posts} /> : <h3 className={"Panel-Thin"}>{params.username} has made no posts</h3>)
+                }
+                {!isLoading && selectedTab === 'likes' &&
+                    (userData.likedPosts.length > 0 ? <PostList posts={userData.likedPosts} /> : <h3 className={"Panel-Thin"}>{params.username} has liked no posts</h3>)
+                }
             </div>
 
         </div>
@@ -121,6 +140,38 @@ const UserProfile = () => {
             </button>
             <LogoutButton />
         </div>
+        {!isLoading && followerDialogVisible && <Dialog attachedElementRef={followInfoContainer} collapseDialogFunction={() => setFollowerDialogVisible(false)}>
+            <h3>Followers: {userData.followers.length}</h3>
+            {userData.followers.map(follower => {
+                return <Link
+                    className={"Dialog-Option Horizontal-Flex-Container Space-Between"}
+                    to={`/user/${follower.username}`}
+                    state={{user_id: follower.user_id}}
+                    key={follower.user_id}
+                >
+                    {follower.username}
+                    <span
+                        className={"hidden-right-arrow"}
+                    ><FaArrowRight/></span>
+                </Link>
+            })}
+        </Dialog>}
+        {!isLoading && followingDialogVisible && <Dialog attachedElementRef={followInfoContainer} collapseDialogFunction={() => setFollowingDialogVisible(false)}>
+            <h3>Following: {userData.following.length}</h3>
+            {userData.following.map(following => {
+                return <Link
+                    className={"Dialog-Option Horizontal-Flex-Container Space-Between"}
+                    to={`/user/${following.username}`}
+                    state={{user_id: following.user_id}}
+                    key={following.user_id}
+                >
+                    {following.username}
+                    <span
+                        className={"hidden-right-arrow"}
+                    ><FaArrowRight/></span>
+                </Link>
+            })}
+        </Dialog>}
     </div>
 };
 
