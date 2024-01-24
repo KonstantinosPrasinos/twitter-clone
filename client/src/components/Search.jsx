@@ -74,7 +74,7 @@ const Search = () => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
+  // Post results need to fit the PostList where posts have a username property that represents author
   const modifiedPostResults = modifyPostResults(searchResults.posts);
   return (
     <div className="search-container">
