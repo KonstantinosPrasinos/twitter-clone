@@ -14,6 +14,7 @@
   --accent-color: #645c9b;
   --text-color: #ffffff;
   --border-color: #3b3e4b;
+  --feed-color: #1f1d2b52;
 
   --error-color: #FF3040;
   --warning-color: #fc9403;
@@ -183,6 +184,28 @@ button:disabled {
 
 .alert-container > div.alert-hidden {
   opacity: 0;
+}
+.Feed {
+  height: auto;
+  padding: 1em;
+  width: 600px;
+  box-sizing: border-box;
+
+  border: var(--base-border);
+  border-radius: var(--base-border-radius);
+  background: var(--secondary-color);
+  gap: var(--big-gap);
+}
+
+.Post-Container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-gap);
+  opacity: 0.80;
+  text-align: left;
+
+  max-height: 100%;
+  overflow-y: auto;
 }
 /*Search Styles*/
 .search-container {
