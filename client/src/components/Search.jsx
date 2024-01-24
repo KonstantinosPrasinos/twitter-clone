@@ -4,7 +4,8 @@ import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
 const maxQueryLength = 50;
-const minQueryLength = 0;
+const minQueryLength = 1;
+const maxResults = 4;
 const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
@@ -102,12 +103,11 @@ const Search = () => {
       </div>
       
       <div className="results-container" >
-      {activeTab === 'users' && (
-        <UserList users={searchResults.users} />
-      )}
-
+        {activeTab === 'users' && searchResults.users && (
+          <UserList users={searchResults.users.slice(0,Math.min(searchResults.users.length, maxResults))} />
+        )}
         {activeTab === 'posts' && modifiedPostResults && (
-          <PostList posts={modifiedPostResults} />
+          <PostList posts={modifiedPostResults.slice(0,Math.min(modifiedPostResults.length,maxResults))} />
         )}
       </div>
   </div>
