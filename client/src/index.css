@@ -222,11 +222,40 @@ button:disabled {
 }
 
 .results-container {
-    width:10%
+    width:10%;
+    margin-top:20px;
 }
 
-.tab-buttons {
-  margin-bottom: 10px;
+.Tab-Navigation {
+  flex-direction: row;
+  border: var(--base-border);
+  border-radius: var(--round-border-radius);
+}
+
+.Tab-Navigation > button {
+  flex-grow: 1;
+  text-align: center;
+  padding: var(--base-padding);
+  cursor: pointer;
+  background: var(--secondary-color);
+  border-radius: var(--round-border-radius);
+
+  transition: none;
+}
+
+.Tab-Navigation > button:hover {
+  transform: none;
+}
+
+.Tab-Navigation-Selected-Tab {
+  background: var(--accent-color) !important;
+}
+
+.Horizontal-Flex-Container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--base-gap);
+  align-items: center;
 }
 .post-username {
   margin: 0;
