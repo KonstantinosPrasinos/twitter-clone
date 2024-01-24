@@ -184,8 +184,28 @@ button:disabled {
 .alert-container > div.alert-hidden {
   opacity: 0;
 }
+/*Search Styles*/
+.search-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 20px;
+}
 
-/* Create post styles */
+.search-input {
+
+  width: 200px;
+  padding: 8px;
+}
+
+.results-container {
+
+}
+
+.tab-buttons {
+  margin-bottom: 10px;
+}
+
 .create-post-content-container {
   position: relative;
   height: auto;
