@@ -8,7 +8,7 @@ const Home = () => {
         <div className={"titleContainer"}>
         </div>
         <div>
-            <Search />
+            <Search isHomePage={true} maxResults={4}/>
         </div>
         <LogoutButton />
     </div>
