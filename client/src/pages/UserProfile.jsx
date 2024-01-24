@@ -7,13 +7,14 @@ import {FaArrowRight} from "react-icons/fa";
 import PostList from "../components/PostList.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Navbar from "../components/Navbar.jsx";
+import Tabs from "../components/Tabs.jsx";
 
 const UserProfile = () => {
     const params = useParams()
     const location = useLocation()
     const [userData, setUserData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
-    const [selectedTab, setSelectedTab] = useState('posts')
+    const [selectedTab, setSelectedTab] = useState('Posts')
     const [followerDialogVisible, setFollowerDialogVisible] = useState(false);
     const [followingDialogVisible, setFollowingDialogVisible] = useState(false);
     const userContext = useContext(UserContext);
@@ -101,27 +102,14 @@ const UserProfile = () => {
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>
-                    <div className={"Tab-Navigation Horizontal-Flex-Container"}>
-                        <button
-                            className={selectedTab === 'posts' ? "Tab-Navigation-Selected-Tab" : ""}
-                            onClick={() => setSelectedTab('posts')}
-                        >Posts</button>
-                        <button
-                            className={selectedTab === 'replies' ? "Tab-Navigation-Selected-Tab" : ""}
-                            onClick={() => setSelectedTab('replies')}
-                        >Replies</button>
-                        <button
-                            className={selectedTab === 'likes' ? "Tab-Navigation-Selected-Tab" : ""}
-                            onClick={() => setSelectedTab('likes')}
-                        >Likes</button>
-                    </div>
+                    <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={['Posts', 'Replies', 'Likes']} />
                 </div>
 
                 {isLoading && <div>Loading...</div>}
-                {!isLoading && selectedTab === 'posts' &&
+                {!isLoading && selectedTab === 'Posts' &&
                     (userData.posts.length > 0 ? <PostList posts={userData.posts} /> : <h3 className={"Panel-Thin"}>{params.username} has made no posts</h3>)
                 }
-                {!isLoading && selectedTab === 'likes' &&
+                {!isLoading && selectedTab === 'Likes' &&
                     (userData.likedPosts.length > 0 ? <PostList posts={userData.likedPosts} /> : <h3 className={"Panel-Thin"}>{params.username} has liked no posts</h3>)
                 }
             </div>

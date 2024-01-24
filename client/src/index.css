@@ -441,6 +441,12 @@ button:disabled {
   cursor: pointer;
   background: var(--secondary-color);
   border-radius: var(--round-border-radius);
+
+  transition: none;
+}
+
+.Tab-Navigation > button:hover {
+  transform: none;
 }
 
 .Tab-Navigation-Selected-Tab {
@@ -452,6 +458,7 @@ button:disabled {
   cursor: pointer;
 }
 
+/* Dialog styles */
 @keyframes Expand_Floating_Component {
   from {
     transform: translateY(10px);
@@ -463,7 +470,6 @@ button:disabled {
   }
 }
 
-/* Dialog styles */
 .Dialog-Container {
   position: fixed;
   width: 300px;
