@@ -18,8 +18,6 @@ const signupController = async (req, res) => {
               created_at: new Date()
             },
           });
-
-          console.log(`Username: ${username}, Email: ${email}, Password: ${hash}`);
           res.json({ success: true, message: 'Sign up successful', user });
 
         } catch (error) {
