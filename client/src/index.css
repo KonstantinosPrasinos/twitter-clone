@@ -228,6 +228,9 @@ button:disabled {
 .tab-buttons {
   margin-bottom: 10px;
 }
+.post-username {
+  margin: 0;
+}
 .Single-Post-Container {
 
   padding: 10px 20px;
