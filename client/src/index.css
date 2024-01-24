@@ -212,13 +212,35 @@ button:disabled {
   position: fixed;
   top: 0;
   right: 0;
-  margin: 20px;
+  width:31%;
 }
-
+/*search input styles*/
+.search-input::placeholder{
+  color: color(#575756 a(0.8));
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
 .search-input {
-
-  width: 200px;
-  padding: 8px;
+  width: 60%;
+  padding: 12px 24px;
+  font-size: 18px;
+  line-height: 18px;
+  transition: all 250ms ease-in-out ;
+  margin: 20px auto;
+  border-radius: 50px;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  background-repeat: no-repeat;
+  border: 1px solid #575756;
+  background-color: transparent;
+}
+.search-input:hover,.search-input:focus{
+      padding: 12px 0;
+      outline: 0;
+      border: 1px solid transparent;
+      border-bottom: 1px solid #575756;
+      border-radius: 0;
+      background-position: 100% center;
 }
 
 .results-container {
