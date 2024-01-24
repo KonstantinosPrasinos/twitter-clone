@@ -223,7 +223,7 @@ button:disabled {
 .search-input {
   width: 60%;
   padding: 12px 24px;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 18px;
   transition: all 250ms ease-in-out ;
   margin: 20px auto;
