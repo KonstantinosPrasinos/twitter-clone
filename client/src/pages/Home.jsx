@@ -6,7 +6,6 @@ const Home = () => {
     return <div className="mainContainer">
         <CreatePostForm />
         <div className={"titleContainer"}>
-            <div>Welcome!</div>
         </div>
         <div>
             <Search />
