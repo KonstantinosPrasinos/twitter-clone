@@ -249,7 +249,10 @@ button:disabled {
   grid-column: 1;
   grid-row: 2;
 }
-
+.profile-date {
+  align-self: flex-end;
+  opacity: 0.37;
+}
 .create-post-content-container > div {
   position: absolute;
   width: 100%;
