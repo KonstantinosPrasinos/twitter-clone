@@ -65,7 +65,13 @@ const PostList = ({ posts }) => {
               <p>{post.content}</p>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               <div className={"Horizontal-Flex-Container"}>
-                <button className={"Horizontal-Flex-Container"} onClick={() => handlePostLike(post.isRepost ? post.repost_id : post.post_id, post.isRepost)}>
+                <button
+                    className={`
+                      Horizontal-Flex-Container
+                      Basic-Button
+                      ${post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
+                    }
+                    onClick={() => handlePostLike(post.isRepost ? post.repost_id : post.post_id, post.isRepost)}>
                   {!post?.likes && <><FaRegHeart /> <span className={"Align-Text-Center"}>0</span></>}
                   {post?.likes && <>
                     {post.likes.map(like => like.username).includes(userContext.state?.username) ? <FaHeart /> : <FaRegHeart />}

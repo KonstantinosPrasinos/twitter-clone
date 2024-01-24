@@ -120,6 +120,10 @@ button:disabled {
   gap: var(--base-gap);
 }
 
+.Basic-Button {
+  background-color: transparent;
+}
+
 .Horizontal-Flex-Container {
   display: flex;
   flex-direction: row;
@@ -383,4 +387,8 @@ button:disabled {
 .Align-Text-Center {
   line-height: 1.1em;
   height: 1em;
+}
+
+.post-action-completed {
+  color: var(--accent-color);
 }
