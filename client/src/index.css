@@ -228,7 +228,16 @@ button:disabled {
 .tab-buttons {
   margin-bottom: 10px;
 }
+.Single-Post-Container {
 
+  padding: 10px 20px;
+  border: var(--base-border);
+  border-radius: var(--small-border-radius);
+  background: var(--feed-color);
+  text-align: left;
+  font-size: medium;
+
+}
 .create-post-content-container {
   position: relative;
   height: auto;
