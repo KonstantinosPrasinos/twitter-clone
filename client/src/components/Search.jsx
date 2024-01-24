@@ -47,8 +47,8 @@ const Search = () => {
         setError(null);
       } 
       else if (withinLimits(searchQuery, minQueryLength, maxQueryLength)) {
-            handleSearch();
-            setError(null);
+        handleSearch()
+        setError(null);
       }
       else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
   }, [searchQuery]);
@@ -58,8 +58,8 @@ const Search = () => {
   };
 
   return (
-    <div>
-      <input
+    <div className="search-container">
+      <input className="search-input"
         type="text"
         value={searchQuery}
         onChange={handleInput}
@@ -72,12 +72,12 @@ const Search = () => {
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
-      <div>
-        <div style={{ marginBottom: '10px' }}>
-          <button onClick={() => handleTabChange('users')} style={{ marginRight: '10px' }} disabled={activeTab === 'users'}>
+      <div className="results-container">
+        <div className="tab-buttons">
+          <button onClick={() => handleTabChange('users')}  disabled={activeTab === 'users'}>
             Users
           </button>
-          <button onClick={() => handleTabChange('posts')} disabled={activeTab === 'posts'}>
+          <button onClick={() => handleTabChange('posts')} disabled={activeTab === 'posts'} >
             Posts
           </button>
       </div>
