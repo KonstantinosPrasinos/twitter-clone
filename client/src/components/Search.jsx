@@ -2,8 +2,9 @@ import React, { useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
 import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
+import UserList from './UserList.jsx';
 const maxQueryLength = 50;
-const minQueryLength = 1;
+const minQueryLength = 0;
 const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
@@ -90,9 +91,8 @@ const Search = () => {
       </button>
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
-
-      <div className="results-container">
-        <div className="tab-buttons">
+      
+      <div className="tab-buttons">
           <button onClick={() => handleTabChange('users')}  disabled={activeTab === 'users'}>
             Users
           </button>
@@ -100,21 +100,17 @@ const Search = () => {
             Posts
           </button>
       </div>
-      {activeTab === 'users' && (
-        <div>
-          <ul>
-            {searchResults.users.map((user) => (
-              <li key={user.id}>{user.username}</li>
-            ))}
-          </ul>
-        </div>
-      )}
       
-      {activeTab === 'posts' && modifiedPostResults && (
-        <PostList posts={modifiedPostResults} />
+      <div className="results-container" >
+      {activeTab === 'users' && (
+        <UserList users={searchResults.users} />
       )}
-    </div>
-    </div>
+
+        {activeTab === 'posts' && modifiedPostResults && (
+          <PostList posts={modifiedPostResults} />
+        )}
+      </div>
+  </div>
   );
 };
 
