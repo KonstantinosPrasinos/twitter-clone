@@ -4,6 +4,7 @@ import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import Results from "./pages/Results.jsx";
 import {useContext, useEffect} from "react";
 
 function ProtectedLayout() {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />
+      },
+      {
+        path: '/results',
+        element: <Results />
       },
       {
         path: '/home',
