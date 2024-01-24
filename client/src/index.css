@@ -379,3 +379,8 @@ button:disabled {
 .post-username {
   margin: 0;
 }
+
+.Align-Text-Center {
+  line-height: 1.1em;
+  height: 1em;
+}
