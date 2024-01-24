@@ -11,10 +11,8 @@ const formatCreatedAt = (createdAt) => {
             <div className="Single-Post-Container">
               <div>
                 <h2 className={"post-username"}>{user.username}</h2>
-                {user.email}
-                <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
-                  <span style={{ fontSize: '12px',float: 'right' }}>{formatCreatedAt(user.created_at)}</span>
-                </p>
+                <p>Email: {user.email}</p>
+                <div className="profile-date">Joined on: {formatCreatedAt(user.created_at)}</div>
               </div>
             </div>
           </div>
