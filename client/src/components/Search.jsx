@@ -4,15 +4,22 @@ import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
 import Tabs from './Tabs.jsx';
+import { useNavigate } from 'react-router-dom';
 const maxQueryLength = 50;
 const minQueryLength = 1;
-const maxResults = 4;
-const Search = () => {
+
+const Search = ({isHomePage,maxResults}) => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
     const [error,setError] = useState(null);
     const [activeTab, setActiveTab] = useState('Users');
-
+    const navigate = useNavigate();
+    const containerStyle = {
+      position:  'fixed', // Conditionally set position
+      top:  '0', // Conditionally set top
+      right: isHomePage ? '0' : '20%', // Conditionally set right
+      width: isHomePage ? '31%' : '60%', // Conditionally set width
+    };
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
@@ -60,15 +67,21 @@ const Search = () => {
         } 
         catch (error) {
             console.error('Error during search:', error);
+            setError('An error occurred during the search. Please try again later.');
         }
     };
+    const handleButtonSearch =  () => {
+      handleSearch()
+      navigate('/results');
+
+    }
     useEffect(() => {
       if (searchQuery === "") {
         setSearchResults({ users: [], posts: [] });
         setError(null);
       } 
       else if (withinLimits(searchQuery, minQueryLength, maxQueryLength)) {
-        handleSearch()
+        handleSearch();
         setError(null);
       }
       else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
@@ -80,7 +93,8 @@ const Search = () => {
   // Post results need to fit the PostList structure where posts have a username property that represents author
   const modifiedPostResults = modifyPostResults(searchResults.posts);
   return (
-    <div className="search-container">
+    
+    <div className="search-container" style={containerStyle}>
       <input className="search-input"
         type="text"
         value={searchQuery}
@@ -88,12 +102,11 @@ const Search = () => {
         placeholder="Search Τσίου... "
       />
 
-      <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleSearch} >
+      <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleButtonSearch} >
         <FaSearch />
       </button>
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      
       
       <Tabs selectedTab={activeTab} setSelectedTab={handleTabChange} tabs={['Users','Posts']} />
       <div className="results-container" >
