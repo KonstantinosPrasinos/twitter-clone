@@ -3,6 +3,7 @@ import {withinLimits} from "../functions/withinLimits.js";
 import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
+import Tabs from './Tabs.jsx';
 const maxQueryLength = 50;
 const minQueryLength = 1;
 const maxResults = 4;
@@ -10,7 +11,7 @@ const Search = () => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
     const [error,setError] = useState(null);
-    const [activeTab, setActiveTab] = useState('users');
+    const [activeTab, setActiveTab] = useState('Users');
 
     const handleInput = (e) =>
     {
@@ -76,7 +77,7 @@ const Search = () => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  // Post results need to fit the PostList where posts have a username property that represents author
+  // Post results need to fit the PostList structure where posts have a username property that represents author
   const modifiedPostResults = modifyPostResults(searchResults.posts);
   return (
     <div className="search-container">
@@ -93,20 +94,13 @@ const Search = () => {
 
       {error && <div style={{ color: 'red' }}>{error}</div>}
       
-      <div className="tab-buttons">
-          <button onClick={() => handleTabChange('users')}  disabled={activeTab === 'users'}>
-            Users
-          </button>
-          <button onClick={() => handleTabChange('posts')} disabled={activeTab === 'posts'} >
-            Posts
-          </button>
-      </div>
       
+      <Tabs selectedTab={activeTab} setSelectedTab={handleTabChange} tabs={['Users','Posts']} />
       <div className="results-container" >
-        {activeTab === 'users' && searchResults.users && (
+        {activeTab === 'Users' && searchResults.users && (
           <UserList users={searchResults.users.slice(0,Math.min(searchResults.users.length, maxResults))} />
         )}
-        {activeTab === 'posts' && modifiedPostResults && (
+        {activeTab === 'Posts' && modifiedPostResults && (
           <PostList posts={modifiedPostResults.slice(0,Math.min(modifiedPostResults.length,maxResults))} />
         )}
       </div>
