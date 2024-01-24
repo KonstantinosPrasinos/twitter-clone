@@ -312,12 +312,12 @@ const followUser = async (req,res) => {
         });
     
         res.status(201).json({ success: true, message: "User is now following the specified user.", follow: newFollow });
-      } catch (error) {
+    } catch (error) {
         console.error("Error following user:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
-      } finally {
+    } finally {
         await prisma.$disconnect();
-      }
+    }
 
 
 }
@@ -350,7 +350,7 @@ const unfollowUser = async (req, res) => {
             return res.status(404).json({ success: false, message: "Following user not found." });
         }     
 
-      //check if the follow relationship exists
+        //check if the follow relationship exists
         const existingFollow = await prisma.followers.findFirst({
             where: {
                 follower_user_id,
@@ -363,23 +363,23 @@ const unfollowUser = async (req, res) => {
         }
       
 
-      //deelete the follow relationship
-      await prisma.followers.delete({
-        where: {
-            follower_user_id :existingFollow.follower_user_id,
-            following_user_id : existingFollow.following_user_id,
-            follower_id: existingFollow.follower_id
-          },
-      });
+        //deelete the follow relationship
+        await prisma.followers.delete({
+            where: {
+                follower_user_id :existingFollow.follower_user_id,
+                following_user_id : existingFollow.following_user_id,
+                follower_id: existingFollow.follower_id
+            },
+        });
   
       res.status(200).json({ success: true, message: "User is no longer following the specified user." });
     } catch (error) {
-      console.error("Error unfollowing user:", error);
+        console.error("Error unfollowing user:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
     } finally {
-      await prisma.$disconnect();
+        await prisma.$disconnect();
     }
-  };
+};
 
 
 
