@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
 import { FaSearch } from 'react-icons/fa';
+import PostList from './PostList.jsx';
 const maxQueryLength = 50;
 const minQueryLength = 1;
 const Search = () => {
@@ -91,19 +92,7 @@ const Search = () => {
           </ul>
         </div>
       )}
-      {activeTab === 'posts' && (
-        <div>
-          <h2>Posts</h2>
-          <ul>
-            {searchResults.posts.map((post) => (
-              <li key={post.id}>
-                <p>{post.content}</p>
-                <p>Author: {post.users.username}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {activeTab === 'posts' && <PostList posts={searchResults.posts} />}
     </div>
     </div>
   );
