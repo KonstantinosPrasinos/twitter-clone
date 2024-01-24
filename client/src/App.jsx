@@ -27,17 +27,17 @@ const router = createBrowserRouter([
     children: [
         // Add here all protected routes
       {
-        path: '/',
-        element: <Home />
-      },
-      {
         path: '/results',
         element: <Results />
       },
       {
         path: '/home',
         element: <Navigate to={"/"} />
-      }
+      },
+      {
+        path: '/',
+        element: <Home />
+      },
     ]
   },
     // All non protected routes go here
