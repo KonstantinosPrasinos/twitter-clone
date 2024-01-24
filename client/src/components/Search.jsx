@@ -21,6 +21,23 @@ const Search = () => {
         else setError(`Search query can't be more than ${maxQueryLength} characters.`);
 
     };
+    const modifyPostResults = (postResults) => {
+      if (postResults) {
+        // Modify the posts in the search results to include the author's username directly
+        const modifiedPosts = postResults.map(post => ({
+          post_id: post.post_id,
+          user_id: post.user_id,
+          content: post.content,
+          created_at: post.created_at,
+          username: post.users.username,
+        }));
+    
+        // Return the modified search results
+        return modifiedPosts;
+      }
+    
+      return null;
+    };
 
     const handleSearch = async () =>{
         try{
@@ -58,6 +75,7 @@ const Search = () => {
     setActiveTab(tab);
   };
 
+  const modifiedPostResults = modifyPostResults(searchResults.posts);
   return (
     <div className="search-container">
       <input className="search-input"
@@ -84,7 +102,6 @@ const Search = () => {
       </div>
       {activeTab === 'users' && (
         <div>
-          <h2>People</h2>
           <ul>
             {searchResults.users.map((user) => (
               <li key={user.id}>{user.username}</li>
@@ -92,7 +109,10 @@ const Search = () => {
           </ul>
         </div>
       )}
-      {activeTab === 'posts' && <PostList posts={searchResults.posts} />}
+      
+      {activeTab === 'posts' && modifiedPostResults && (
+        <PostList posts={modifiedPostResults} />
+      )}
     </div>
     </div>
   );
