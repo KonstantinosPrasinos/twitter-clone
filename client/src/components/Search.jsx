@@ -15,10 +15,10 @@ const Search = ({isHomePage,maxResults}) => {
     const [activeTab, setActiveTab] = useState('Users');
     const navigate = useNavigate();
     const containerStyle = {
-      position:  'fixed', // Conditionally set position
+      position: isHomePage ?  'fixed':'relative', // Conditionally set position
       top:  '0', // Conditionally set top
       right: isHomePage ? '0' : '20%', // Conditionally set right
-      width: isHomePage ? '31%' : '60%', // Conditionally set width
+      width: isHomePage ? '31%' : '130%', // Conditionally set width
     };
     const handleInput = (e) =>
     {
