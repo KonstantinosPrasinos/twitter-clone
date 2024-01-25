@@ -69,7 +69,7 @@ const PostList = ({ posts }) => {
                     className={`
                       Horizontal-Flex-Container
                       Basic-Button
-                      ${post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
+                      ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
                     }
                     onClick={() => handlePostLike(post.isRepost ? post.repost_id : post.post_id, post.isRepost)}>
                   {!post?.likes && <><FaRegHeart /> <span className={"Align-Text-Center"}>0</span></>}
