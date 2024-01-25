@@ -7,6 +7,7 @@ const postRoutes = require('./routes/postRoutes');
 const feedRoutes = require('./routes/feedRoutes');
 const userRoutes = require('./routes/userRoutes');
 
+const searchRoutes = require('./routes/searchRoutes');
 const {appConfig,corsConfig} = require('./config/app-config');
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(cors({
 app.use(authRoutes);
 app.use(feedRoutes);
 
+app.use(searchRoutes);
 app.use(postRoutes);
 app.use(userRoutes)
 
