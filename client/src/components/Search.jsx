@@ -8,18 +8,12 @@ import { useNavigate } from 'react-router-dom';
 const maxQueryLength = 50;
 const minQueryLength = 1;
 
-const Search = ({isHomePage,maxResults}) => {
+const Search = ({customStyle,maxResults}) => {
     const [searchQuery,setSearchQuery] = useState("");
     const [searchResults,setSearchResults] = useState({users: [], posts: []});
     const [error,setError] = useState(null);
     const [activeTab, setActiveTab] = useState('Users');
     const navigate = useNavigate();
-    const containerStyle = {
-      position: isHomePage ?  'fixed':'relative', // Conditionally set position
-      top:  '0', // Conditionally set top
-      right: isHomePage ? '0' : '20%', // Conditionally set right
-      width: isHomePage ? '31%' : '130%', // Conditionally set width
-    };
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
@@ -71,7 +65,7 @@ const Search = ({isHomePage,maxResults}) => {
         }
     };
     const handleButtonSearch =  () => {
-      handleSearch()
+    
       navigate('/results');
 
     }
@@ -94,7 +88,7 @@ const Search = ({isHomePage,maxResults}) => {
   const modifiedPostResults = modifyPostResults(searchResults.posts);
   return (
     
-    <div className="search-container" style={containerStyle}>
+    <div style={customStyle}>
       <input className="search-input"
         type="text"
         value={searchQuery}
