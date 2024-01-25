@@ -8,7 +8,7 @@ const Home = () => {
         <div className={"titleContainer"}>
         </div>
         <div>
-            <Search isHomePage={true} maxResults={4}/>
+            <Search customStyle={{position:'fixed', top:  '0',right:'0', width:'32%'}} maxResults={4}/>
         </div>
         <LogoutButton />
     </div>
