@@ -22,7 +22,17 @@ const PostList = ({ posts }) => {
                 </Link>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
-                {post.isRepost ? `${post.original_username} 'Said:'` : 'Said:'}
+                {post.isRepost && <span>
+                  <Link
+                      className={"clickable-username"}
+                      to={`/user/${post.original_username}`}
+                      state={{user_id: post.original_user_id}}
+                  >
+                    {post.original_username}
+                  </Link>
+                  {" "}said:
+                </span>}
+                {!post.isRepost && <span>Said:</span>}
                 <span style={{ fontSize: '12px',float: 'right' }}>{formatCreatedAt(post.created_at)}</span>
               </p>
               <p>{post.content}</p>
