@@ -1,9 +1,10 @@
-import React, { useEffect, useState} from 'react';
+import React, { useContext,useEffect, useState} from 'react';
 import {withinLimits} from "../functions/withinLimits.js";
 import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
 import Tabs from './Tabs.jsx';
+import {AlertContext} from "../context/AlertContext.jsx";
 import { useNavigate } from 'react-router-dom';
 const maxQueryLength = 50;
 const minQueryLength = 1;
@@ -14,6 +15,7 @@ const Search = ({customStyle,maxResults}) => {
     const [error,setError] = useState(null);
     const [activeTab, setActiveTab] = useState('Users');
     const navigate = useNavigate();
+    const alertContext = useContext(AlertContext);
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
@@ -22,7 +24,7 @@ const Search = ({customStyle,maxResults}) => {
             setSearchQuery(inputQuery);
             setError(null);
         }
-        else setError(`Search query can't be more than ${maxQueryLength} characters.`);
+        else alertContext.addAlert(`Search query can't be more than ${maxQueryLength} characters.`);
 
     };
     const modifyPostResults = (postResults) => {
