@@ -102,7 +102,7 @@ const UserProfile = () => {
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>
-                    <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={['Posts', 'Replies', 'Likes']} />
+                    <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={['Posts', 'Likes']} />
                 </div>
 
                 {isLoading && <div>Loading...</div>}
