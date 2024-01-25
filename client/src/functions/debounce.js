@@ -1,4 +1,4 @@
-const delay = 400; // Add a delay of 200ms to debounce
+const delay = 400; // Add a delay of 400ms to debounce
 
 export function debounce(func) {
     let timeoutId;
