@@ -6,11 +6,11 @@ const createFeed = async (req, res) => {
   try {
     const followers = await prisma.followers.findMany({
       where: {
-        following_user_id: userID,
+        follower_user_id: userID,
       },
     });
 
-    const followerUserIds = followers.map(follower => follower.follower_user_id);
+    const followerUserIds = followers.map(follower => follower.following_user_id);
 
     try {
       // Fetch posts from followers
@@ -96,6 +96,8 @@ const createFeed = async (req, res) => {
             created_at: reply.created_at,
           })),
           isRepost: false,
+          repostsCount: post.reposts.length,
+          repostedByUser: post.reposts.some((repost) => repost.user_id === userID)
         };
 
         // Reposts

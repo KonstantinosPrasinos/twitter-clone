@@ -270,7 +270,7 @@ const followUser = async (req,res) => {
     const {follower_user_id, following_username } = req.body;
     try {
         if (!follower_user_id || !following_username ) {
-          return res.status(400).json({ success: false, message: "Follower and following userIDs required." });
+          return res.status(400).json({ success: false, message: "Follower userIDs and following username required." });
         }
         
         //check if the follower_user_id exists in the users table
