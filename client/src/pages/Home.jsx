@@ -15,7 +15,7 @@ const Home = () => {
         </div>
         <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
             <LogoutButton />
-            <Search  maxResults={4}/>
+            <Search  maxResults={3}/>
         </div>
      </div>
     );
