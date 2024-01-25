@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
+import useLogout from "../hooks/useLogout.jsx";
 
 const maxPostLength = 280;
 
@@ -30,6 +31,8 @@ const CreatePostForm = ({initialInput = ""}) => {
     const textAreaRef = useRef();
     const dummyTextAreaRef = useRef();
     const contentContainerRef = useRef();
+
+    const {logout} = useLogout();
 
     const handleInput = (event) => {
         let text = event.target.innerText;
@@ -82,7 +85,12 @@ const CreatePostForm = ({initialInput = ""}) => {
         });
 
         if (!response.ok) {
-            alertContext.addAlert("Failed to create post");
+            if (response.status === 401) {
+                alertContext.addAlert("Session expired. Please log in again.");
+                await logout();
+            } else {
+                alertContext.addAlert("Failed to create post");
+            }
         } else {
             alertContext.addAlert("Post created successfully");
             setPostContent("");
