@@ -1,6 +1,9 @@
 import {FaHeart, FaRegHeart} from "react-icons/fa";
 import {useContext, useState} from "react";
 import {UserContext} from "../context/UserContext.jsx";
+import useLogout from "../hooks/useLogout.jsx";
+import {AlertContext} from "../context/AlertContext.jsx";
+import {formatNumber} from "../functions/formatNumber.js";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -9,18 +12,26 @@ const formatCreatedAt = (createdAt) => {
 
 const PostList = ({ posts }) => {
   const userContext = useContext(UserContext);
+  const alertContext = useContext(AlertContext);
+  const {logout} = useLogout();
 
   const [formattedPosts, setFormattedPosts] = useState(posts);
 
-  const handlePostLike = (postId, isRepost) => {
+  const handlePostLike = async (postId, isRepost) => {
     let hasLikedPost = null;
 
-    setFormattedPosts(currentPosts => currentPosts.map(currentPost => {
+    // Create a copy of the posts before the interaction is handled in case the interaction must be undone
+    const previousPosts = [...formattedPosts];
+
+    // Add (or remove) the like to the post optimistically
+    const newPosts = formattedPosts.map(currentPost => {
       // If it's not the interacted post return it
       if (isRepost) {
         if (currentPost.repost_id !== postId) return currentPost;
       } else {
-        if (currentPost.isRepost || currentPost.post_id !== postId) return currentPost;
+        if (currentPost.isRepost || currentPost.post_id !== postId) {
+          return currentPost
+        }
       }
 
       // If it is the interacted post
@@ -40,14 +51,45 @@ const PostList = ({ posts }) => {
           return {...currentPost, likes: [...currentPost.likes, {user_id: userContext.state.user_id, username: userContext.state.username}]}
         }
       }
-    }))
+    })
+
+    setFormattedPosts(newPosts);
 
     if (hasLikedPost === null) return;
 
+    let response;
+
+    // Make the like/unlike request to the server.
     if (hasLikedPost) {
-      // Send like request to server
+      response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/like`, {
+        method: 'POST',
+        body: JSON.stringify({user_id: userContext.state?.user_id, post_id: postId}),
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include'
+      });
     } else {
-      // Send remove like request to server
+      response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike`, {
+        method: 'POST',
+        body: JSON.stringify({user_id: userContext.state?.user_id, post_id: postId}),
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include'
+      });
+    }
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        alertContext.addAlert("Session expired. Please log in again.");
+        await logout();
+      }
+
+      if (hasLikedPost) {
+        alertContext.addAlert("Failed to add like to post");
+      } else {
+        alertContext.addAlert("Failed to remove the like from the post");
+      }
+
+      // Reset post data to previous values
+      setFormattedPosts(previousPosts);
     }
   }
 
@@ -75,7 +117,7 @@ const PostList = ({ posts }) => {
                   {!post?.likes && <><FaRegHeart /> <span className={"Align-Text-Center"}>0</span></>}
                   {post?.likes && <>
                     {post.likes.map(like => like.username).includes(userContext.state?.username) ? <FaHeart /> : <FaRegHeart />}
-                    <span className={"Align-Text-Center"}>{post.likes.length}</span>
+                    <span className={"Align-Text-Center"}>{formatNumber(post.likes.length)}</span>
                   </>}
                 </button>
               </div>
