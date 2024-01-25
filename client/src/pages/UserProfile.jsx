@@ -8,6 +8,8 @@ import PostList from "../components/PostList.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Tabs from "../components/Tabs.jsx";
+import useLogout from "../hooks/useLogout.jsx";
+import {formatNumber} from "../functions/formatNumber.js";
 
 const UserProfile = () => {
     const params = useParams()
@@ -20,6 +22,7 @@ const UserProfile = () => {
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
+    const {logout} = useLogout();
 
     const {user_id} = location.state;
 
@@ -44,7 +47,12 @@ const UserProfile = () => {
                     const data = await response.json();
                     setUserData(data)
                 } else {
-                    alertContext.addAlert("Failed to fetch user");
+                    if (response.status === 401) {
+                        alertContext.addAlert("Session expired. Please log in again.");
+                        await logout();
+                    } else {
+                        alertContext.addAlert("Failed to fetch user");
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching feed:', error);
@@ -56,18 +64,6 @@ const UserProfile = () => {
 
         fetchProfile();
     }, [params]);
-
-    function formatNumber(number) {
-        if (number >= 1000000) {
-            const formattedNumber = (number / 1000000).toFixed(1);
-            return formattedNumber.endsWith('.0') ? `${Math.floor(formattedNumber)}M` : `${formattedNumber}M`;
-        } else if (number >= 1000) {
-            const formattedNumber = (number / 1000).toFixed(1);
-            return formattedNumber.endsWith('.0') ? `${Math.floor(formattedNumber)}K` : `${formattedNumber}K`;
-        } else {
-            return `${number}`;
-        }
-    }
 
     const handleFollowerClick = (event) => {
         if (isLoading || userData?.followers?.length === 0) return;

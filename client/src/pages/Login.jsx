@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {LoginApp} from "../functions/LoginApp.jsx";
+import {LoginApp} from "../functions/LoginApp.js";
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 
