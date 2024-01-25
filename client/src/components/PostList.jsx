@@ -1,9 +1,10 @@
 import {FaHeart, FaRegHeart} from "react-icons/fa";
-import {useContext, useState} from "react";
+import {useCallback, useContext, useRef, useState} from "react";
 import {UserContext} from "../context/UserContext.jsx";
 import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
+import {debounce} from "../functions/debounce.js";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -13,15 +14,68 @@ const formatCreatedAt = (createdAt) => {
 const PostList = ({ posts }) => {
   const userContext = useContext(UserContext);
   const alertContext = useContext(AlertContext);
+
+  const likeChanges = useRef({});
+  const postsBeforeLikeChanges = useRef([]);
+
   const {logout} = useLogout();
 
   const [formattedPosts, setFormattedPosts] = useState(posts);
+
+  const handleLikeRequest = useCallback(debounce(async () => {
+    if (!likeChanges.current) return;
+
+    for (const postId in likeChanges.current) {
+      console.log("making requests")
+      const {newValue: hasLikedPost} = likeChanges.current[postId];
+
+      let response;
+
+      // Make the like/unlike request to the server.
+      if (hasLikedPost) {
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/like`, {
+          method: 'POST',
+          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+          headers: {'Content-Type': 'application/json'},
+          credentials: 'include'
+        });
+      } else {
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike`, {
+          method: 'POST',
+          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+          headers: {'Content-Type': 'application/json'},
+          credentials: 'include'
+        });
+      }
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          alertContext.addAlert("Session expired. Please log in again.");
+          await logout();
+        }
+
+        if (hasLikedPost) {
+          alertContext.addAlert("Failed to add like to post");
+        } else {
+          alertContext.addAlert("Failed to remove the like from the post");
+        }
+
+        // Reset post data to previous values
+        setFormattedPosts(postsBeforeLikeChanges.current);
+      }
+
+      postsBeforeLikeChanges.current = [];
+      likeChanges.current = {};
+    }
+  }), [])
 
   const handlePostLike = async (postId, isRepost) => {
     let hasLikedPost = null;
 
     // Create a copy of the posts before the interaction is handled in case the interaction must be undone
-    const previousPosts = [...formattedPosts];
+    if (!postsBeforeLikeChanges.current.length) {
+      postsBeforeLikeChanges.current = [...formattedPosts]
+    }
 
     // Add (or remove) the like to the post optimistically
     const newPosts = formattedPosts.map(currentPost => {
@@ -57,40 +111,18 @@ const PostList = ({ posts }) => {
 
     if (hasLikedPost === null) return;
 
-    let response;
-
-    // Make the like/unlike request to the server.
-    if (hasLikedPost) {
-      response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/like`, {
-        method: 'POST',
-        body: JSON.stringify({user_id: userContext.state?.user_id, post_id: postId}),
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include'
-      });
-    } else {
-      response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike`, {
-        method: 'POST',
-        body: JSON.stringify({user_id: userContext.state?.user_id, post_id: postId}),
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include'
-      });
-    }
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        alertContext.addAlert("Session expired. Please log in again.");
-        await logout();
-      }
-
-      if (hasLikedPost) {
-        alertContext.addAlert("Failed to add like to post");
+    if (likeChanges.current.hasOwnProperty(postId)) {
+      if (likeChanges.current[postId].initialValue === hasLikedPost) {
+        delete likeChanges.current[postId];
       } else {
-        alertContext.addAlert("Failed to remove the like from the post");
+        likeChanges.current[postId].newValue = hasLikedPost;
       }
 
-      // Reset post data to previous values
-      setFormattedPosts(previousPosts);
+    } else {
+      likeChanges.current[postId] = {initialValue: !hasLikedPost, newValue: hasLikedPost}
     }
+
+    handleLikeRequest();
   }
 
   return (
