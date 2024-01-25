@@ -53,7 +53,11 @@ const Search = ({customStyle,maxResults}) => {
                 credentials: 'include'
             });
             if (!response.ok) {
+              if (response.status === 401) {
+                alertContext.addAlert('User session has expired. Please sign in');
+              } else {
                 throw new Error(`HTTP error! Status: ${response.status}`);
+              }
             }
             const data = await response.json();
             setSearchResults(data);
@@ -61,7 +65,7 @@ const Search = ({customStyle,maxResults}) => {
         } 
         catch (error) {
             console.error('Error during search:', error);
-            setError('An error occurred during the search. Please try again later.');
+            alertContext.addAlert('An error occurred during the search. Please try again later.');
         }
     };
     const handleButtonSearch =  () => {
