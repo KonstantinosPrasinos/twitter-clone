@@ -6,7 +6,7 @@ const Results = () => {
         <div className="mainContainer">
             <LogoutButton />
             <div >
-                <Search isHomePage={false} maxResults={20}/> 
+                <Search customStyle={{position:'relative', top:  '0',right:'20%', width:'130%'}} maxResults={20}/> 
             </div>
             
         </div>
