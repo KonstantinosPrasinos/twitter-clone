@@ -3,17 +3,22 @@ import React, {createContext, useReducer} from 'react';
 // This is where the user global value (context) is held
 export const UserContext = createContext({});
 
-const timeoutTime = 60 * 60 * 1000 - 60 * 1000 // 59 minutes
+const timeoutTime = 8 * 60 * 60 * 1000 - 60 * 1000 // 7 hours 59 minutes
 
 // This is what we call to change the value of user
 export const userReducer = (state, action) => {
     switch (action.type) {
         case 'SET_USER':
-            // Add the same timeout to the user object in local storage as the jwt is valid for
-            let expirationDate = new Date();
-            expirationDate = new Date(expirationDate.getTime() + timeoutTime)
+            const storedUser = localStorage.getItem("user");
 
-            localStorage.setItem("user", JSON.stringify({...action.payload, validUntil: expirationDate}))
+            if (!storedUser) {
+                // Add the same timeout to the user object in local storage as the jwt is valid for
+                let expirationDate = new Date();
+                expirationDate = new Date(expirationDate.getTime() + timeoutTime)
+
+                localStorage.setItem("user", JSON.stringify({...action.payload, validUntil: expirationDate}))
+            }
+
             return action.payload;
         case 'REMOVE_USER':
             localStorage.removeItem("user");

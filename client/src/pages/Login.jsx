@@ -31,7 +31,7 @@ const Login = () => {
       if (password.length === 0) {
             alertContext.addAlert("You must input a password");
             return;
-        }
+      }
 
 
 
