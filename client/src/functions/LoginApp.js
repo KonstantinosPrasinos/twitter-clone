@@ -2,7 +2,7 @@
 
 export const LoginApp = () => {
 
-    const login = async (username, password) => {
+    return  async (username, password) => {
 
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
             method: 'POST',
@@ -16,7 +16,5 @@ export const LoginApp = () => {
         }
 
         return await response.json();
-    }
-
-    return  login;
+    };
 }
