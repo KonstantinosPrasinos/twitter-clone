@@ -3,7 +3,7 @@ import React, {createContext, useReducer} from 'react';
 // This is where the user global value (context) is held
 export const UserContext = createContext({});
 
-const timeoutTime = 60 * 60 * 1000 - 60 * 1000 // 59 minutes
+const timeoutTime = 8 * 60 * 60 * 1000 - 60 * 1000 // 7 hours 59 minutes
 
 // This is what we call to change the value of user
 export const userReducer = (state, action) => {
