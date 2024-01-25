@@ -1,9 +1,19 @@
+import React, {useContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
 };
 
 const PostList = ({ posts }) => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/Comments");
+  };
+
   return (
     <div className="Feed Post-Container">
       {posts.map((post) => (
@@ -17,6 +27,7 @@ const PostList = ({ posts }) => {
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>{post.isRepost ? `${post.original_username} 'Said:'` : 'Said:'}</p>
               <p>{post.content}</p>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
+              {<button onClick={handleClick}>Comments</button>}
             </div>
           </div>
         </div>

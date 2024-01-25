@@ -4,7 +4,7 @@ import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
-import Comments from "./pages/Comments.jsx";
+import Comments from "./pages/comments.jsx";
 import {useContext, useEffect} from "react";
 
 function ProtectedLayout() {
@@ -45,6 +45,11 @@ const router = createBrowserRouter([
   {
     path: '/Login',
     element: <Login />
+  },
+
+  {
+    path: '/Comments',
+    element: <Comments />
   }
 ]);
 

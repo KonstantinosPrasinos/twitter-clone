@@ -3,6 +3,7 @@ import CreatePostForm from "../components/CreatePostForm.jsx";
 import LogoutButton from '../components/LogoutButton';
 import ViewPostsForm from "../components/ViewPostsForm.jsx";
 
+
 const Home = () => {
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
