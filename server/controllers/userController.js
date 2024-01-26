@@ -54,12 +54,7 @@ const getUserProfile = async (req, res) => {
     }
 
     try {
-        // Get the original, reposted and liked posts
         const originalPosts = await prisma.posts.findMany({
-    if (!user_id) return res.status(400).json({success: false, message: "Username required."})
-
-    try {
-        const userPosts = await prisma.posts.findMany({
             where: {
                 user_id: parseInt(user_id)
             },
