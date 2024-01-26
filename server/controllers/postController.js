@@ -179,8 +179,60 @@ const repostPost = async (req, res) => {
     }
 };
 
+const unrepostPost = async (req, res) => {
+    const { user_id, post_id } = req.body;
+  
+    try {
+        if (!user_id || !post_id) {
+            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        }
+    
+        //check if the user and post exist
+        const userExists = await prisma.users.findUnique({
+            where: { user_id: user_id },
+        });
+    
+        const postExists = await prisma.posts.findUnique({
+            where: { post_id: post_id },
+        });
+    
+        if (!userExists || !postExists) {
+            return res.status(404).json({ success: false, message: "User or post not found." });
+        }
+    
+        //check if the user has already unreposted the post
+        const existingRepost = await prisma.reposts.findFirst({
+            where: {
+            user_id: user_id,
+            post_id: post_id,
+            },
+        });
+        
+        if (!existingRepost) {
+            return res.status(400).json({ success: false, message: "User has already unreposted the post." });
+        }
+    
+    
+        //delete existing repost entry
+        await prisma.reposts.delete({
+            where: {
+            user_id: existingRepost.user_id,
+            post_id: existingRepost.post_id,
+            repost_id: existingRepost.repost_id
+            },
+        });
+    
+        res.status(201).json({ success: true, message: "Post unreposted successfully."});
+    } catch (error) {
+        console.error("Error unreposting post:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
 
 
 
 
-module.exports = {createPost,likePost,unlikePost,repostPost};
+
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost};
