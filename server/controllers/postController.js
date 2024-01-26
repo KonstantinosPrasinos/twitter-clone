@@ -111,7 +111,7 @@ const likePost = async (req, res) => {
         }
     
     
-        //create a new like entry
+        //delete existing like entry
         await prisma.likes.delete({
             where: {
             user_id: existingLike.user_id,
@@ -129,5 +129,58 @@ const likePost = async (req, res) => {
     }
 };
   
+const repostPost = async (req, res) => {
+    const { user_id, post_id } = req.body;
+    try{
+        if (!user_id || !post_id) {
+            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        }
+    
+        //check if the user and post exist
+        const userExists = await prisma.users.findUnique({
+            where: { user_id: user_id },
+        });
+    
+        const postExists = await prisma.posts.findUnique({
+            where: { post_id: post_id },
+        });
+    
+        if (!userExists || !postExists) {
+            return res.status(404).json({ success: false, message: "User or post not found." });
+        }
+    
+        //check if the user has already reposted the post
+        const existingRepost = await prisma.reposts.findFirst({
+            where: {
+            user_id: user_id,
+            post_id: post_id,
+            },
+        });
+    
+        if (existingRepost) {
+            return res.status(400).json({ success: false, message: "User has already reposted the post." });
+        }
+    
+        //create a new repost entry
+        const newRepost = await prisma.reposts.create({
+            data: {
+            user_id: user_id,
+            post_id: post_id,
+            },
+        });
 
-module.exports = {createPost,likePost,unlikePost};
+        res.status(201).json({ success: true, message: "Post reposted successfully.", repost: newRepost });
+
+    } catch (error) {
+        console.error("Error reposting post:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+            await prisma.$disconnect();
+    }
+};
+
+
+
+
+
+module.exports = {createPost,likePost,unlikePost,repostPost};
