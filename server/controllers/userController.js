@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 
 const getUserProfile = async (req, res) => {
     const {user_id} = req.params;
-
     if (!user_id) return res.status(400).json({success: false, message: "User id required."})
 
     const formatPosts = (posts, isRepost = false) => {
@@ -55,7 +54,6 @@ const getUserProfile = async (req, res) => {
     }
 
     try {
-        // Get the original, reposted and liked posts
         const originalPosts = await prisma.posts.findMany({
             where: {
                 user_id: parseInt(user_id)
@@ -114,6 +112,7 @@ const getUserProfile = async (req, res) => {
                 },
             },
         });
+
         const repostedPosts = await prisma.reposts.findMany({
             where: {
                 user_id: parseInt(user_id),
@@ -271,7 +270,7 @@ const getUserProfile = async (req, res) => {
                 user_id: true
             }
         });
-        
+
         const following = await prisma.users.findMany({
             where: {
                 user_id: {
@@ -283,7 +282,7 @@ const getUserProfile = async (req, res) => {
                 user_id: true
             }
         });
-        
+
         // Format the posts and liked posts
         const formattedPosts = [...formatPosts(originalPosts), ...formatPosts(repostedPosts, true)];
         formattedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -298,4 +297,124 @@ const getUserProfile = async (req, res) => {
     }
 }
 
-module.exports = getUserProfile;
+
+const followUser = async (req,res) => {
+    //follower -> logged in user
+    //following -> user that the logged in user wants to follow
+    const {follower_user_id, following_username } = req.body;
+    try {
+        if (!follower_user_id || !following_username ) {
+          return res.status(400).json({ success: false, message: "Follower userIDs and following username required." });
+        }
+        
+        //check if the follower_user_id exists in the users table
+        const followerExists = await prisma.users.findUnique({
+            where: { user_id: follower_user_id },
+        });
+    
+        if (!followerExists) {
+            return res.status(404).json({ success: false, message: "Follower user not found." });
+        }
+    
+        //check if the following user with the provided username exists
+        const followingUser = await prisma.users.findUnique({
+            where: { username: following_username },
+        });
+    
+        if (!followingUser) {
+            return res.status(404).json({ success: false, message: "Following user not found." });
+        }       
+
+        //check if the follow relationship already exists
+        const existingFollow = await prisma.followers.findFirst({
+          where: {
+            follower_user_id,
+            following_user_id: followingUser.user_id,
+          },
+        });
+    
+        if (existingFollow) {
+          return res.status(400).json({ success: false, message: "User is already following the specified user." });
+        }
+    
+        //create the follow relationship
+        const newFollow = await prisma.followers.create({
+          data: {
+            follower_user_id,
+            following_user_id: followingUser.user_id,
+          },
+        });
+    
+        res.status(201).json({ success: true, message: "User is now following the specified user.", follow: newFollow });
+    } catch (error) {
+        console.error("Error following user:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+
+
+}
+
+const unfollowUser = async (req, res) => {
+    //follower -> logged in user
+    //following -> user that the logged-in user wants to unfollow
+    const { follower_user_id, following_username } = req.body;
+  
+    try {
+        if (!follower_user_id || !following_username) {
+            return res.status(400).json({ success: false, message: "Follower and following userIDs required." });
+        }
+    
+        //check if the follower_user_id and following_user_id exist in the users table
+        const followerExists = await prisma.users.findUnique({
+            where: { user_id: follower_user_id },
+        });
+    
+        if (!followerExists) {
+            return res.status(404).json({ success: false, message: "Follower or following user not found." });
+        }
+      
+        //check if the following user with the provided username exists
+        const followingUser = await prisma.users.findUnique({
+            where: { username: following_username },
+        });
+    
+        if (!followingUser) {
+            return res.status(404).json({ success: false, message: "Following user not found." });
+        }     
+
+        //check if the follow relationship exists
+        const existingFollow = await prisma.followers.findFirst({
+            where: {
+                follower_user_id,
+                following_user_id: followingUser.user_id,
+            },
+        });
+  
+        if (!existingFollow) {
+            return res.status(400).json({ success: false, message: "User is not following the specified user." });
+        }
+      
+
+        //deelete the follow relationship
+        await prisma.followers.delete({
+            where: {
+                follower_user_id :existingFollow.follower_user_id,
+                following_user_id : existingFollow.following_user_id,
+                follower_id: existingFollow.follower_id
+            },
+        });
+  
+      res.status(200).json({ success: true, message: "User is no longer following the specified user." });
+    } catch (error) {
+        console.error("Error unfollowing user:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+
+
+module.exports = {getUserProfile, followUser, unfollowUser};
