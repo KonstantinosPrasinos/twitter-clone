@@ -2,7 +2,9 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createFeed = async (req, res) => {
-  const userID = req.body.userID;
+
+  const userID = req.params;
+
   try {
     const followers = await prisma.followers.findMany({
       where: {

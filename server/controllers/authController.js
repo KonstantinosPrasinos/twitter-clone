@@ -29,7 +29,7 @@ async function findUserByCredential(credential) {
 const maxTokenAge = 8 * 60 * 60 * 1000; //8 hours
 function createToken(user) {
   const payload = {
-    userId: user.id,
+    userId: user.user_id,
     username: user.username,
   };
   const options = {
