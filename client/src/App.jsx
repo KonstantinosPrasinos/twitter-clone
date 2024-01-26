@@ -4,7 +4,9 @@ import {UserContext} from "./context/UserContext.jsx";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import Results from "./pages/Results.jsx";
 import {useContext, useEffect} from "react";
+import UserProfile from "./pages/UserProfile.jsx";
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
@@ -26,12 +28,20 @@ const router = createBrowserRouter([
     children: [
         // Add here all protected routes
       {
-        path: '/',
-        element: <Home />
+        path: '/user/:username',
+        element: <UserProfile />
+      },
+      {
+        path: '/results',
+        element: <Results />
       },
       {
         path: '/home',
         element: <Navigate to={"/"} />
+      },
+      {
+        path: '/',
+        element: <Home />
       }
     ]
   },
@@ -60,7 +70,10 @@ function App() {
 
     if (!userObject?.user_id) return;
 
-    if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) return;
+    if (new Date(userObject?.validUntil).getTime() <= (new Date()).getTime()) {
+      localStorage.removeItem("user");
+      return;
+    }
 
     userContext.dispatch({type: 'SET_USER', payload: userObject});
   }, []);

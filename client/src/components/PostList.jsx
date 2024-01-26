@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import {FaHeart, FaRegHeart, FaRetweet} from "react-icons/fa";
 import {useCallback, useContext, useRef, useState} from "react";
 import {UserContext} from "../context/UserContext.jsx";
@@ -213,11 +214,29 @@ const PostList = ({ posts }) => {
         <div key={post.isRepost ? `repost_${post.repost_id}` : `post_${post.post_id}`}>
           <div className="Single-Post-Container">
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className={"post-username"}>{post.isRepost ? post.reposted_username : post.username}</h2>
-                <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
-              </div>
-              <p style={{ fontSize: '16px', fontStyle: 'italic' }}>{post.isRepost ? `${post.original_username} 'Said:'` : 'Said:'}</p>
+              <h2 className={"post-username"}>
+                <Link
+                    className={"clickable-username"}
+                    to={`/user/${post.isRepost ? post.reposted_username : post.username}`}
+                    state={{user_id: post.isRepost ? post.reposted_user_id : post.user_id}}
+                >
+                  {post.isRepost ? post.reposted_username : post.username}
+                </Link>
+              </h2>
+              <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
+                {post.isRepost && <span>
+                  <Link
+                      className={"clickable-username"}
+                      to={`/user/${post.original_username}`}
+                      state={{user_id: post.original_user_id}}
+                  >
+                    {post.original_username}
+                  </Link>
+                  {" "}said:
+                </span>}
+                {!post.isRepost && <span>Said:</span>}
+                <span style={{ fontSize: '12px',float: 'right' }}>{formatCreatedAt(post.created_at)}</span>
+              </p>
               <p>{post.content}</p>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               {!post.isRepost && <div className={"Horizontal-Flex-Container"}>

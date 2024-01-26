@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AlertContext } from "../context/AlertContext.jsx";
 import {UserContext} from "../context/UserContext.jsx";
 import PostList from "./PostList.jsx";
+import useLogout from "../hooks/useLogout.jsx";
 
 const ViewPostsForm = () => {
   const [formattedFeed, setFormattedFeed] = useState([]);
   const [loading, setLoading] = useState(true);
   const alertContext = useContext(AlertContext);
   const userContext = useContext(UserContext);
+  const {logout} = useLogout();
 
   useEffect(() => {
     const fetchFeed = async () => {
@@ -25,7 +27,12 @@ const ViewPostsForm = () => {
           const data = await response.json();
           setFormattedFeed(data.posts);
         } else {
-          alertContext.addAlert("Failed to fetch feed");
+          if (response.status === 401) {
+            alertContext.addAlert("Session expired. Please log in again.");
+            await logout();
+          } else {
+            alertContext.addAlert("Failed to fetch feed");
+          }
         }
       } catch (error) {
         console.error('Error fetching feed:', error);

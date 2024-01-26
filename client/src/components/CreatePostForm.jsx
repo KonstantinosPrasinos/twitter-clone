@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
+import useLogout from "../hooks/useLogout.jsx";
 
 const maxPostLength = 280;
 
@@ -22,15 +23,16 @@ const restoreSelection = (node, offset) => {
 
     selection.addRange(range);
 }
-
-const CreatePostForm = () => {
+const CreatePostForm = ({initialInput = ""}) => {
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
-    const [postContent, setPostContent] = useState("");
+    const [postContent, setPostContent] = useState(initialInput);
 
     const textAreaRef = useRef();
     const dummyTextAreaRef = useRef();
     const contentContainerRef = useRef();
+
+    const {logout} = useLogout();
 
     const handleInput = (event) => {
         let text = event.target.innerText;
@@ -61,7 +63,7 @@ const CreatePostForm = () => {
             dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>';
         } else {
             // Replace all @ or # tags with highlighted text
-            dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z]+|#\w+/gi, (value) => {
+            dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z_0-9]+|#\w+/gi, (value) => {
                 return `<span class="dummy-highlighted">${value}</span>`
             });
         }
@@ -83,16 +85,27 @@ const CreatePostForm = () => {
         });
 
         if (!response.ok) {
-            alertContext.addAlert("Failed to create post");
+            if (response.status === 401) {
+                alertContext.addAlert("Session expired. Please log in again.");
+                await logout();
+            } else {
+                alertContext.addAlert("Failed to create post");
+            }
         } else {
             alertContext.addAlert("Post created successfully");
             setPostContent("");
             textAreaRef.current.innerHTML = '';
-            dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a post</span>'
+            dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder" onclick="">Write a post</span>'
         }
     }
 
     useEffect(() => {
+        // Initialize input if needed
+        if (initialInput && initialInput.length > 0) {
+            textAreaRef.current.innerText = initialInput + ' ';
+            handleInput({target: textAreaRef.current})
+        }
+
         // The input div height is based on the user input. So initialize it as the base height.
         if (textAreaRef.current) {
             textAreaRef.current.style.height = "0px";
