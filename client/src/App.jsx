@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Results from "./pages/Results.jsx";
+import Comments from "./pages/Comments.jsx";
 import {useContext, useEffect} from "react";
 import UserProfile from "./pages/UserProfile.jsx";
 
@@ -54,6 +55,11 @@ const router = createBrowserRouter([
   {
     path: '/Login',
     element: <Login />
+  },
+
+  {
+    path: '/Comments',
+    element: <Comments />
   }
 ]);
 

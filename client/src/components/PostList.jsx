@@ -190,9 +190,6 @@ const PostList = ({ posts }) => {
     })
 
     setFormattedPosts(newPosts)
-
-    return;
-    // Execute when request route is ready
     
     if (repostChanges.current.hasOwnProperty(postId)) {
       if (repostChanges.current[postId].initialValue === hasRepostedPost) {

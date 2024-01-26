@@ -4,6 +4,7 @@ import ViewPostsForm from "../components/ViewPostsForm.jsx";
 import Search from '../components/Search.jsx';
 import Navbar from "../components/Navbar.jsx";
 
+
 const Home = () => {
     return (
      <div className="mainContainer">

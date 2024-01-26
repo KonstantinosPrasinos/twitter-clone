@@ -23,6 +23,7 @@ const UserProfile = () => {
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
     const {logout} = useLogout();
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const {user_id} = location.state;
 
@@ -31,7 +32,7 @@ const UserProfile = () => {
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
-
+    
         const fetchProfile = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${user_id}`, {
@@ -62,6 +63,8 @@ const UserProfile = () => {
             }
         };
 
+        if (userData.user && userContext.state.user_id !== userData.user.user_id) {setIsFollowing(userData.isFollowing);}
+
         fetchProfile();
     }, [params]);
 
@@ -79,6 +82,63 @@ const UserProfile = () => {
         setFollowingDialogVisible(current => !current)
     }
 
+    const handleFollowClick = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userContext.state.user_id}`,
+                },
+                body: JSON.stringify({
+                    follower_user_id: userContext.state.user_id,
+                    following_username: params.username,
+                }),
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                alertContext.addAlert(`You are now following ${params.username}.`);
+                fetchProfile();
+            } else {
+                alertContext.addAlert('Failed to follow user.');
+            }
+        } catch (error) {
+            console.error('Error following user:', error);
+            alertContext.addAlert('Failed to follow user.');
+        }
+    };
+
+    const handleUnfollowClick = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unfollow`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userContext.state.user_id}`,
+                },
+                body: JSON.stringify({
+                    follower_user_id: userContext.state.user_id,
+                    following_username: params.username,
+                }),
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                alertContext.addAlert(`You are no longer following ${params.username}.`);
+                fetchProfile();
+            } else {
+                alertContext.addAlert('Failed to unfollow user.');
+            }
+        } catch (error) {
+            console.error('Error unfollowing user:', error);
+            alertContext.addAlert('Failed to unfollow user.');
+        }
+    };
+    
+    
+      
+
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>
@@ -95,6 +155,11 @@ const UserProfile = () => {
                                 {"Followers: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
+                            {userData.user && userContext.state.user_id !== userData.user.user_id && (
+                                <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
+                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                </button>
+                            )}
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>
