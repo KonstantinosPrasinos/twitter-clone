@@ -23,10 +23,11 @@ app.use(cors({
 
 app.use(authRoutes);
 app.use(feedRoutes);
-
 app.use(searchRoutes);
+app.use(userRoutes);
 app.use(postRoutes);
 app.use(userRoutes)
+
 
 app.get("", (req, res) => {
     res.send("Hello world!");
