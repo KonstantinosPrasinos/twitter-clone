@@ -231,8 +231,45 @@ const unrepostPost = async (req, res) => {
     }
 };
 
+const replyPost = async (req, res) => {
+    const { user_id, post_id, content } = req.body;
+    try{
+        if (!user_id || !post_id) {
+            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        }
+    
+        //check if the user and post exist
+        const userExists = await prisma.users.findUnique({
+            where: { user_id: user_id },
+        });
+    
+        const postExists = await prisma.posts.findUnique({
+            where: { post_id: post_id },
+        });
+    
+        if (!userExists || !postExists) {
+            return res.status(404).json({ success: false, message: "User or post not found." });
+        }
+    
+        //create a reply entry
+        const newReply = await prisma.replies.create({
+            data: {
+            user_id: user_id,
+            post_id: post_id,
+            content: content
+            },
+        });
+
+        res.status(201).json({ success: true, message: "Reply to post created successfully.", reply: newReply });
+
+    } catch (error) {
+        console.error("Error replying post:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+            await prisma.$disconnect();
+    }
+};
 
 
 
-
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost};
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost};
