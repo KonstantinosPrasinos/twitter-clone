@@ -4,12 +4,16 @@ import CreateCommentForm from "../components/CreateCommentForm.jsx";
 import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
 
 
-const handleBack = () => {
-    navigate("/Home");
-};
+const Home = (post_id) => {
+
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate("/Home");
+    };
 
 
-const Home = () => {
+
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>

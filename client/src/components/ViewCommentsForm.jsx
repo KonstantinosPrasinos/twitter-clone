@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AlertContext } from "../context/AlertContext.jsx";
 import { UserContext } from "../context/UserContext.jsx";
 
-const ViewCommentsForm = () => {
+const ViewCommentsForm = (post_id) => {
   const [replies, setReplies] = useState([]);
   const [loading, setLoading] = useState(true);
   const alertContext = useContext(AlertContext);
@@ -17,7 +17,7 @@ const ViewCommentsForm = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${post.post_id}`,
+            'Authorization': `Bearer ${post_id}`,
           },
           credentials: 'include',
         });

@@ -10,8 +10,8 @@ const PostList = ({ posts }) => {
 
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/Comments");
+  const handleClick = (post_id) => {
+    navigate("/Comments/${post_id}");
   };
 
   return (

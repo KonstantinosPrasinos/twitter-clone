@@ -3,7 +3,7 @@ import { AlertContext } from "../context/AlertContext.jsx";
 import {UserContext} from "../context/UserContext.jsx";
 import PostList from "./PostList.jsx";
 
-const ViewPostsForm = () => {
+const ViewPostsForm = (post_id) => {
   const [formattedFeed, setFormattedFeed] = useState([]);
   const [loading, setLoading] = useState(true);
   const alertContext = useContext(AlertContext);
@@ -16,7 +16,7 @@ const ViewPostsForm = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${userContext.state.user_id}`,
+            'Authorization': `Bearer ${post_id}`,
           },
           credentials: 'include',
         });
