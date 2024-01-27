@@ -22,6 +22,7 @@ const Comments = () => {
             <div className={"mainContainer-left-bar"}>
                 <div className={"Vertical-Flex-Container"}>
                     <CreateCommentForm post_id={post_id} />
+                    <ViewCommentsForm post_id={post_id} />
                 </div>
             </div>
             <div className={"mainContainer-right-bar Vertical-Flex-Container"}>

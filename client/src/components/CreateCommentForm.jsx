@@ -94,7 +94,6 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
             alertContext.addAlert('Failed to create comment. Please try again.');
         }
         console.log(post_id);
-        console.log(userContext.state?.user_id);
     }
 
     useEffect(() => {

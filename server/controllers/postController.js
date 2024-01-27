@@ -271,5 +271,38 @@ const replyPost = async (req, res) => {
 };
 
 
+const commentPost = async (req, res) => {
+    const { post_id } = req.params;
 
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost};
+    try {
+        if (!post_id) {
+            return res.status(400).json({ success: false, message: "Post ID is required." });
+        }
+
+        // Check if the post exists
+        const postExists = await prisma.posts.findUnique({
+            where: { post_id: post_id },
+        });
+
+        if (!postExists) {
+            return res.status(404).json({ success: false, message: "Post not found." });
+        }
+
+        // Retrieve replies for the given post
+        const replies = await prisma.replies.findMany({
+            where: { post_id: post_id },
+            orderBy: { created_at: 'asc' }, // You can change the order as needed
+        });
+
+        res.status(200).json({ success: true, replies: replies });
+    } catch (error) {
+        console.error("Error fetching replies for post:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+
+
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,commentPost};

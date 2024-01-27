@@ -18,7 +18,6 @@ const ViewPostsForm = (post_id) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${post_id}`,
           },
           credentials: 'include',
         });
