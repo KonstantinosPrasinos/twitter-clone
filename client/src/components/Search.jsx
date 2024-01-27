@@ -24,8 +24,7 @@ const Search = ({customStyle,maxResults}) => {
             setSearchQuery(inputQuery);
             setError(null);
         }
-        else alertContext.addAlert(`Search query can't be more than ${maxQueryLength} characters.`);
-
+        else  alertContext.addAlert(`Search query can't be more than ${maxQueryLength} characters.`);
     };
     const modifyPostResults = (postResults) => {
       if (postResults) {
@@ -84,7 +83,7 @@ const Search = ({customStyle,maxResults}) => {
         handleSearch();
         setError(null);
       }
-      else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
+      else alertContext.addAlert(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
   }, [searchQuery]);
 
   const handleTabChange = (tab) => {
