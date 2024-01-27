@@ -95,17 +95,18 @@ const Search = ({customStyle,maxResults}) => {
   return (
     
     <div style={customStyle}>
+     <div className='Horizontal-Flex-Container'>
       <input className="search-input"
         type="text"
         value={searchQuery}
         onChange={handleInput}
         placeholder="Search Τσίου... "
       />
-
+    
       <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleButtonSearch} >
         <FaSearch />
       </button>
-
+     </div>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       
       <Tabs selectedTab={activeTab} setSelectedTab={handleTabChange} tabs={['Users','Posts']} />
