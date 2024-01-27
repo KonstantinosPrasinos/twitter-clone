@@ -27,14 +27,15 @@ const UserProfile = () => {
     const [isConnectedUser, setIsConnectedUser] = useState(false);
 
     const {user_id} = location.state;
-    
 
+    const isViewingOwnProfile = user_id === userContext.state.user_id;
+    
     useEffect(() => {
         // Reset everything in case of redirection to another user
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
-        
+        if (userData.user && userContext.state.user_id !== userData.user.user_id) {setIsFollowing(userData.isFollowing);}
     
         const fetchProfile = async () => {
             try {
@@ -66,7 +67,6 @@ const UserProfile = () => {
             }
         };
 
-        if (userData.user && userContext.state.user_id !== userData.user.user_id) {setIsFollowing(userData.isFollowing);}
 
         fetchProfile();
     }, [params]);
@@ -104,7 +104,7 @@ const UserProfile = () => {
                 alertContext.addAlert(`You are now following ${params.username}.`);
                 fetchProfile();
             } else {
-                alertContext.addAlert('Failed to follow user.');
+                alertContext.addAlert('Failed.User is already following the specified user.');
             }
         } catch (error) {
             console.error('Error following user:', error);
@@ -158,14 +158,10 @@ const UserProfile = () => {
                                 {"Followers: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
-                            {userData && userData.user && userContext.state.user_id !== userData.user.user_id && (
-                                <>
-                                    {!isConnectedUser && (
-                                        <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
-                                            {isFollowing ? 'Unfollow' : 'Follow'}
-                                        </button>
-                                    )}
-                                </>
+                            {!isViewingOwnProfile && (
+                                <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
+                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                </button>
                             )}
 
                         </div>
