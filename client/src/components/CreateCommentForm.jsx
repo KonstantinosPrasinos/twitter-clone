@@ -25,7 +25,7 @@ const restoreSelection = (node, offset) => {
 const CreateCommentForm = ({post_id,initialInput = ""}) => {
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
-    const [content, setcontent] = useState(initialInput);
+    const [content, setContext] = useState(initialInput);
 
     const textAreaRef = useRef();
     const dummyTextAreaRef = useRef();
@@ -35,7 +35,7 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
         let text = event.target.innerText;
 
         if (text.length <= maxPostLength) {
-            setcontent(text);
+            setContext(text);
 
             // Set height of containers for when lines are more than one
             event.target.style.height = "0px";
@@ -56,12 +56,10 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
         }
 
         if (text.length === 0) {
-            // If text is empty then add placeholder
             dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a Comment</span>';
         } else {
-            // Replace all @ or # tags with highlighted text
             dummyTextAreaRef.current.innerHTML = text.replaceAll(/@[a-zA-Z_0-9]+|#\w+/gi, (value) => {
-                return `<span class="dummy-highlighted">${value}</span>`
+                return `<span class="dummy-highlighted">${value}</span>`;
             });
         }
     }
@@ -74,26 +72,29 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
     }, [content])
 
     const handlePost = async () => {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/reply`, {
-            method: 'POST',
-            body: JSON.stringify({userId: userContext.state?.user_id, post_id, content}),
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include'
-        });
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/reply`, {
+                method: 'POST',
+                body: JSON.stringify({ user_id: userContext.state?.user_id, post_id, content }),
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+            });
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                alertContext.addAlert("Session expired. Please log in again.");
-                await logout();
+            if (response.ok) {
+                alertContext.addAlert("Comment created successfully");
+                setContext("");
+                textAreaRef.current.innerHTML = '';
+                dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a Comment</span>';
             } else {
-                alertContext.addAlert("Failed to create post");
+                const errorMessage = await response.text();
+                alertContext.addAlert(`Failed to create comment: ${errorMessage}`);
             }
-        } else {
-            alertContext.addAlert("Post created successfully");
-            setcontent("");
-            textAreaRef.current.innerHTML = '';
-            dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder" onclick="">Write a post</span>'
+        } catch (error) {
+            console.error('Error creating comment:', error);
+            alertContext.addAlert('Failed to create comment. Please try again.');
         }
+        console.log(post_id);
+        console.log(userContext.state?.user_id);
     }
 
     useEffect(() => {
@@ -124,13 +125,13 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
                     ref={dummyTextAreaRef}
                 >
                     <span className={"dummy-placeholder"}>
-                        Write a post
+                        Write a comment
                     </span>
                 </div>
             </div>
             <div className={`create-post-remaining-characters ${remainingCharacters === 0 ? "create-post-remaining-characters-zero" : ""}`}>{remainingCharacters}</div>
             <div className={"create-post-button-container"}>
-                <button disabled={content.length === 0 || content.length > maxPostLength} onClick={handlePost}>Post</button>
+                <button disabled={content.length === 0 || content.length > maxPostLength} onClick={handlePost}>Submit</button>
             </div>
         </div>
     );

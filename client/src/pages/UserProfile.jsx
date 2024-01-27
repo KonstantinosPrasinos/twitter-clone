@@ -102,6 +102,7 @@ const UserProfile = () => {
 
             if (response.ok) {
                 alertContext.addAlert(`You are now following ${params.username}.`);
+                setIsFollowing(true);
                 fetchProfile();
             } else {
                 alertContext.addAlert('Failed.User is already following the specified user.');
@@ -129,6 +130,7 @@ const UserProfile = () => {
 
             if (response.ok) {
                 alertContext.addAlert(`You are no longer following ${params.username}.`);
+                setIsFollowing(false);
                 fetchProfile();
             } else {
                 alertContext.addAlert('Failed to unfollow user.');

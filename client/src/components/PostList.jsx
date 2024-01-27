@@ -270,7 +270,7 @@ const PostList = ({ posts }) => {
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
               </div>}
-              {<button onClick={() => handleClick(post.post_id)}>Add Comments</button>}
+              {<button onClick={() => handleClick(post.post_id)}>Add Comment</button>}
             </div>
           </div>
         </div>
