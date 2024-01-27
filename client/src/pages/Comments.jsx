@@ -4,7 +4,7 @@ import CreateCommentForm from "../components/CreateCommentForm.jsx";
 import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
 
 
-const Home = (post_id) => {
+const Comments = (post_id) => {
 
     const navigate = useNavigate();
 
@@ -17,8 +17,7 @@ const Home = (post_id) => {
     return <div className="mainContainer">
         <div className={"mainContainer-left-bar"}>
             <div className={"Vertical-Flex-Container"}>
-                <CreateCommentForm />
-                <ViewCommentsForm />
+            <CreateCommentForm post_id={post_id} />
             </div>
         </div>
         <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
@@ -27,4 +26,4 @@ const Home = (post_id) => {
     </div>
 };
 
-export default Home;
+export default Comments;

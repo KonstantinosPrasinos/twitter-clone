@@ -24,14 +24,17 @@ const UserProfile = () => {
     const followInfoContainer = useRef();
     const {logout} = useLogout();
     const [isFollowing, setIsFollowing] = useState(false);
+    const [isConnectedUser, setIsConnectedUser] = useState(false);
 
     const {user_id} = location.state;
+    
 
     useEffect(() => {
         // Reset everything in case of redirection to another user
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
+        
     
         const fetchProfile = async () => {
             try {
@@ -155,11 +158,16 @@ const UserProfile = () => {
                                 {"Followers: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
-                            {userData.user && userContext.state.user_id !== userData.user.user_id && (
-                                <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
-                                    {isFollowing ? 'Unfollow' : 'Follow'}
-                                </button>
+                            {userData && userData.user && userContext.state.user_id !== userData.user.user_id && (
+                                <>
+                                    {!isConnectedUser && (
+                                        <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
+                                            {isFollowing ? 'Unfollow' : 'Follow'}
+                                        </button>
+                                    )}
+                                </>
                             )}
+
                         </div>
                         <div className={"profile-date"}>Joined on: {!isLoading && (new Date(userData.user.created_at)).toLocaleDateString()}</div>
                     </div>

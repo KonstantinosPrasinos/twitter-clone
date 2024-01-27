@@ -14,7 +14,7 @@ const ViewPostsForm = (post_id) => {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feed`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feed/${userContext.state.user_id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

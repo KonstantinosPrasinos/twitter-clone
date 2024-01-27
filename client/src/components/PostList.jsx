@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 import {FaHeart, FaRegHeart, FaRetweet} from "react-icons/fa";
 import {useCallback, useContext, useRef, useState} from "react";
 import {UserContext} from "../context/UserContext.jsx";
@@ -6,6 +6,7 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
+import CreateCommentForm from "../components/CreateCommentForm.jsx";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -23,6 +24,7 @@ const PostList = ({ posts }) => {
   const postsBeforeRepostChanges = useRef([]);
 
   const {logout} = useLogout();
+  const navigate = useNavigate();
 
   const handleLikeRequest = useCallback(debounce(async () => {
     if (!likeChanges.current) return;
@@ -205,6 +207,11 @@ const PostList = ({ posts }) => {
     handleRepostRequest();
   }
 
+  const handleClick = (postId) => {
+    navigate(`/Comments`);
+    
+  };
+
   return (
     <div className="Feed Post-Container">
       {formattedPosts.map((post) => (
@@ -263,6 +270,7 @@ const PostList = ({ posts }) => {
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
               </div>}
+              {<button onClick={() => handleClick(post.post_id)}>Add Comments</button>}
             </div>
           </div>
         </div>
