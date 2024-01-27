@@ -3,9 +3,13 @@ const prisma = new PrismaClient();
 
 const createFeed = async (req, res) => {
 
+  const authenticatedUserId = req.user.userId;
   const userID = parseInt(req.params.user_id, 10);
 
-  console.log(userID)
+  if (authenticatedUserId !== userID) {
+    return res.status(403).json({ message: 'Forbidden: Access denied. Invalid user ID.' });
+  }
+
 
   try {
     const followers = await prisma.followers.findMany({
