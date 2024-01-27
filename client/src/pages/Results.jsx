@@ -1,6 +1,6 @@
 import React from 'react';
 import Search from '../components/Search.jsx';
-import LogoutButton from '../components/LogoutButton.jsx';
+import Navbar from '../components/Navbar.jsx';
 const Results = () => {
     return (
         <div className="mainContainer">
@@ -8,7 +8,7 @@ const Results = () => {
                 <Search  maxResults={20}/> 
             </div>
             <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
-                <LogoutButton />
+                <Navbar />
             </div>
             
         </div>
