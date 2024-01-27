@@ -214,7 +214,7 @@ const PostList = ({ posts }) => {
         <div key={post.isRepost ? `repost_${post.repost_id}` : `post_${post.post_id}`}>
           <div className="Single-Post-Container">
             <div>
-              <h2 className={"post-username"}>
+              <h3 className={"post-username"}>
                 <Link
                     className={"clickable-username"}
                     to={`/user/${post.isRepost ? post.reposted_username : post.username}`}
@@ -222,7 +222,7 @@ const PostList = ({ posts }) => {
                 >
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
-              </h2>
+              </h3>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
                 {post.isRepost && <span>
                   <Link
