@@ -49,12 +49,9 @@ const UserProfile = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setUserData(data)
-                    if (userContext.state.user_id !== data.user.user_id) {
-                        setIsFollowing(true);
-                    } else {
-                        setIsFollowing(false); // The logged-in user doesn't follow themselves
-                    }
+                    const isFollowingCurrentUser = data.followers.some(follower => follower.user_id === userContext.state.user_id);
+                    setUserData({ ...data, isFollowing: isFollowingCurrentUser })
+
                 } else {
                     if (response.status === 401) {
                         alertContext.addAlert("Session expired. Please log in again.");
@@ -113,7 +110,6 @@ const UserProfile = () => {
             }
         } catch (error) {
             console.error('Error following user:', error);
-            alertContext.addAlert('Failed to follow user.');
         }
     };
 
