@@ -23,8 +23,7 @@ const UserProfile = () => {
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
     const {logout} = useLogout();
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [isConnectedUser, setIsConnectedUser] = useState(false);
+    const [isFollowing, setIsFollowing] = useState();
 
     const {user_id} = location.state;
 
@@ -35,7 +34,7 @@ const UserProfile = () => {
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
-        if (userData.user && userContext.state.user_id !== userData.user.user_id) {setIsFollowing(userData.isFollowing);}
+        
     
         const fetchProfile = async () => {
             try {
@@ -51,6 +50,11 @@ const UserProfile = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data)
+                    if (userContext.state.user_id !== data.user.user_id) {
+                        setIsFollowing(true);
+                    } else {
+                        setIsFollowing(false); // The logged-in user doesn't follow themselves
+                    }
                 } else {
                     if (response.status === 401) {
                         alertContext.addAlert("Session expired. Please log in again.");
@@ -161,9 +165,13 @@ const UserProfile = () => {
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
                             </div>
                             {!isViewingOwnProfile && (
-                                <button onClick={isFollowing ? handleUnfollowClick : handleFollowClick}>
-                                    {isFollowing ? 'Unfollow' : 'Follow'}
-                                </button>
+                                <>
+                                    {isFollowing ? (
+                                        <button onClick={handleUnfollowClick}>Unfollow</button>
+                                    ) : (
+                                        <button onClick={handleFollowClick}>Follow</button>
+                                    )}
+                                </>
                             )}
 
                         </div>
