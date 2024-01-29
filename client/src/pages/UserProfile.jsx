@@ -23,7 +23,7 @@ const UserProfile = () => {
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
     const {logout} = useLogout();
-    const [isFollowing, setIsFollowing] = useState();
+    const [isFollowing, setIsFollowing] = useState(true);
 
     const {user_id} = location.state;
 
@@ -49,8 +49,8 @@ const UserProfile = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    const isFollowingCurrentUser = data.followers.some(follower => follower.user_id === userContext.state.user_id);
-                    setUserData({ ...data, isFollowing: isFollowingCurrentUser })
+                    const isFollowing = data.followers.some(follower => follower.user_id === userContext.state.user_id);
+                    setUserData(data)
 
                 } else {
                     if (response.status === 401) {
