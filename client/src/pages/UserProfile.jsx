@@ -34,43 +34,41 @@ const UserProfile = () => {
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
-        
-    
-        const fetchProfile = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${user_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${userContext.state.user_id}`,
-                    },
-                    credentials: 'include',
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserData(data)
-
-
-                } else {
-                    if (response.status === 401) {
-                        alertContext.addAlert("Session expired. Please log in again.");
-                        await logout();
-                    } else {
-                        alertContext.addAlert("Failed to fetch user");
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching feed:', error);
-                alertContext.addAlert("Failed to fetch feed");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-
         fetchProfile();
     }, [params]);
+
+
+    const fetchProfile = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userContext.state.user_id}`,
+                },
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUserData(data)
+                setIsFollowing(data.isCurrentUserFollowing);
+                console.log(data.isCurrentUserFollowing);
+            } else {
+                if (response.status === 401) {
+                    alertContext.addAlert("Session expired. Please log in again.");
+                    await logout();
+                } else {
+                    alertContext.addAlert("Failed to fetch user");
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching feed:', error);
+            alertContext.addAlert("Failed to fetch feed");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleFollowerClick = (event) => {
         if (isLoading || userData?.followers?.length === 0) return;
@@ -116,7 +114,7 @@ const UserProfile = () => {
     const handleUnfollowClick = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unfollow`, {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userContext.state.user_id}`,

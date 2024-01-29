@@ -255,6 +255,10 @@ const getUserProfile = async (req, res) => {
             }
         })
 
+        const isCurrentUserFollowing = user.followers_followers_follower_user_idTousers.some(
+            follower => follower.follower_user_id === user_id
+        );
+
         // Get the following and followers for the user
         const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.following_user_id);
         const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.following_user_id);
@@ -290,7 +294,7 @@ const getUserProfile = async (req, res) => {
         const formattedLikedPosts = [...formatPosts(likedPosts.map(post => post.posts))]
         formattedLikedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-        res.status(200).json({user, posts: formattedPosts, likedPosts: formattedLikedPosts, followers, following})
+        res.status(200).json({user, posts: formattedPosts, likedPosts: formattedLikedPosts, followers, following, isCurrentUserFollowing})
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).json({ success: false, message: 'Internal server error 1' });
