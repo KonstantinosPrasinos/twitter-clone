@@ -3,7 +3,7 @@ import { AlertContext } from "../context/AlertContext.jsx";
 import { UserContext } from "../context/UserContext.jsx";
 
 const ViewCommentsForm = ({post_id}) => {
-  const [replies, setReplies] = useState([]);
+  const [formattedFeed, setFormattedFeed] = useState([]);
   const [loading, setLoading] = useState(true);
   const alertContext = useContext(AlertContext);
   const userContext = useContext(UserContext);
@@ -43,16 +43,24 @@ const ViewCommentsForm = ({post_id}) => {
     fetchFeed();
   }, []);
 
+  const postReplies = formattedFeed.filter((post) => post.post_id === post_id);
+  console.log(post_id);
+
   return (
-    <div className="comment-list">
-      <h3>Comments:</h3>
-      {replies.map((reply) => (
-        <div key={reply.replies_id} className="comment-item">
-          <p>{reply.content}</p>
-          <p>Posted by: {reply.user_id}</p>
-          <p>Posted at: {new Date(reply.created_at).toLocaleString()}</p>
+    <div>
+      <h2 style={{ textAlign: 'left' }}>Comments</h2>
+      {loading && <p>Loading...</p>}
+      {!loading && (
+        <div className="Feed Post-Container">
+          {/* Render the filtered replies */}
+          {postReplies.map((reply) => (
+            <div key={reply.post_id}>
+              {/* Display reply information */}
+              <p>{reply.content}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate,useLocation } from "react-router-dom";
 import CreateCommentForm from "../components/CreateCommentForm.jsx";
 import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
+import {FaHome} from "react-icons/fa";
 
 
 const Comments = () => {
@@ -11,9 +12,9 @@ const Comments = () => {
     const post_id = state?.post_id;
 
 
-    const handleBack = () => {
-        navigate("/Home");
-    };
+    const handleHomeClick = () => {
+        navigate("/")
+    }
 
 
 
@@ -25,11 +26,18 @@ const Comments = () => {
                     <ViewCommentsForm post_id={post_id} />
                 </div>
             </div>
-            <div className={"mainContainer-right-bar Vertical-Flex-Container"}>
-                <button onClick={handleBack}>Back to Posts.</button>
+            <div className={"mainContainer-right-bar"}>
+                <nav className={"Vertical-Flex-Container Big-Gap"}>
+                    <button className={"Horizontal-Flex-Container logout-button"} onClick={handleHomeClick}>
+                        <FaHome />
+                        Back
+                    </button>
+                </nav>
             </div>
         </div>
+        
     );
+
 };
 
 export default Comments;

@@ -52,7 +52,6 @@ const UserProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setUserData(data)
-                setIsFollowing(data.isCurrentUserFollowing);
                 console.log(data.isCurrentUserFollowing);
             } else {
                 if (response.status === 401) {
