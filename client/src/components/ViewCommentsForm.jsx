@@ -11,9 +11,9 @@ const ViewCommentsForm = ({post_id}) => {
 
 
   useEffect(() => {
-    const fetchReplies = async () => {
+    const fetchFeed = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/${post_id}/replies`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feed/${userContext.state.user_id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -23,20 +23,24 @@ const ViewCommentsForm = ({post_id}) => {
 
         if (response.ok) {
           const data = await response.json();
-          setReplies(data.replies);
+          setFormattedFeed(data.posts);
         } else {
-          alertContext.addAlert("Failed to fetch replies");
+          if (response.status === 401) {
+            alertContext.addAlert("Session expired. Please log in again.");
+            await logout();
+          } else {
+            alertContext.addAlert("Failed to fetch feed");
+          }
         }
       } catch (error) {
-        console.error('Error fetching replies:', error);
-        alertContext.addAlert("Failed to fetch replies");
+        console.error('Error fetching feed:', error);
+        alertContext.addAlert("Failed to fetch feed");
       } finally {
         setLoading(false);
       }
     };
-    console.log(post_id);
 
-    fetchReplies();
+    fetchFeed();
   }, []);
 
   return (

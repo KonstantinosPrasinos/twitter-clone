@@ -49,9 +49,8 @@ const UserProfile = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    const isCurrentUserFollowing = data.followers.some(follower => follower.user_id === userContext.state.user_id);
-                    setIsFollowing(isCurrentUserFollowing);
                     setUserData(data)
+
 
                 } else {
                     if (response.status === 401) {
