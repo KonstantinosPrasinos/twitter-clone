@@ -65,10 +65,10 @@ const ViewCommentsForm = ({ post_id }) => {
               filteredReplies.map(reply => (
                 <div key={reply.created_at}>
                   <div className="Single-Post-Container" key={reply.post_id}>
-                    <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       {reply.username}
-                      <span style={{ fontSize: '12px', float: 'right', fontWeight: 'bold' }}>{formatCreatedAt(reply.created_at)}</span>
-                    </p>
+                      <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{formatCreatedAt(reply.created_at)}</span>
+                    </div>
                     <p>{reply.content}</p>
                   </div>
                 </div>
