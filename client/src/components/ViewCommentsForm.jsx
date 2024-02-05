@@ -48,7 +48,7 @@ const ViewCommentsForm = ({ post_id }) => {
 
 
   const filteredReplies = feed.reduce((accumulator, post) => {
-    if (post.post_id === post_id && post.replies) {
+    if ((post.post_id === post_id || post.repost_id === post_id) && post.replies) {
       accumulator.push(...post.replies);
     }
     return accumulator;
