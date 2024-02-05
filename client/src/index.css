@@ -271,11 +271,12 @@ button:disabled {
 }
 /*Search Styles*/
 .search-container {
-  position: fixed;
+
   top: 0;
   right: 0;
-  width:31%;
+
 }
+
 /*search input styles*/
 .search-input::placeholder{
   color: color(#575756 a(0.8));

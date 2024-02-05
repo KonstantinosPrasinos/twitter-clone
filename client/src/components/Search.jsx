@@ -24,8 +24,7 @@ const Search = ({customStyle,maxResults}) => {
             setSearchQuery(inputQuery);
             setError(null);
         }
-        else alertContext.addAlert(`Search query can't be more than ${maxQueryLength} characters.`);
-
+        else  alertContext.addAlert(`Search query can't be more than ${maxQueryLength} characters.`);
     };
     const modifyPostResults = (postResults) => {
       if (postResults) {
@@ -84,7 +83,7 @@ const Search = ({customStyle,maxResults}) => {
         handleSearch();
         setError(null);
       }
-      else setError(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
+      else alertContext.addAlert(`Search query must be between ${minQueryLength} and ${maxQueryLength} characters.`);
   }, [searchQuery]);
 
   const handleTabChange = (tab) => {
@@ -95,17 +94,18 @@ const Search = ({customStyle,maxResults}) => {
   return (
     
     <div style={customStyle}>
+     <div className='Horizontal-Flex-Container'>
       <input className="search-input"
         type="text"
         value={searchQuery}
         onChange={handleInput}
         placeholder="Search Τσίου... "
       />
-
+    
       <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleButtonSearch} >
         <FaSearch />
       </button>
-
+     </div>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       
       <Tabs selectedTab={activeTab} setSelectedTab={handleTabChange} tabs={['Users','Posts']} />
