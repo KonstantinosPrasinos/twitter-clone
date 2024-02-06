@@ -46,6 +46,36 @@ const ViewCommentsForm = ({ post_id }) => {
     fetchFeed();
   }, []);
 
+  const handleDeleteClick = async (reply_id) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unreply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userContext.state.user_id}`,
+        },
+        body: JSON.stringify({
+          user_id: userContext.state.user_id,
+          post_id: params.username,
+          reply_id: reply_id,
+        }),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        alertContext.addAlert(`Reply deleted successfully.`);
+        // Perform any additional actions needed after successful deletion
+      } else {
+        alertContext.addAlert('Failed to delete reply.');
+      }
+    } catch (error) {
+      console.error('Error deleting reply:', error);
+      alertContext.addAlert('Failed to delete reply.');
+    }
+  };
+
+  
+
 
   const filteredReplies = feed.reduce((accumulator, post) => {
     if ((post.post_id === post_id || post.repost_id === post_id) && post.replies) {
@@ -69,7 +99,10 @@ const ViewCommentsForm = ({ post_id }) => {
                       {reply.username}
                       <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{formatCreatedAt(reply.created_at)}</span>
                     </div>
-                    <p>{reply.content}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <p>{reply.content}</p>
+                      <button onClick={() => handleDeleteClick(reply.reply_id)}>Delete</button>
+                    </div>
                   </div>
                 </div>
               ))

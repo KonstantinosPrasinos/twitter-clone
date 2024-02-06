@@ -52,7 +52,6 @@ const UserProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setUserData(data)
-                console.log(data.isCurrentUserFollowing);
             } else {
                 if (response.status === 401) {
                     alertContext.addAlert("Session expired. Please log in again.");
