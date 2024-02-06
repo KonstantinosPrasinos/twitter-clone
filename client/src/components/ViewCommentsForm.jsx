@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AlertContext } from "../context/AlertContext.jsx";
 import { UserContext } from "../context/UserContext.jsx";
+import { useNavigate } from 'react-router-dom';
 
 const ViewCommentsForm = ({ post_id }) => {
   const [feed, setFeed] = useState([]);
@@ -14,6 +15,7 @@ const ViewCommentsForm = ({ post_id }) => {
   };
 
   useEffect(() => {
+
     const fetchFeed = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/feed/${userContext.state.user_id}`, {
@@ -44,11 +46,16 @@ const ViewCommentsForm = ({ post_id }) => {
     };
 
     fetchFeed();
+    
+    
   }, []);
 
+  
+
   const handleDeleteClick = async (reply_id) => {
+    console.log("Reply ID:", reply_id);
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unreply`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unreply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +63,6 @@ const ViewCommentsForm = ({ post_id }) => {
         },
         body: JSON.stringify({
           user_id: userContext.state.user_id,
-          post_id: params.username,
           reply_id: reply_id,
         }),
         credentials: 'include',
@@ -64,7 +70,6 @@ const ViewCommentsForm = ({ post_id }) => {
 
       if (response.ok) {
         alertContext.addAlert(`Reply deleted successfully.`);
-        // Perform any additional actions needed after successful deletion
       } else {
         alertContext.addAlert('Failed to delete reply.');
       }
@@ -75,7 +80,6 @@ const ViewCommentsForm = ({ post_id }) => {
   };
 
   
-
 
   const filteredReplies = feed.reduce((accumulator, post) => {
     if ((post.post_id === post_id || post.repost_id === post_id) && post.replies) {
@@ -96,12 +100,14 @@ const ViewCommentsForm = ({ post_id }) => {
                 <div key={reply.created_at}>
                   <div className="Single-Post-Container" key={reply.post_id}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      {reply.username}
+                      <h2>{reply.username}</h2>
+                      <span style={{ fontSize: '12px', fontWeight: 'bold', marginLeft: '10px' }}>Reply ID: {reply.reply_id}</span>
                       <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{formatCreatedAt(reply.created_at)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <p>{reply.content}</p>
                       <button onClick={() => handleDeleteClick(reply.reply_id)}>Delete</button>
+                      
                     </div>
                   </div>
                 </div>

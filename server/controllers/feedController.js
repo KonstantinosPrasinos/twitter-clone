@@ -45,6 +45,7 @@ const createFeed = async (req, res) => {
           },
           replies: {
             select: {
+              reply_id: true,
               user_id: true,
               users: {
                 select: {

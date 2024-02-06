@@ -272,14 +272,14 @@ const replyPost = async (req, res) => {
 
 
 const unreplyPost = async (req, res) => {
-    const { user_id, reply_id, post_id } = req.body;
+    const { user_id, reply_id } = req.body;
     try {
         // Check if all required fields are provided
-        if (!user_id || !reply_id || !post_id) {
-            return res.status(400).json({ success: false, message: "User ID, reply ID, and post ID are required." });
+        if (!user_id || !reply_id) {
+            return res.status(400).json({ success: false, message: "User ID and reply ID are required." });
         }
     
-        // Check if the user, reply, and post exist
+        // Check if the user and reply exist
         const userExists = await prisma.users.findUnique({
             where: { user_id: user_id },
         });
@@ -287,48 +287,24 @@ const unreplyPost = async (req, res) => {
         const replyExists = await prisma.replies.findUnique({
             where: { reply_id: reply_id },
         });
-
-        const postExists = await prisma.posts.findUnique({
-            where: { post_id: post_id },
-        });
     
-        if (!userExists || !replyExists || !postExists) {
-            return res.status(404).json({ success: false, message: "User or reply or post not found." });
+        if (!userExists || !replyExists) {
+            return res.status(404).json({ success: false, message: "User or reply not found." });
         }
 
-        // Check if the unreply exists
-        const existingUnreply = await prisma.reposts.findFirst({
-            where: {
-                user_id: user_id,
-                reply_id: reply_id,
-                post_id: post_id,
-            },
-        });
-        
-        if (!existingUnreply) {
-            return res.status(400).json({ success: false, message: "User has already unreplied the reply." });
-        }
-    
-        // Delete the unreply entry
-        await prisma.reposts.delete({
-            where: {
-                user_id: user_id,
-                reply_id: reply_id,
-                post_id: post_id,
-            },
+        // Delete the reply
+        await prisma.replies.delete({
+            where: { reply_id: reply_id },
         });
 
-        res.status(201).json({ success: true, message: "Reply unreplied successfully." });
+        res.status(201).json({ success: true, message: "Reply deleted successfully." });
 
     } catch (error) {
-        console.error("Error unreplying post:", error);
+        console.error("Error deleting reply:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     } finally {
         await prisma.$disconnect();
     }
 };
-
-
-
 
 module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,unreplyPost};
