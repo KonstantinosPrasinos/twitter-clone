@@ -1,14 +1,14 @@
 const express = require('express');
-const {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,commentPost} = require('../controllers/postController');
+const postController = require('../controllers/postController');
 const authenticateToken = require('../middleware/authenticateToken'); //protects routes
 const router = express.Router();
 
-router.post('/api/posts', authenticateToken, createPost);
-router.post('/api/post/like', authenticateToken, likePost);
-router.post('/api/post/unlike', authenticateToken, unlikePost);
-router.post('/api/post/repost', authenticateToken, repostPost);
-router.post('/api/post/unrepost', authenticateToken, unrepostPost);
-router.post('/api/post/reply', authenticateToken, replyPost);
-
+router.post('/api/posts', authenticateToken, postController.createPost);
+router.post('/api/post/like', authenticateToken, postController.likePost);
+router.post('/api/post/unlike', authenticateToken, postController.unlikePost);
+router.post('/api/post/repost', authenticateToken, postController.repostPost);
+router.post('/api/post/unrepost', authenticateToken, postController.unrepostPost);
+router.post('/api/post/reply', authenticateToken, postController.replyPost);
+router.post('/api/post/delete', authenticateToken, postController.replyPost);
 
 module.exports = router;
