@@ -270,7 +270,42 @@ const replyPost = async (req, res) => {
     }
 };
 
+const editPost = async (req, res) => {
+    const { user_id, post_id, new_content } = req.body;
+    try{
+        if (!user_id || !post_id || !new_content) {
+            return res.status(400).json({ success: false, message: "User ID, Post ID and Content are required." });
+        }
+    
+        const post = await prisma.posts.findUnique({
+            where: { post_id: post_id },
+            select: { user_id: true },
+        });
+    
+        if (!post || post.user_id !== user_id) {
+            throw new Error('User is not authorized to edit this post.');
+        }
+
+        const updatedPost = await prisma.posts.update({
+            where: { post_id: post_id },
+            data: { content: new_content },
+        });
+        
+        res.status(201).json({ success: true, message: "Post edited successfully.", post: updatedPost });
 
 
 
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost};
+
+    } catch(error){
+        console.error("Error editing post:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+
+}
+
+
+
+
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,editPost};
