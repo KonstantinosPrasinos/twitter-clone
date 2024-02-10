@@ -17,7 +17,7 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
         } catch (error) {
             console.error('Error deleting resource:', error);
         }
-    }, [deleteFunction, resourceType, resourceId]);
+    }, [deleteResource, resourceType, resourceId]);
 
     return (
         <button className="Horizontal-Flex-Container Basic-Button" onClick={handleDelete}>
