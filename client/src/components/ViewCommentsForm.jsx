@@ -30,7 +30,6 @@ const ViewCommentsForm = ({ post_id }) => {
         if (response.ok) {
           const data = await response.json();
           setFeed(data.posts);
-          console.log("Post ID:", post_id);
         } else {
           if (response.status === 401) {
             alertContext.addAlert('Session expired. Please log in again.');
@@ -49,7 +48,6 @@ const ViewCommentsForm = ({ post_id }) => {
 
     if (userContext.state.user_id) {
       fetchFeed();
-      console.log(userContext.state.user_id);
     }
   }, [userContext.state.user_id, alertContext, post_id]);
 
