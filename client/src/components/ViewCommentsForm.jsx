@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from React Router
 import { AlertContext } from '../context/AlertContext.jsx';
 import { UserContext } from '../context/UserContext.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -97,13 +98,19 @@ const ViewCommentsForm = ({ post_id }) => {
                 <div key={reply.created_at}>
                   <div className="Single-Post-Container" key={reply.post_id}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h2>{reply.username}</h2>
+                      {/* Link to user profile */}
+                      <Link
+                        className={"clickable-username"}
+                        to={`/user/${reply.username}`}
+                        state={{user_id: reply.user_id }}
+                      >
+                        <h2>{reply.username}</h2>
+                      </Link>
                       <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{formatCreatedAt(reply.created_at)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <p>{reply.content}</p>
                       <button onClick={() => handleDeleteClick(reply.reply_id)}>Delete</button>
-                      
                     </div>
                   </div>
                 </div>
