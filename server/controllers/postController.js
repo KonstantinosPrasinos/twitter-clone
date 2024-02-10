@@ -283,7 +283,7 @@ const editPost = async (req, res) => {
         });
     
         if (!post || post.user_id !== user_id) {
-            throw new Error('User is not authorized to edit this post.');
+            return res.status(400).json({ success: false, message: "User is not authorized to edit this post." });
         }
 
         const updatedPost = await prisma.posts.update({
