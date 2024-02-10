@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import useDeleteResource from './hooks/useDeleteResource';
+import React, { useCallback,useContext } from 'react';
+import useDeleteResource from '../hooks/useDeleteResource';
 import { FaTrashAlt } from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 const DeleteButton = ({ label, resourceType, resourceId }) => {
@@ -9,10 +9,10 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
         try {
             const response = await deleteResource(resourceType, resourceId);
             if (!response.ok) {
-                const errorMessage = await response.json();
-                alertContext.addAlert(errorMessage);
+                const error = await response.json();
+                alertContext.addAlert(error.message);
             } else {
-                // Handle successful deletion
+                alertContext.addAlert("Post Successfuly deleted");
             }
         } catch (error) {
             console.error('Error deleting resource:', error);
