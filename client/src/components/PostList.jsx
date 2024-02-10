@@ -206,8 +206,8 @@ const PostList = ({ posts }) => {
     handleRepostRequest();
   }
 
-  const handleClick = (postId) => {
-    navigate("/comments", { state: { post_id: postId } });
+  const handleClick = (post_id) => {
+    navigate("/comments", { state: { post_id: post_id } });
   };
 
   return (
