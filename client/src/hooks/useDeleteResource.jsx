@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 const useDeleteResource = () => {
     const deleteResource = useCallback(async (resourceType, resourceId) => {
         try {
-            const response = await fetch(`/api/${resourceType}/${resourceId}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${resourceType}/${resourceId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
