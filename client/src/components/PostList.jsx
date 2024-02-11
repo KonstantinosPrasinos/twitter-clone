@@ -227,7 +227,9 @@ const PostList = ({ posts }) => {
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
                 {post.user_id === userContext.state?.user_id && (
-                    <MoreButtonWithDialog dialogContent={<DeleteButton label="Delete post" resourceType={"posts"} resourceId={post.post_id}/>}/>
+                    <MoreButtonWithDialog>
+                      <DeleteButton label="Delete post" resourceType={"posts"} resourceId={post.post_id}/>
+                    </ MoreButtonWithDialog>
                 )}
               </div>
               </h2>

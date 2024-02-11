@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { SlOptions } from "react-icons/sl";
 import Dialog from '../components/Dialog.jsx'; 
 
-const MoreButtonWithDialog = ({ children, dialogContent }) => {
+const MoreButtonWithDialog = ({ children }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const buttonRef = useRef();
 
@@ -20,14 +20,13 @@ const MoreButtonWithDialog = ({ children, dialogContent }) => {
         <div>
             <button className="Horizontal-Flex-Container Basic-Button" onClick={handleMoreButtonClick} ref={buttonRef}>
                 <SlOptions /> 
-                {children}
             </button>
             {isDialogOpen && (
                 <Dialog
                     attachedElementRef={buttonRef}
                     collapseDialogFunction={collapseDialogFunction}
                 >
-                    {dialogContent}
+                    {children}
                 </Dialog>
             )}
         </div>
