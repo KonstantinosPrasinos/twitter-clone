@@ -228,7 +228,6 @@ const PostList = ({ posts }) => {
                 {post.user_id === userContext.state?.user_id && (
                    <DeleteButton label=" " resourceType="posts" resourceId={post.post_id}/>
                 )}
-                <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
               </div>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
@@ -245,8 +244,10 @@ const PostList = ({ posts }) => {
                 {!post.isRepost && <span>Said:</span>}
               </p>
               <p>{post.content}</p>
+              <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               {!post.isRepost && <div className={"Horizontal-Flex-Container"}>
+              
                 <button
                     className={`
                       Horizontal-Flex-Container
