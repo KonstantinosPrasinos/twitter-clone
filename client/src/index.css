@@ -130,7 +130,15 @@ button:disabled {
 .Big-Gap {
   gap: var(--big-gap);
 }
-
+.Delete-Button {
+  color: #bb6976;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  background-color: transparent;
+}
+.Delete-Button:hover {
+  color: #94545e;
+  background-color: transparent;
+}
 .Basic-Button {
   background-color: transparent;
 }
