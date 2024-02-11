@@ -7,6 +7,7 @@ import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
 import DeleteButton from "../components/DeleteButton.jsx";
+import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
@@ -226,7 +227,7 @@ const PostList = ({ posts }) => {
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
                 {post.user_id === userContext.state?.user_id && (
-                   <DeleteButton label=" " resourceType="posts" resourceId={post.post_id}/>
+                    <MoreButtonWithDialog dialogContent={<DeleteButton label="Delete post" resourceType={"posts"} resourceId={post.post_id}/>}/>
                 )}
               </div>
               </h2>
