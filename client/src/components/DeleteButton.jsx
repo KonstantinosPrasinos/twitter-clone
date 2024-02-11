@@ -1,10 +1,12 @@
-import React, { useCallback,useContext } from 'react';
+import React, { useCallback,useContext,useState } from 'react';
 import useDeleteResource from '../hooks/useDeleteResource';
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt,FaTrashAlt } from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 const DeleteButton = ({ label, resourceType, resourceId }) => {
     const alertContext = useContext(AlertContext);
     const deleteResource = useDeleteResource();
+    const [isHovered, setIsHovered] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
     const handleDelete = useCallback(async () => {
         try {
             const response = await deleteResource(resourceType, resourceId);
@@ -20,9 +22,16 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
     }, [deleteResource, resourceType, resourceId]);
 
     return (
-        <button className="Horizontal-Flex-Container Delete-Button" onClick={handleDelete}>
-            <FaRegTrashAlt />
-            {label || 'Delete'}
+        <button 
+            className="Horizontal-Flex-Container Delete-Button" 
+            onClick={handleDelete}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onMouseDown={() => setIsClicked(true)}
+            onMouseUp={() => setIsClicked(false)}
+        >
+            {isClicked ? <FaTrashAlt /> : isHovered ? <FaTrashAlt /> : <FaRegTrashAlt />}
+            <span style={{ fontSize: '17px', fontWeight: 'bold' }}>{label || 'Delete'}</span>
         </button>
     );
 };
