@@ -1,6 +1,6 @@
 import React, { useCallback,useContext } from 'react';
 import useDeleteResource from '../hooks/useDeleteResource';
-import { FaTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 const DeleteButton = ({ label, resourceType, resourceId }) => {
     const alertContext = useContext(AlertContext);
@@ -20,8 +20,8 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
     }, [deleteResource, resourceType, resourceId]);
 
     return (
-        <button className="Horizontal-Flex-Container Basic-Button" onClick={handleDelete}>
-            <FaTrashAlt />
+        <button className="Horizontal-Flex-Container Delete-Button" onClick={handleDelete}>
+            <FaRegTrashAlt />
             {label || 'Delete'}
         </button>
     );
