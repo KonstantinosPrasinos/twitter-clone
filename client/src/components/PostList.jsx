@@ -6,6 +6,8 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
+import { FaComment } from "react-icons/fa";
+import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -270,7 +272,11 @@ const PostList = ({ posts }) => {
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
               </div>}
-              {<button onClick={() => handleClick(post.post_id)}>Add Comment</button>}
+              {<button className="Horizontal-Flex-Container logout-button"
+                onClick={() => handleClick(post.post_id)}>
+                  <FaComment />
+                  Replies
+              </button>}
             </div>
           </div>
         </div>

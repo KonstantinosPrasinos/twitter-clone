@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link from React Router
 import { AlertContext } from '../context/AlertContext.jsx';
 import { UserContext } from '../context/UserContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { MdDelete } from "react-icons/md";
 
 const ViewCommentsForm = ({ post_id }) => {
   const [feed, setFeed] = useState([]);
@@ -72,7 +73,6 @@ const ViewCommentsForm = ({ post_id }) => {
         }),
         credentials: 'include',
       });
-
       if (response.ok) {
         alertContext.addAlert(`Reply deleted successfully.`);
       } else {
@@ -108,7 +108,11 @@ const ViewCommentsForm = ({ post_id }) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <p>{reply.content}</p>
-                      <button onClick={() => handleDeleteClick(reply.reply_id)}>Delete</button>
+                      {<button className="Horizontal-Flex-Container logout-button"
+                        onClick={() => handleDeleteClick(reply.reply_id)}>
+                        <MdDelete />
+                        Delete
+                      </button>}
                     </div>
                   </div>
                 </div>
