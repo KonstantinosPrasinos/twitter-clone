@@ -73,6 +73,7 @@ const ViewCommentsForm = ({ post_id }) => {
         }),
         credentials: 'include',
       });
+
       if (response.ok) {
         alertContext.addAlert(`Reply deleted successfully.`);
       } else {
@@ -108,11 +109,13 @@ const ViewCommentsForm = ({ post_id }) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <p>{reply.content}</p>
-                      {<button className="Horizontal-Flex-Container logout-button"
+                      {userContext.state.user_id === reply.user_id && (
+                        <button className="Horizontal-Flex-Container logout-button"
                         onClick={() => handleDeleteClick(reply.reply_id)}>
                         <MdDelete />
                         Delete
-                      </button>}
+                      </button>
+                      )}
                     </div>
                   </div>
                 </div>

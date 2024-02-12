@@ -7,7 +7,6 @@ import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
 import { FaComment } from "react-icons/fa";
-import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
