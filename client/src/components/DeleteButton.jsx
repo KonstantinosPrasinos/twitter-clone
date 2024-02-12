@@ -18,6 +18,7 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
                 if(response.status === 401) await logout(); //Session Expired
             } else {
                 alertContext.addAlert(`${resourceType} has been successfully deleted`);
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error deleting resource:', error);
