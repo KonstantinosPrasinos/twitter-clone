@@ -9,6 +9,6 @@ router.post('/api/post/unlike', authenticateToken, postController.unlikePost);
 router.post('/api/post/repost', authenticateToken, postController.repostPost);
 router.post('/api/post/unrepost', authenticateToken, postController.unrepostPost);
 router.post('/api/post/reply', authenticateToken, postController.replyPost);
-router.delete('/api/posts/:postId', authenticateToken, postController.deletePost);
+router.delete('/api/post/:postId', authenticateToken, postController.deletePost);
 
 module.exports = router;
