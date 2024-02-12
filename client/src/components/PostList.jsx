@@ -228,7 +228,7 @@ const PostList = ({ posts }) => {
                 </Link>
                 {post.user_id === userContext.state?.user_id && (
                     <MoreButtonWithDialog>
-                      <DeleteButton label="Delete post" resourceType={"posts"} resourceId={post.post_id}/>
+                      <DeleteButton label="Delete post" resourceType={"post"} resourceId={post.post_id}/>
                     </ MoreButtonWithDialog>
                 )}
               </div>
@@ -255,6 +255,7 @@ const PostList = ({ posts }) => {
                     className={`
                       Horizontal-Flex-Container
                       Basic-Button
+                      Heart-Button
                       ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
                     }
                     onClick={() => handlePostLike(post.post_id)}>
