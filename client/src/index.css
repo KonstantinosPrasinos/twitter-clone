@@ -131,16 +131,16 @@ button:disabled {
   gap: var(--big-gap);
 }
 .Delete-Button {
-  color: #ae2012;
+  color: #ff351a;
   transition: color 0.3s ease, background-color 0.3s ease;
   padding: 0;
-  background-color: transparent;
+  background-color: var(--secondary-color);
   display: inline-block;
 }
 
 .Delete-Button:hover {
-  color: #8f1c11;
-  background-color: transparent;
+  color: #b32613;
+  background-color: #2b2e3d;
 }
 .Basic-Button {
   background-color: transparent;
