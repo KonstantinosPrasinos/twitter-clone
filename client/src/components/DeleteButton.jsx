@@ -18,7 +18,6 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
                 if(response.status === 401) await logout(); //Session Expired
             } else {
                 alertContext.addAlert(`${resourceType} has been successfully deleted`);
-                window.location.reload();
             }
         } catch (error) {
             console.error('Error deleting resource:', error);
@@ -35,7 +34,7 @@ const DeleteButton = ({ label, resourceType, resourceId }) => {
             onMouseUp={() => setIsClicked(false)}
         >
             {isClicked ? <FaTrashAlt /> : isHovered ? <FaTrashAlt /> : <FaRegTrashAlt />}
-            <span style={{ fontSize: '17px', fontWeight: 'bold' }}>{label || 'Delete'}</span>
+            <span style={{ fontSize: '17px' }}>{label || 'Delete'}</span>
         </button>
     );
 };
