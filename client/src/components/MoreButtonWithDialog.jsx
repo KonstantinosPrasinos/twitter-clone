@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { SlOptions } from "react-icons/sl";
 import Dialog from '../components/Dialog.jsx'; 
 
@@ -8,13 +8,27 @@ const MoreButtonWithDialog = ({ children }) => {
 
     const handleMoreButtonClick = () => {
         setIsDialogOpen(!isDialogOpen);
-        console.log(isDialogOpen);
-        console.log(buttonRef.current)
     };
 
     const collapseDialogFunction = () => {
         setIsDialogOpen(true);
     };
+    
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (!buttonRef.current.contains(event.target)) {
+                setIsDialogOpen(false);
+            }
+        };
+
+        if (isDialogOpen) {
+            document.addEventListener('click', handleOutsideClick);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, [isDialogOpen]);
 
     return (
         <div>
