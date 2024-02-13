@@ -6,7 +6,8 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
-
+import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
+import EditButton from "./EditButton.jsx";
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
@@ -225,7 +226,11 @@ const PostList = ({ posts }) => {
                 >
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
-                <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
+                {post.user_id === userContext.state?.user_id && (
+                    <MoreButtonWithDialog>
+                      <EditButton label="Edit post"/>
+                    </ MoreButtonWithDialog>
+                )}
               </div>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
@@ -242,6 +247,7 @@ const PostList = ({ posts }) => {
                 {!post.isRepost && <span>Said:</span>}
               </p>
               <p>{post.content}</p>
+              <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               {!post.isRepost && <div className={"Horizontal-Flex-Container"}>
                 <button
