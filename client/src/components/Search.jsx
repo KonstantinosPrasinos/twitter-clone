@@ -5,6 +5,7 @@ import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
 import Tabs from './Tabs.jsx';
 import {AlertContext} from "../context/AlertContext.jsx";
+import useLogout from "../hooks/useLogout.jsx";
 import { useNavigate } from 'react-router-dom';
 const maxQueryLength = 50;
 const minQueryLength = 1;
@@ -16,6 +17,7 @@ const Search = ({customStyle,maxResults}) => {
     const [activeTab, setActiveTab] = useState('Users');
     const navigate = useNavigate();
     const alertContext = useContext(AlertContext);
+    const {logout} = useLogout();
     const handleInput = (e) =>
     {
         const inputQuery = e.target.value;
@@ -56,8 +58,10 @@ const Search = ({customStyle,maxResults}) => {
             if (!response.ok) {
               if (response.status === 401) {
                 alertContext.addAlert('User session has expired. Please sign in');
+                await useLogout();
               } else {
                 throw new Error(`HTTP error! Status: ${response.status}`);
+                await logout();
               }
             }
             const data = await response.json();
@@ -65,7 +69,6 @@ const Search = ({customStyle,maxResults}) => {
             setError(null)
         } 
         catch (error) {
-            console.error('Error during search:', error);
             alertContext.addAlert('An error occurred during the search. Please try again later.');
         }
     };

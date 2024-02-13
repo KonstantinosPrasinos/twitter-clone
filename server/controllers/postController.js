@@ -16,16 +16,45 @@ const createPost = async (req,res) => {
         }
         catch (error)
         {
-            console.error('Error creating post:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
     else {
-        console.error('Post Content is Empty!');
         res.status(400).json({ error: 'Post Content is Empty!' });
     }
 
 }
+const deletePost = async (req,res) => {
+    try
+    {
+        const postId = parseInt(req.params.postId);
+        if (!postId || isNaN(postId)) {
+            return res.status(400).json({ message: 'Invalid postId.' });
+        }
+        const authUserId = parseInt(req.user.userId);
+        const existingPost = await prisma.posts.findUnique({
+            where: { post_id: postId },
+            select: {
+                user_id: true
+            },
+        });
+        if (!existingPost) {
+            return res.status(404).json({ message: 'Post not found.' });
+        }
+        // Check if the owner of the post that will be deleted is the authenticated user
+        if (existingPost.user_id !== authUserId) {
+            return res.status(403).json({ message: 'You are not authorized to delete this post.' });
+        }
+        await prisma.posts.delete({
+            where: { post_id: postId }
+        });
+        res.status(204).send();
+    }
+    catch (error) 
+    {
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 
 const likePost = async (req, res) => {
     const { user_id, post_id } = req.body;
@@ -273,4 +302,4 @@ const replyPost = async (req, res) => {
 
 
 
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost};
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,deletePost};

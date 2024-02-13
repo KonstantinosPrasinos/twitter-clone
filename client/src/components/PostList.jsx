@@ -6,7 +6,8 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
-
+import DeleteButton from "../components/DeleteButton.jsx";
+import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
@@ -225,7 +226,11 @@ const PostList = ({ posts }) => {
                 >
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
-                <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
+                {post.user_id === userContext.state?.user_id && (
+                    <MoreButtonWithDialog>
+                      <DeleteButton label="Delete post" resourceType={"post"} resourceId={post.post_id}/>
+                    </ MoreButtonWithDialog>
+                )}
               </div>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
@@ -242,12 +247,15 @@ const PostList = ({ posts }) => {
                 {!post.isRepost && <span>Said:</span>}
               </p>
               <p>{post.content}</p>
+              <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               {!post.isRepost && <div className={"Horizontal-Flex-Container"}>
+              
                 <button
                     className={`
                       Horizontal-Flex-Container
                       Basic-Button
+                      Heart-Button
                       ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
                     }
                     onClick={() => handlePostLike(post.post_id)}>
@@ -269,7 +277,9 @@ const PostList = ({ posts }) => {
                   <FaRetweet/>
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
+                
               </div>}
+              
               {<button onClick={() => handleClick(post.post_id)}>Add Comment</button>}
             </div>
           </div>
