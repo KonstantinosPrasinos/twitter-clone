@@ -130,7 +130,18 @@ button:disabled {
 .Big-Gap {
   gap: var(--big-gap);
 }
+.Edit-Button {
+  color: #16d8a7;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 0;
+  background-color: var(--secondary-color);
+  display: inline-block;
+}
 
+.Edit-Button:hover {
+  color: #16d8a7;
+  background-color: #373b4e;
+}
 .Basic-Button {
   background-color: transparent;
 }
