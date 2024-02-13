@@ -133,9 +133,9 @@ button:disabled {
 .Delete-Button {
   color: #ff351a;
   transition: color 0.3s ease, background-color 0.3s ease;
-  padding: 0;
+  padding: 7px 60px;
+  border-radius: 6px; 
   background-color: var(--secondary-color);
-  display: inline-block;
 }
 
 .Delete-Button:hover {
