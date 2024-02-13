@@ -133,9 +133,9 @@ button:disabled {
 .Edit-Button {
   color: #4dd1c4;
   transition: color 0.3s ease, background-color 0.3s ease;
-  padding: 0;
+  padding: 7px 65px;
+  border-radius: 6px; 
   background-color: var(--secondary-color);
-  display: inline-block;
 }
 
 .Edit-Button:hover {
