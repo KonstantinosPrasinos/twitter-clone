@@ -45,9 +45,8 @@ const PostList = ({ posts }) => {
           credentials: 'include'
         });
       } else {
-        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike`, {
-          method: 'POST',
-          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike/${postId}`, {
+          method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           credentials: 'include'
         });
@@ -91,9 +90,8 @@ const PostList = ({ posts }) => {
           credentials: 'include'
         });
       } else {
-        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unrepost`, {
-          method: 'POST',
-          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unrepost/${postId}`, {
+          method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           credentials: 'include'
         });

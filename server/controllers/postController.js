@@ -107,31 +107,27 @@ const likePost = async (req, res) => {
 };
 
   const unlikePost = async (req, res) => {
-    const { user_id, post_id } = req.body;
+    const post_id = parseInt(req.params.post_id, 10);
+    const authenticatedUserId = req.user.userId;
   
     try {
-        if (!user_id || !post_id) {
-            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        if (!post_id) {
+            return res.status(400).json({ success: false, message: "Post ID are required." });
         }
-    
-        //check if the user and post exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
     
         const postExists = await prisma.posts.findUnique({
             where: { post_id: post_id },
         });
     
-        if (!userExists || !postExists) {
-            return res.status(404).json({ success: false, message: "User or post not found." });
+        if (!postExists) {
+            return res.status(404).json({ success: false, message: "Post not found." });
         }
     
         //check if the user has already unliked the post
         const existingLike = await prisma.likes.findFirst({
             where: {
-            user_id: user_id,
-            post_id: post_id,
+                user_id: authenticatedUserId,
+                post_id: post_id,
             },
         });
         
@@ -209,30 +205,28 @@ const repostPost = async (req, res) => {
 };
 
 const unrepostPost = async (req, res) => {
-    const { user_id, post_id } = req.body;
+    const post_id = parseInt(req.params.post_id, 10);
+    const authenticatedUserId = req.user.userId;
   
     try {
-        if (!user_id || !post_id) {
-            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        if (!post_id) {
+            return res.status(400).json({ success: false, message: "Post ID is required." });
         }
     
-        //check if the user and post exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
+        
     
         const postExists = await prisma.posts.findUnique({
             where: { post_id: post_id },
         });
     
-        if (!userExists || !postExists) {
-            return res.status(404).json({ success: false, message: "User or post not found." });
+        if (!postExists) {
+            return res.status(404).json({ success: false, message: "Post not found." });
         }
     
         //check if the user has already unreposted the post
         const existingRepost = await prisma.reposts.findFirst({
             where: {
-            user_id: user_id,
+            user_id: authenticatedUserId,
             post_id: post_id,
             },
         });
@@ -301,24 +295,23 @@ const replyPost = async (req, res) => {
 
 
 const unreplyPost = async (req, res) => {
-    const { user_id, reply_id } = req.body;
+    
+    const reply_id = parseInt(req.params.reply_id, 10);
+    const authenticatedUserId = req.user.userId;
+
     try {
         // Check if all required fields are provided
-        if (!user_id || !reply_id) {
-            return res.status(400).json({ success: false, message: "User ID and reply ID are required." });
+        if (!reply_id) {
+            return res.status(400).json({ success: false, message: "Replay ID is required." });
         }
-    
-        // Check if the user and reply exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
+        
 
         const replyExists = await prisma.replies.findUnique({
             where: { reply_id: reply_id },
         });
     
-        if (!userExists || !replyExists) {
-            return res.status(404).json({ success: false, message: "User or reply not found." });
+        if (!replyExists) {
+            return res.status(404).json({ success: false, message: "Reply not found." });
         }
         // Delete the reply
         await prisma.replies.delete({
