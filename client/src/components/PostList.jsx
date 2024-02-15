@@ -6,7 +6,7 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
-import { FaComment } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -270,12 +270,11 @@ const PostList = ({ posts }) => {
                   <FaRetweet/>
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
-              </div>}
-              {<button className="Horizontal-Flex-Container logout-button"
+                <button className="Horizontal-Flex-Container Basic-Button"
                 onClick={() => handleClick(post.post_id)}>
-                  <FaComment />
-                  Replies
-              </button>}
+                <FaRegComment />
+              </button>
+              </div>}
             </div>
           </div>
         </div>
