@@ -23,7 +23,7 @@ const UserProfile = () => {
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
     const {logout} = useLogout();
-    const [isFollowing, setIsFollowing] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(true);
 
     const {user_id} = location.state;
 
@@ -111,16 +111,12 @@ const UserProfile = () => {
 
     const handleUnfollowClick = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unfollow`, {
-                method: 'POST',
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/unfollow/${params.username}`, {
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userContext.state.user_id}`,
                 },
-                body: JSON.stringify({
-                    follower_user_id: userContext.state.user_id,
-                    following_username: params.username,
-                }),
                 credentials: 'include',
             });
 
