@@ -418,5 +418,4 @@ const unfollowUser = async (req, res) => {
 };
 
 
-
 module.exports = {getUserProfile, followUser, unfollowUser};

@@ -8,6 +8,8 @@ import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
 import DeleteButton from "../components/DeleteButton.jsx";
 import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
+import { FaRegComment } from "react-icons/fa";
+
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString(); // Adjust the formatting as needed
@@ -207,8 +209,8 @@ const PostList = ({ posts }) => {
     handleRepostRequest();
   }
 
-  const handleClick = (postId) => {
-    navigate("/comments", { state: { post_id: postId } });
+  const handleClick = (post_id) => {
+    navigate("/comments", { state: { post_id: post_id } });
   };
 
   return (
@@ -277,10 +279,11 @@ const PostList = ({ posts }) => {
                   <FaRetweet/>
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
-                
+                <button className="Horizontal-Flex-Container Basic-Button"
+                onClick={() => handleClick(post.post_id)}>
+                <FaRegComment />
+              </button>
               </div>}
-              
-              {<button onClick={() => handleClick(post.post_id)}>Add Comment</button>}
             </div>
           </div>
         </div>

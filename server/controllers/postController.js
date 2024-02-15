@@ -300,6 +300,39 @@ const replyPost = async (req, res) => {
 };
 
 
+const unreplyPost = async (req, res) => {
+    const { user_id, reply_id } = req.body;
+    try {
+        // Check if all required fields are provided
+        if (!user_id || !reply_id) {
+            return res.status(400).json({ success: false, message: "User ID and reply ID are required." });
+        }
+    
+        // Check if the user and reply exist
+        const userExists = await prisma.users.findUnique({
+            where: { user_id: user_id },
+        });
 
+        const replyExists = await prisma.replies.findUnique({
+            where: { reply_id: reply_id },
+        });
+    
+        if (!userExists || !replyExists) {
+            return res.status(404).json({ success: false, message: "User or reply not found." });
+        }
+        // Delete the reply
+        await prisma.replies.delete({
+            where: { reply_id: reply_id },
+        });
 
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,deletePost};
+        res.status(201).json({ success: true, message: "Reply deleted successfully." });
+
+    } catch (error) {
+        console.error("Error deleting reply:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,unreplyPost,deletePost};
