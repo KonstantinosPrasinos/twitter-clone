@@ -61,16 +61,12 @@ const ViewCommentsForm = ({ post_id }) => {
 
   const handleDeleteClick = async (reply_id) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unreply`, {
-        method: 'POST',
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unreply/${reply_id}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userContext.state.user_id}`,
         },
-        body: JSON.stringify({
-          user_id: userContext.state.user_id,
-          reply_id: reply_id,
-        }),
         credentials: 'include',
       });
 
