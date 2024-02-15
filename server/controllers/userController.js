@@ -258,8 +258,8 @@ const getUserProfile = async (req, res) => {
         
 
         // Get the following and followers for the user
-        const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.following_user_id);
-        const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.follower_user_id);
+        const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.follower_user_id);
+        const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.following_user_id);
 
         const followers = await prisma.users.findMany({
             where: {

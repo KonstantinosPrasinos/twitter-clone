@@ -23,7 +23,7 @@ const UserProfile = () => {
     const alertContext = useContext(AlertContext);
     const followInfoContainer = useRef();
     const {logout} = useLogout();
-    const [isFollowing, setIsFollowing] = useState(true);
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const {user_id} = location.state;
 
@@ -143,13 +143,13 @@ const UserProfile = () => {
                     <h2>{params.username}</h2>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
                         <div className={"Horizontal-Flex-Container"} ref={followInfoContainer}>
-                            <div className={"Hover-Underline"} onClick={handleFollowingClick}>
-                                {"Following: "}
-                                {!isLoading ? formatNumber(userData.following.length) : "..."}
-                            </div>
                             <div className={"Hover-Underline"} onClick={handleFollowerClick}>
-                                {"Followers: "}
+                                {"Following: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}
+                            </div>
+                            <div className={"Hover-Underline"} onClick={handleFollowingClick}>
+                                {"Followers: "}
+                                {!isLoading ? formatNumber(userData.following.length) : "..."}
                             </div>
                             {!isViewingOwnProfile && (
                                 <>
@@ -181,7 +181,7 @@ const UserProfile = () => {
             <Navbar />
         </div>
         {!isLoading && followerDialogVisible && <Dialog attachedElementRef={followInfoContainer} collapseDialogFunction={() => setFollowerDialogVisible(false)}>
-            <h3>Followers: {userData.followers.length}</h3>
+            <h3>Following: {userData.followers.length}</h3>
             {userData.followers.map(follower => {
                 return <Link
                     className={"Dialog-Option Horizontal-Flex-Container Space-Between"}
@@ -197,7 +197,7 @@ const UserProfile = () => {
             })}
         </Dialog>}
         {!isLoading && followingDialogVisible && <Dialog attachedElementRef={followInfoContainer} collapseDialogFunction={() => setFollowingDialogVisible(false)}>
-            <h3>Following: {userData.following.length}</h3>
+            <h3>Followers: {userData.following.length}</h3>
             {userData.following.map(following => {
                 return <Link
                     className={"Dialog-Option Horizontal-Flex-Container Space-Between"}
