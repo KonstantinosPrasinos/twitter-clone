@@ -361,21 +361,14 @@ const followUser = async (req,res) => {
 const unfollowUser = async (req, res) => {
     //follower -> logged in user
     //following -> user that the logged-in user wants to unfollow
-    const { follower_user_id, following_username } = req.body;
+    const following_username = req.params.username;
+    const follower_user_id = req.user.userId;
   
     try {
-        if (!follower_user_id || !following_username) {
-            return res.status(400).json({ success: false, message: "Follower and following userIDs required." });
+        if (!following_username) {
+            return res.status(400).json({ success: false, message: "Following userIDs required." });
         }
     
-        //check if the follower_user_id and following_user_id exist in the users table
-        const followerExists = await prisma.users.findUnique({
-            where: { user_id: follower_user_id },
-        });
-    
-        if (!followerExists) {
-            return res.status(404).json({ success: false, message: "Follower or following user not found." });
-        }
       
         //check if the following user with the provided username exists
         const followingUser = await prisma.users.findUnique({
