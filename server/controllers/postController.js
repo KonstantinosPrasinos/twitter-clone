@@ -107,7 +107,6 @@ const likePost = async (req, res) => {
 };
 
   const unlikePost = async (req, res) => {
-    //const { user_id, post_id } = req.body;
     const post_id = parseInt(req.params.post_id, 10);
     const authenticatedUserId = req.user.userId;
   
@@ -298,24 +297,23 @@ const replyPost = async (req, res) => {
 
 
 const unreplyPost = async (req, res) => {
-    const { user_id, reply_id } = req.body;
+    
+    const reply_id = parseInt(req.params.reply_id, 10);
+    const authenticatedUserId = req.user.userId;
+
     try {
         // Check if all required fields are provided
-        if (!user_id || !reply_id) {
-            return res.status(400).json({ success: false, message: "User ID and reply ID are required." });
+        if (!reply_id) {
+            return res.status(400).json({ success: false, message: "Replay ID is required." });
         }
-    
-        // Check if the user and reply exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
+        
 
         const replyExists = await prisma.replies.findUnique({
             where: { reply_id: reply_id },
         });
     
-        if (!userExists || !replyExists) {
-            return res.status(404).json({ success: false, message: "User or reply not found." });
+        if (!replyExists) {
+            return res.status(404).json({ success: false, message: "Reply not found." });
         }
         // Delete the reply
         await prisma.replies.delete({

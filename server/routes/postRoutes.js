@@ -10,6 +10,6 @@ router.post('/api/post/repost', authenticateToken, postController.repostPost);
 router.post('/api/post/unrepost', authenticateToken, postController.unrepostPost);
 router.post('/api/post/reply', authenticateToken, postController.replyPost);
 router.delete('/api/post/:postId', authenticateToken, postController.deletePost);
-router.post('/api/post/unreply', authenticateToken, postController.unreplyPost);
+router.delete('/api/post/unreply/:reply_id', authenticateToken, postController.unreplyPost);
 
 module.exports = router;
