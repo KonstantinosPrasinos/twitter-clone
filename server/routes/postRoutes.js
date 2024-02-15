@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/api/posts', authenticateToken, postController.createPost);
 router.post('/api/post/like', authenticateToken, postController.likePost);
-router.post('/api/post/unlike', authenticateToken, postController.unlikePost);
+router.delete('/api/post/unlike/:post_id', authenticateToken, postController.unlikePost);
 router.post('/api/post/repost', authenticateToken, postController.repostPost);
 router.post('/api/post/unrepost', authenticateToken, postController.unrepostPost);
 router.post('/api/post/reply', authenticateToken, postController.replyPost);
