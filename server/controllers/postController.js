@@ -271,19 +271,19 @@ const replyPost = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-    const { user_id, post_id, new_content } = req.body;
+    const post_id = parseInt(req.params.post_id, 10);
+    const {new_content} = req.body;
     try{
-        if (!user_id || !post_id || !new_content) {
-            return res.status(400).json({ success: false, message: "User ID, Post ID and Content are required." });
+        if (!post_id || !new_content) {
+            return res.status(400).json({ success: false, message: "Post ID and Content are required." });
         }
     
         const post = await prisma.posts.findUnique({
             where: { post_id: post_id },
-            select: { user_id: true },
         });
     
-        if (!post || post.user_id !== user_id) {
-            return res.status(400).json({ success: false, message: "User is not authorized to edit this post." });
+        if (!post) {
+            return res.status(400).json({ success: false, message: "There is no post with this post ID" });
         }
 
         const updatedPost = await prisma.posts.update({

@@ -9,7 +9,7 @@ router.post('/api/post/unlike', authenticateToken, unlikePost);
 router.post('/api/post/repost', authenticateToken, repostPost);
 router.post('/api/post/unrepost', authenticateToken, unrepostPost);
 router.post('/api/post/reply', authenticateToken, replyPost);
-router.post('/api/post/edit', authenticateToken, editPost);
+router.put('/api/post/edit/:post_id', authenticateToken, editPost);
 
 
 module.exports = router;
