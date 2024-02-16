@@ -112,19 +112,22 @@ const createFeed = async (req, res) => {
 
         // Reposts
         post.reposts.forEach(repost => {
-          const repostInfo = {
-            repost_id: repost.repost_id,
-            reposted_user_id: repost.user_id,
-            reposted_username: repost.users.username,
-            post_id: repost.post_id,
-            original_user_id: repost.posts.user_id,
-            original_username: repost.posts.users.username,
-            content: repost.posts.content,
-            created_at: repost.created_at,
-            isRepost: true,
-          };
+          if (followerUserIds.includes(repost.user_id)) {
+            const repostInfo = {
+              repost_id: repost.repost_id,
+              reposted_user_id: repost.user_id,
+              reposted_username: repost.users.username,
+              post_id: repost.post_id,
+              original_user_id: repost.posts.user_id,
+              original_username: repost.posts.users.username,
+              content: repost.posts.content,
+              created_at: repost.created_at,
+              isRepost: true,
+            };
+            formattedFeed.push(repostInfo);
+          }
 
-          formattedFeed.push(repostInfo);
+          
         });
 
         formattedFeed.push(postInfo);
