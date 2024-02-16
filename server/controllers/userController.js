@@ -412,44 +412,18 @@ const unfollowUser = async (req, res) => {
 };
 
 //Edit User Data
-const editProfil = async (req,res) => {
+const editProfile = async (req,res) => {
     
-    const authenticatedUserId = req.user.userId;
-    const {user_id, new_username,new_email,new_password} = req.body;
+    const user_id = req.user.userId;
+    const {new_username,new_email,new_password} = req.body;
     const saltRounds = 10;
 
-    if(authenticatedUserId !== user_id){
-        return res.status(403).json({ message: 'Forbidden: Access denied. Invalid user ID.' });
-    }
+    
+
+    
 
     try{
 
-        const usernameExists = await prisma.users.findUnique({
-            where: { 
-                username: new_username,  
-            },
-            
-        });
-        
-
-        if (usernameExists.username) {
-            return res.status(500).json({ success: false, message: "Username already exists." });
-        }
-
-        const emailExists = await prisma.users.findUnique({
-            where: { 
-                email: new_email 
-            },
-        });
-    
-        if (emailExists) {
-            return res.status(500).json({ success: false, message: "Email already exists." });
-        }
-
-        if (!user_id || !new_username || !new_email || !new_password) {
-            return res.status(400).json({ success: false, message: "User ID and new data are required." });
-            }
-            
         const userExists = await prisma.users.findUnique({
             where: { user_id: user_id },
         });
@@ -457,37 +431,63 @@ const editProfil = async (req,res) => {
         if (!userExists) {
             return res.status(404).json({ success: false, message: "User not found." });
         }
+        
+        const updates = {};
 
-        bcrypt.genSalt(saltRounds, (err,salt) => {
-            bcrypt.hash(new_password, salt, async (err, hash) => {
-                try {
-                    //create the follow relationship
-                    const updatedUser = await prisma.users.update({
-                        where: { user_id: user_id },
-                        data: { username: new_username,
-                                email: new_email,
-                                password_hash : hash,
-                        },
-                    });
-                
-                    res.status(201).json({ success: true, message: "Username changed successfully.", user: updatedUser });
-                } catch (error) {
-                    console.error('Error during password hashing:', error);
-                    res.status(400).json({ success: false, message: 'Error during password hashing' });
-                }
+        if (new_username && new_username !== userExists.username) {
+            const usernameExists = await prisma.users.findUnique({
+                where: {
+                    username: new_username,
+                },
             });
+
+            if (usernameExists) {
+                return res.status(500).json({ success: false, message: "Username already exists." });
+            }
+
+            updates.username = new_username;
+        }
+
+        if (new_email && new_email !== userExists.email) {
+            const emailExists = await prisma.users.findUnique({
+                where: {
+                    email: new_email
+                },
+            });
+
+            if (emailExists) {
+                return res.status(500).json({ success: false, message: "Email already exists." });
+            }
+
+            updates.email = new_email;
+        }
+
+        if (new_password) {
+            const salt = await bcrypt.genSalt(saltRounds);
+            const hash = await bcrypt.hash(new_password, salt);
+            updates.password_hash = hash;
+        }
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ success: false, message: "No changes detected." });
+        }
+
+        const updatedUser = await prisma.users.update({
+            where: { user_id: user_id },
+            data: updates,
         });
-    } catch(error){
-        console.error("Error editing profil:", error);
+
+        res.status(201).json({ success: true, message: "Profile updated successfully.", user: updatedUser });
+    } catch (error) {
+        console.error("Error editing profile:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
     } finally {
         await prisma.$disconnect();
     }
+};
+    
 
 
-}
 
-
-
-module.exports = {getUserProfile, followUser, unfollowUser,editProfil};
+module.exports = {getUserProfile, followUser, unfollowUser,editProfile};
 
