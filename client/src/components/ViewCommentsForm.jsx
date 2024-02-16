@@ -16,7 +16,6 @@ const ViewCommentsForm = ({ post_id }) => {
     const date = new Date(createdAt);
     return date.toLocaleString(); // Adjust the formatting as needed
   };
-
   useEffect(() => {
     const fetchFeed = async () => {
       try {

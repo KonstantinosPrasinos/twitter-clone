@@ -84,7 +84,6 @@ const UserProfile = () => {
             if (response.ok) {
                 const data = await response.json();
                 setIsFollowing(data.success); // Update isFollowing based on the success property of the response
-                console.log(isFollowing);
             } else {
                 alertContext.addAlert('Failed to check follow relationship.');
             }

@@ -39,6 +39,7 @@ const getUserProfile = async (req, res) => {
                         username: like.users.username,
                     })),
                     replies: post.replies.map(reply => ({
+                        reply_id: reply.reply_id,
                         user_id: reply.user_id,
                         username: reply.users.username,
                         content: reply.content,
@@ -76,6 +77,7 @@ const getUserProfile = async (req, res) => {
                 },
                 replies: {
                     select: {
+                        reply_id: true,
                         user_id: true,
                         users: {
                             select: {
@@ -142,6 +144,7 @@ const getUserProfile = async (req, res) => {
                         },
                         replies: {
                             select: {
+                                reply_id: true,
                                 user_id: true,
                                 users: {
                                     select: {
@@ -204,6 +207,7 @@ const getUserProfile = async (req, res) => {
                         },
                         replies: {
                             select: {
+                                reply_id: true,
                                 user_id: true,
                                 users: {
                                     select: {
