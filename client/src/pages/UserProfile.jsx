@@ -34,7 +34,9 @@ const UserProfile = () => {
         setIsLoading(true);
         setFollowingDialogVisible(false);
         setFollowerDialogVisible(false);
+        setIsFollowing(false);
         fetchProfile();
+        checkFollowStatus();
     }, [params]);
 
 
@@ -68,6 +70,31 @@ const UserProfile = () => {
         }
     };
 
+    const checkFollowStatus = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/checkFollowRelationship/${user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userContext.state.user_id}`,
+                },
+                credentials: 'include',
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                setIsFollowing(data.success); // Update isFollowing based on the success property of the response
+                console.log(isFollowing);
+            } else {
+                alertContext.addAlert('Failed to check follow relationship.');
+            }
+        } catch (error) {
+            console.error('Error checking follow relationship:', error);
+            alertContext.addAlert('Failed to check follow relationship.');
+        }
+    };
+    
+
     const handleFollowerClick = (event) => {
         if (isLoading || userData?.followers?.length === 0) return;
         event.stopPropagation()
@@ -100,6 +127,7 @@ const UserProfile = () => {
             if (response.ok) {
                 alertContext.addAlert(`You are now following ${params.username}.`);
 
+                checkFollowStatus();
                 fetchProfile();
             } else {
                 alertContext.addAlert('Failed.User is already following the specified user.');
@@ -122,6 +150,7 @@ const UserProfile = () => {
 
             if (response.ok) {
                 alertContext.addAlert(`You are no longer following ${params.username}.`);
+                checkFollowStatus();
                 fetchProfile();
             } else {
                 alertContext.addAlert('Failed to unfollow user.');
@@ -143,6 +172,7 @@ const UserProfile = () => {
                     <h2>{params.username}</h2>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
                         <div className={"Horizontal-Flex-Container"} ref={followInfoContainer}>
+                            
                             <div className={"Hover-Underline"} onClick={handleFollowerClick}>
                                 {"Following: "}
                                 {!isLoading ? formatNumber(userData.followers.length) : "..."}

@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+
 const getUserProfile = async (req, res) => {
     const {user_id} = req.params;
     if (!user_id) return res.status(400).json({success: false, message: "User id required."})
@@ -410,5 +411,32 @@ const unfollowUser = async (req, res) => {
     }
 };
 
+const checkFollowRelationship = async (req, res) => {
+    const { user_id } = req.params;
+    const follower_user_id = req.user.userId; // Assuming user data is stored in req.user
 
-module.exports = {getUserProfile, followUser, unfollowUser};
+    try {
+        // Check if the follow relationship exists
+        const existingFollow = await prisma.followers.findFirst({
+            where: {
+                follower_user_id,
+                following_user_id: parseInt(user_id),
+            },
+        });
+
+        // If follow relationship exists, send success response
+        if (existingFollow) {
+            res.status(200).json({ success: true, message: "User is following the specified user." });
+        } else {
+            res.status(200).json({ success: false, message: "User is not following the specified user." });
+        }
+    } catch (error) {
+        console.error("Error checking follow relationship:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+
+module.exports = {getUserProfile, followUser, unfollowUser,checkFollowRelationship};
