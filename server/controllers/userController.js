@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
 
 const getUserProfile = async (req, res) => {
     const {user_id} = req.params;
@@ -410,5 +411,83 @@ const unfollowUser = async (req, res) => {
     }
 };
 
+//Edit User Data
+const editProfil = async (req,res) => {
+    
+    const authenticatedUserId = req.user.userId;
+    const {user_id, new_username,new_email,new_password} = req.body;
+    const saltRounds = 10;
 
-module.exports = {getUserProfile, followUser, unfollowUser};
+    if(authenticatedUserId !== user_id){
+        return res.status(403).json({ message: 'Forbidden: Access denied. Invalid user ID.' });
+    }
+
+    try{
+
+        const usernameExists = await prisma.users.findUnique({
+            where: { 
+                username: new_username,  
+            },
+            
+        });
+        
+
+        if (usernameExists.username) {
+            return res.status(500).json({ success: false, message: "Username already exists." });
+        }
+
+        const emailExists = await prisma.users.findUnique({
+            where: { 
+                email: new_email 
+            },
+        });
+    
+        if (emailExists) {
+            return res.status(500).json({ success: false, message: "Email already exists." });
+        }
+
+        if (!user_id || !new_username || !new_email || !new_password) {
+            return res.status(400).json({ success: false, message: "User ID and new data are required." });
+            }
+            
+        const userExists = await prisma.users.findUnique({
+            where: { user_id: user_id },
+        });
+        
+        if (!userExists) {
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
+
+        bcrypt.genSalt(saltRounds, (err,salt) => {
+            bcrypt.hash(new_password, salt, async (err, hash) => {
+                try {
+                    //create the follow relationship
+                    const updatedUser = await prisma.users.update({
+                        where: { user_id: user_id },
+                        data: { username: new_username,
+                                email: new_email,
+                                password_hash : hash,
+                        },
+                    });
+                
+                    res.status(201).json({ success: true, message: "Username changed successfully.", user: updatedUser });
+                } catch (error) {
+                    console.error('Error during password hashing:', error);
+                    res.status(400).json({ success: false, message: 'Error during password hashing' });
+                }
+            });
+        });
+    } catch(error){
+        console.error("Error editing profil:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+
+
+}
+
+
+
+module.exports = {getUserProfile, followUser, unfollowUser,editProfil};
+
