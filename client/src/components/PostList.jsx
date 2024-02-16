@@ -6,6 +6,9 @@ import useLogout from "../hooks/useLogout.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
 import {debounce} from "../functions/debounce.js";
+import DeleteButton from "../components/DeleteButton.jsx";
+import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
+import { FaRegComment } from "react-icons/fa";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -42,9 +45,8 @@ const PostList = ({ posts }) => {
           credentials: 'include'
         });
       } else {
-        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike`, {
-          method: 'POST',
-          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unlike/${postId}`, {
+          method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           credentials: 'include'
         });
@@ -88,9 +90,8 @@ const PostList = ({ posts }) => {
           credentials: 'include'
         });
       } else {
-        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unrepost`, {
-          method: 'POST',
-          body: JSON.stringify({user_id: userContext.state?.user_id, post_id: parseInt(postId)}),
+        response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post/unrepost/${postId}`, {
+          method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           credentials: 'include'
         });
@@ -206,8 +207,8 @@ const PostList = ({ posts }) => {
     handleRepostRequest();
   }
 
-  const handleClick = (postId) => {
-    navigate("/comments", { state: { post_id: postId } });
+  const handleClick = (post_id) => {
+    navigate("/comments", { state: { post_id: post_id } });
   };
 
   return (
@@ -226,6 +227,11 @@ const PostList = ({ posts }) => {
                   {post.isRepost ? post.reposted_username : post.username}
                 </Link>
                 <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
+                {post.user_id === userContext.state?.user_id && (
+                    <MoreButtonWithDialog>
+                      <DeleteButton label="Delete post" resourceType={"post"} resourceId={post.post_id}/>
+                    </ MoreButtonWithDialog>
+                )}
               </div>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
@@ -244,10 +250,12 @@ const PostList = ({ posts }) => {
               <p>{post.content}</p>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
               {!post.isRepost && <div className={"Horizontal-Flex-Container"}>
+              
                 <button
                     className={`
                       Horizontal-Flex-Container
                       Basic-Button
+                      Heart-Button
                       ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
                     }
                     onClick={() => handlePostLike(post.post_id)}>
@@ -269,8 +277,11 @@ const PostList = ({ posts }) => {
                   <FaRetweet/>
                   <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
                 </button>
+                <button className="Horizontal-Flex-Container Basic-Button"
+                onClick={() => handleClick(post.post_id)}>
+                <FaRegComment />
+              </button>
               </div>}
-              {<button onClick={() => handleClick(post.post_id)}>Add Comment</button>}
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ const {getUserProfile,followUser,unfollowUser, editProfil} = require('../control
 
 router.get('/user/:user_id', authenticateToken, getUserProfile)
 router.post('/user/follow', authenticateToken, followUser)
-router.post('/user/unfollow', authenticateToken, unfollowUser)
+router.delete('/user/unfollow/:username', authenticateToken, unfollowUser)
 router.post('/user/edit', authenticateToken, editProfil)
 
 module.exports = router;

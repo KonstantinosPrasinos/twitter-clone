@@ -1,22 +1,17 @@
-import React from 'react';
-import { useNavigate,useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import CreateCommentForm from "../components/CreateCommentForm.jsx";
 import ViewCommentsForm from "../components/ViewCommentsForm.jsx";
-import {FaHome} from "react-icons/fa";
-
+import { FaHome } from "react-icons/fa";
 
 const Comments = () => {
-
     const navigate = useNavigate();
     const { state } = useLocation();
-    const post_id = state?.post_id;
-
+    const [post_id, setPostId] = useState(state?.post_id); // Initialize state with the post_id value from location state
 
     const handleHomeClick = () => {
-        navigate("/")
+        navigate("/");
     }
-
-
 
     return (
         <div className="mainContainer">
@@ -35,9 +30,7 @@ const Comments = () => {
                 </nav>
             </div>
         </div>
-        
     );
-
 };
 
 export default Comments;

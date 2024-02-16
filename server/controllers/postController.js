@@ -16,16 +16,45 @@ const createPost = async (req,res) => {
         }
         catch (error)
         {
-            console.error('Error creating post:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
     else {
-        console.error('Post Content is Empty!');
         res.status(400).json({ error: 'Post Content is Empty!' });
     }
 
 }
+const deletePost = async (req,res) => {
+    try
+    {
+        const postId = parseInt(req.params.postId);
+        if (!postId || isNaN(postId)) {
+            return res.status(400).json({ message: 'Invalid postId.' });
+        }
+        const authUserId = parseInt(req.user.userId);
+        const existingPost = await prisma.posts.findUnique({
+            where: { post_id: postId },
+            select: {
+                user_id: true
+            },
+        });
+        if (!existingPost) {
+            return res.status(404).json({ message: 'Post not found.' });
+        }
+        // Check if the owner of the post that will be deleted is the authenticated user
+        if (existingPost.user_id !== authUserId) {
+            return res.status(403).json({ message: 'You are not authorized to delete this post.' });
+        }
+        await prisma.posts.delete({
+            where: { post_id: postId }
+        });
+        res.status(204).send();
+    }
+    catch (error) 
+    {
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 
 const likePost = async (req, res) => {
     const { user_id, post_id } = req.body;
@@ -78,31 +107,27 @@ const likePost = async (req, res) => {
 };
 
   const unlikePost = async (req, res) => {
-    const { user_id, post_id } = req.body;
+    const post_id = parseInt(req.params.post_id, 10);
+    const authenticatedUserId = req.user.userId;
   
     try {
-        if (!user_id || !post_id) {
-            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        if (!post_id) {
+            return res.status(400).json({ success: false, message: "Post ID are required." });
         }
-    
-        //check if the user and post exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
     
         const postExists = await prisma.posts.findUnique({
             where: { post_id: post_id },
         });
     
-        if (!userExists || !postExists) {
-            return res.status(404).json({ success: false, message: "User or post not found." });
+        if (!postExists) {
+            return res.status(404).json({ success: false, message: "Post not found." });
         }
     
         //check if the user has already unliked the post
         const existingLike = await prisma.likes.findFirst({
             where: {
-            user_id: user_id,
-            post_id: post_id,
+                user_id: authenticatedUserId,
+                post_id: post_id,
             },
         });
         
@@ -180,30 +205,28 @@ const repostPost = async (req, res) => {
 };
 
 const unrepostPost = async (req, res) => {
-    const { user_id, post_id } = req.body;
+    const post_id = parseInt(req.params.post_id, 10);
+    const authenticatedUserId = req.user.userId;
   
     try {
-        if (!user_id || !post_id) {
-            return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
+        if (!post_id) {
+            return res.status(400).json({ success: false, message: "Post ID is required." });
         }
     
-        //check if the user and post exist
-        const userExists = await prisma.users.findUnique({
-            where: { user_id: user_id },
-        });
+        
     
         const postExists = await prisma.posts.findUnique({
             where: { post_id: post_id },
         });
     
-        if (!userExists || !postExists) {
-            return res.status(404).json({ success: false, message: "User or post not found." });
+        if (!postExists) {
+            return res.status(404).json({ success: false, message: "Post not found." });
         }
     
         //check if the user has already unreposted the post
         const existingRepost = await prisma.reposts.findFirst({
             where: {
-            user_id: user_id,
+            user_id: authenticatedUserId,
             post_id: post_id,
             },
         });
@@ -271,6 +294,38 @@ const replyPost = async (req, res) => {
 };
 
 
+const unreplyPost = async (req, res) => {
+    
+    const reply_id = parseInt(req.params.reply_id, 10);
+    const authenticatedUserId = req.user.userId;
 
+    try {
+        // Check if all required fields are provided
+        if (!reply_id) {
+            return res.status(400).json({ success: false, message: "Replay ID is required." });
+        }
+        
 
-module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost};
+        const replyExists = await prisma.replies.findUnique({
+            where: { reply_id: reply_id },
+        });
+    
+        if (!replyExists) {
+            return res.status(404).json({ success: false, message: "Reply not found." });
+        }
+        // Delete the reply
+        await prisma.replies.delete({
+            where: { reply_id: reply_id },
+        });
+
+        res.status(201).json({ success: true, message: "Reply deleted successfully." });
+
+    } catch (error) {
+        console.error("Error deleting reply:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+        await prisma.$disconnect();
+    }
+};
+
+module.exports = {createPost,likePost,unlikePost,repostPost,unrepostPost,replyPost,unreplyPost,deletePost};

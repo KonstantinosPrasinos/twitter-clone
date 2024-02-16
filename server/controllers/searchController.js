@@ -35,7 +35,6 @@ const searchController = async (req,res) => {
         }
         catch(error)
         {
-            console.error('Error during search:', error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
 

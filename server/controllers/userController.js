@@ -259,8 +259,8 @@ const getUserProfile = async (req, res) => {
         
 
         // Get the following and followers for the user
-        const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.following_user_id);
-        const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.follower_user_id);
+        const followingIdArray = user.followers_followers_following_user_idTousers.map(followingUser => followingUser.follower_user_id);
+        const followerIdArray = user.followers_followers_follower_user_idTousers.map(followerUser => followerUser.following_user_id);
 
         const followers = await prisma.users.findMany({
             where: {
@@ -362,21 +362,14 @@ const followUser = async (req,res) => {
 const unfollowUser = async (req, res) => {
     //follower -> logged in user
     //following -> user that the logged-in user wants to unfollow
-    const { follower_user_id, following_username } = req.body;
+    const following_username = req.params.username;
+    const follower_user_id = req.user.userId;
   
     try {
-        if (!follower_user_id || !following_username) {
-            return res.status(400).json({ success: false, message: "Follower and following userIDs required." });
+        if (!following_username) {
+            return res.status(400).json({ success: false, message: "Following userIDs required." });
         }
     
-        //check if the follower_user_id and following_user_id exist in the users table
-        const followerExists = await prisma.users.findUnique({
-            where: { user_id: follower_user_id },
-        });
-    
-        if (!followerExists) {
-            return res.status(404).json({ success: false, message: "Follower or following user not found." });
-        }
       
         //check if the following user with the provided username exists
         const followingUser = await prisma.users.findUnique({
@@ -497,3 +490,4 @@ const editProfil = async (req,res) => {
 
 
 module.exports = {getUserProfile, followUser, unfollowUser,editProfil};
+
