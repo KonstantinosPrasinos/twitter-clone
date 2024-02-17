@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link, useNavigate } from 'react-router-dom';
 import { AlertContext } from '../context/AlertContext.jsx';
 import { UserContext } from '../context/UserContext.jsx';
 import { MdDelete } from "react-icons/md";
@@ -7,6 +7,8 @@ import { MdDelete } from "react-icons/md";
 const ViewCommentsForm = ({ post_id, posts }) => {
   const alertContext = useContext(AlertContext);
   const userContext = useContext(UserContext);
+  const navigate = useNavigate();
+  
 
   const formatCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
@@ -33,6 +35,7 @@ const ViewCommentsForm = ({ post_id, posts }) => {
 
       if (response.ok) {
         alertContext.addAlert(`Reply deleted successfully.`);
+        navigate("/");
       } else {
         alertContext.addAlert('Failed to delete reply.');
       }

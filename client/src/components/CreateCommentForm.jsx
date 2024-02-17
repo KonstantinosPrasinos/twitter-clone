@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
+import {  useNavigate } from 'react-router-dom';
 
 const maxPostLength = 280;
 
@@ -26,6 +27,7 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
     const userContext = useContext(UserContext);
     const alertContext = useContext(AlertContext);
     const [content, setContext] = useState(initialInput);
+    const navigate = useNavigate();
 
     const textAreaRef = useRef();
     const dummyTextAreaRef = useRef();
@@ -85,6 +87,7 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
                 setContext("");
                 textAreaRef.current.innerHTML = '';
                 dummyTextAreaRef.current.innerHTML = '<span class="dummy-placeholder">Write a Comment</span>';
+                navigate("/");
             } else {
                 const errorMessage = await response.text();
                 alertContext.addAlert(`Failed to create comment: ${errorMessage}`);
@@ -93,7 +96,6 @@ const CreateCommentForm = ({post_id,initialInput = ""}) => {
             console.error('Error creating comment:', error);
             alertContext.addAlert('Failed to create comment. Please try again.');
         }
-        console.log(post_id);
     }
 
     useEffect(() => {

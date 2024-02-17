@@ -7,8 +7,8 @@ import { FaHome } from "react-icons/fa";
 const Comments = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const [post_id, setPostId] = useState(state?.post_id); // Initialize state with the post_id value from location state
-    const [posts, setPosts] = useState(state?.posts); // Initialize state with the posts value from location state
+    const [post_id, setPostId] = useState(state?.post_id);
+    const [posts, setPosts] = useState(state?.posts); 
 
     const handleHomeClick = () => {
         navigate("/");
