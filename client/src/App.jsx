@@ -8,6 +8,7 @@ import Results from "./pages/Results.jsx";
 import Comments from "./pages/Comments.jsx";
 import {useContext, useEffect} from "react";
 import UserProfile from "./pages/UserProfile.jsx";
+import EditProfile from './pages/EditProfile.jsx';
 
 function ProtectedLayout() {
   // If the user is not connected, navigate to log in
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/user/:username',
         element: <UserProfile />
+      },
+      {
+        path: '/user/edit-profile/',
+        element: <EditProfile />
       },
       {
         path: '/results',

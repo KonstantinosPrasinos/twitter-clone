@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar.jsx";
 import Tabs from "../components/Tabs.jsx";
 import useLogout from "../hooks/useLogout.jsx";
 import {formatNumber} from "../functions/formatNumber.js";
+import EditProfileButton from '../components/EditProfileButton.jsx';
 
 const UserProfile = () => {
     const params = useParams()
@@ -24,6 +25,7 @@ const UserProfile = () => {
     const followInfoContainer = useRef();
     const {logout} = useLogout();
     const [isFollowing, setIsFollowing] = useState(false);
+    
 
     const {user_id} = location.state;
 
@@ -140,7 +142,14 @@ const UserProfile = () => {
             <div className={"Vertical-Flex-Container"}>
                 <CreatePostForm initialInput={`@${params.username}`} />
                 <div className={"Panel-Thin"}>
-                    <h2>{params.username}</h2>
+                    <div className={"Horizontal-Flex-Container Space-Between"}>
+                        <div className={"Horizontal-Flex-Container"}>
+                            <h2>{params.username}</h2>
+                        </div>
+                        <div>
+                            <EditProfileButton />
+                        </div>
+                    </div>
                     <div className={"Horizontal-Flex-Container Space-Between"}>
                         <div className={"Horizontal-Flex-Container"} ref={followInfoContainer}>
                             <div className={"Hover-Underline"} onClick={handleFollowerClick}>
