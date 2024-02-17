@@ -208,8 +208,9 @@ const PostList = ({ posts }) => {
   }
 
   const handleClick = (post_id) => {
-    navigate("/comments", { state: { post_id: post_id } });
+    navigate("/comments", { state: { post_id: post_id, posts: formattedPosts } });
   };
+
 
   return (
     <div className="Feed Post-Container">
