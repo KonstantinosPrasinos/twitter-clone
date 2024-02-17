@@ -9,6 +9,7 @@ import {debounce} from "../functions/debounce.js";
 import DeleteButton from "../components/DeleteButton.jsx";
 import MoreButtonWithDialog from "../components/MoreButtonWithDialog.jsx";
 import { FaRegComment } from "react-icons/fa";
+import { FaComment } from "react-icons/fa";
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
@@ -219,70 +220,74 @@ const PostList = ({ posts }) => {
           <div className="Single-Post-Container">
             <div>
               <h2 className={"post-username"}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Link
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Link
                     className={"clickable-username"}
                     to={`/user/${post.isRepost ? post.reposted_username : post.username}`}
-                    state={{user_id: post.isRepost ? post.reposted_user_id : post.user_id}}
-                >
-                  {post.isRepost ? post.reposted_username : post.username}
-                </Link>
-                <span style={{ fontSize: '12px',fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
-                {post.user_id === userContext.state?.user_id && (
+                    state={{ user_id: post.isRepost ? post.reposted_user_id : post.user_id }}
+                  >
+                    {post.isRepost ? post.reposted_username : post.username}
+                  </Link>
+                  <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{formatCreatedAt(post.created_at)}</span>
+                  {post.user_id === userContext.state?.user_id && (
                     <MoreButtonWithDialog>
-                      <DeleteButton label="Delete post" resourceType={"post"} resourceId={post.post_id}/>
-                    </ MoreButtonWithDialog>
-                )}
-              </div>
+                      <DeleteButton label="Delete post" resourceType={"post"} resourceId={post.post_id} />
+                    </MoreButtonWithDialog>
+                  )}
+                </div>
               </h2>
               <p style={{ fontSize: '16px', fontStyle: 'italic' }}>
-                {post.isRepost && <span>
-                  <Link
+                {post.isRepost && (
+                  <span>
+                    <Link
                       className={"clickable-username"}
                       to={`/user/${post.original_username}`}
-                      state={{user_id: post.original_user_id}}
-                  >
-                    {post.original_username}
-                  </Link>
-                  {" "}said:
-                </span>}
+                      state={{ user_id: post.original_user_id }}
+                    >
+                      {post.original_username}
+                    </Link>
+                    {" "}said:
+                  </span>
+                )}
                 {!post.isRepost && <span>Said:</span>}
               </p>
               <p>{post.content}</p>
               {post.isRepost && <p style={{ fontSize: '16px', fontStyle: 'italic' }}>#Repost</p>}
-              {!post.isRepost && <div className={"Horizontal-Flex-Container"}>
-              
-                <button
+              {!post.isRepost && (
+                <div className={"Horizontal-Flex-Container"}>
+                  <button
                     className={`
-                      Horizontal-Flex-Container
-                      Basic-Button
-                      Heart-Button
-                      ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
+                Horizontal-Flex-Container
+                Basic-Button
+                Heart-Button
+                ${post?.likes && post.likes.map(like => like.username).includes(userContext.state?.username) ? "post-action-completed" : ""}`
                     }
-                    onClick={() => handlePostLike(post.post_id)}>
-                  {!post?.likes && <><FaRegHeart/> <span className={"Align-Text-Center"}>0</span></>}
-                  {post?.likes && <>
-                    {post.likes.map(like => like.username).includes(userContext.state?.username) ? <FaHeart/> :
-                        <FaRegHeart/>}
-                    <span className={"Align-Text-Center"}>{formatNumber(post.likes.length)}</span>
-                  </>}
-                </button>
-                <button
+                    onClick={() => handlePostLike(post.post_id)}
+                  >
+                    {!post?.likes && <><FaRegHeart /> <span className={"Align-Text-Center"}>0</span></>}
+                    {post?.likes && (
+                      <>
+                        {post.likes.map(like => like.username).includes(userContext.state?.username) ? <FaHeart /> : <FaRegHeart />}
+                        <span className={"Align-Text-Center"}>{formatNumber(post.likes.length)}</span>
+                      </>
+                    )}
+                  </button>
+                  <button
                     className={`
-                      Horizontal-Flex-Container
-                      Basic-Button
-                      ${!post.isRepost && post.repostedByUser ? "post-action-completed" : ""}`
+                Horizontal-Flex-Container
+                Basic-Button
+                ${!post.isRepost && post.repostedByUser ? "post-action-completed" : ""}`
                     }
                     onClick={() => handlePostRepost(post.post_id)}
-                >
-                  <FaRetweet/>
-                  <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
-                </button>
-                <button className="Horizontal-Flex-Container Basic-Button"
-                onClick={() => handleClick(post.post_id)}>
-                <FaRegComment />
-              </button>
-              </div>}
+                  >
+                    <FaRetweet />
+                    <span className={"Align-Text-Center"}>{post.repostsCount ? formatNumber(post.repostsCount) : 0}</span>
+                  </button>
+                  <button className="Horizontal-Flex-Container Basic-Button" onClick={() => handleClick(post.post_id)}>
+                    {post.replies && post.replies.length > 0 ? <FaComment style={{ color: 'var(--accent-color)' }} /> : <FaRegComment />}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
