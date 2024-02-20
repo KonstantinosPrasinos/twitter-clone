@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {validateEmail} from "../functions/validateEmail.js";
 import {validatePassword} from "../functions/validatePassword.js";
 import {AlertContext} from "../context/AlertContext.jsx";
+import LoadingIndicator from "../components/LoadingIndicator.jsx";
 
 const Register = () => {
     const [formData, setFormData] = useState({username: "", email: "", password: "", repeatPassword: ""});
@@ -95,6 +96,7 @@ const Register = () => {
             <button type={"submit"} form={"register-form"}>Register</button>
             <div className={"register-or-tag"}>or</div>
             <button onClick={handleLogin}>Already have an account? Log in here</button>
+            {isLoading && <LoadingIndicator />}
         </div>
     );
 };
