@@ -3,10 +3,12 @@ import {useNavigate} from "react-router-dom";
 import {LoginApp} from "../functions/LoginApp.js";
 import {UserContext} from "../context/UserContext.jsx";
 import {AlertContext} from "../context/AlertContext.jsx";
+import LoadingIndicator from "../components/LoadingIndicator.jsx";
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const login = LoginApp();
     const userContext = useContext(UserContext);
@@ -33,7 +35,7 @@ const Login = () => {
             return;
       }
 
-
+      setIsLoading(true);
 
       const response = await login(username, password);
       
@@ -43,8 +45,8 @@ const Login = () => {
         } else {
             console.log("Failed to Login")
             alertContext.addAlert("Incorrect User Name or Password");
-
         }
+      setIsLoading(false);
     };
 
     const handleClick = () => {
@@ -61,10 +63,10 @@ const Login = () => {
                 <label htmlFor="Password">Password</label>
                 <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password"
                        name="password" required/>
-                <button type="Login">Log In</button>
+                <button type="Login">Log in</button>
             </form>
             <button onClick={handleClick}>Don't have an account register here.</button>
-
+            {isLoading && <LoadingIndicator/>}
         </div>);
 }
 

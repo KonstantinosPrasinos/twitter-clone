@@ -16,6 +16,7 @@ model followers {
   users_followers_follower_user_idTousers  users?    @relation("followers_follower_user_idTousers", fields: [follower_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   users_followers_following_user_idTousers users?    @relation("followers_following_user_idTousers", fields: [following_user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
+
 model likes {
   like_id    Int       @id @default(autoincrement())
   user_id    Int?
@@ -24,6 +25,7 @@ model likes {
   posts      posts?    @relation(fields: [post_id], references: [post_id], onDelete: Cascade, onUpdate: NoAction)
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
 }
+
 model posts {
   post_id    Int       @id @default(autoincrement())
   user_id    Int?
@@ -32,7 +34,7 @@ model posts {
   users      users?    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction)
   replies    replies[]
   reposts    reposts[]
-  likes      likes[]   
+  likes      likes[]
 }
 
 model replies {

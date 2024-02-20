@@ -642,3 +642,73 @@ button:disabled {
 .post-action-completed {
   color: var(--accent-color);
 }
+
+.loading-container {
+  width: 100%;
+  height: 2em;
+  padding: 20px !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: transparent;
+  box-sizing: border-box;
+
+  --loading-color: var(--accent-color);
+  --loading-background-color: var(--primary-color);
+  --loading-secondary-color: var(--secondary-color);
+}
+
+.loading-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+
+  font-size: 1.25em;
+
+  background-color: var(--primary-color);
+
+  --loading-background-color: var(--secondary-color);
+  --loading-secondary-color: var(--primary-color);
+}
+
+@keyframes rotating {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
+.loading-container .loading-indicator {
+  position: relative;
+  height: 2em;
+  width: 2em;
+  border-radius: 2em;
+  background-color: var(--loading-background-color);
+  overflow: hidden;
+}
+
+.loading-container .loading-indicator::after {
+  content: '';
+  position: absolute;
+  background-color: var(--loading-secondary-color);
+  top: 0.25em;
+  left: 0.25em;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 1.5em;
+}
+
+.loading-container .loading-indicator::before {
+  content: '';
+  position: absolute;
+  background-color: var(--loading-color);
+  top: 0;
+  left: 0;
+  height: 1em;
+  width: 1em;
+  animation: rotating 0.75s linear infinite;
+  transform-origin: bottom right;
+}
