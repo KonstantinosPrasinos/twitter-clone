@@ -1,5 +1,5 @@
 import React, { useCallback,useContext,useState } from 'react';
-import { FaEdit, FaRegEdit, FaRegSave} from "react-icons/fa";
+import { FaEdit, FaRegEdit, FaRegSave, FaSave} from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 import useLogout from "../hooks/useLogout.jsx";
 import  {withinLimits}  from '../functions/withinLimits.js';
@@ -45,7 +45,7 @@ const EditButton = ({ label, initialContent, id,resource }) => {
             setIsEditing(false);
             setEditedContent('');
         }
-    }, [editedContent, resource,id, alertContext]);
+    }, [editedContent, resource,id, alertContext, logout]);
     return (
         <div>
             {isEditing ? (
@@ -57,10 +57,10 @@ const EditButton = ({ label, initialContent, id,resource }) => {
                         onChange={handleInputChange} 
                     />
                     <button
-                        className="Edit-Button Save-Button"  
+                        className="Horizontal-Flex-Container Edit-Button Save-Button"  
                         onClick={handleUpdateClick}>
-                        <FaRegSave />
-                        <span style={{ fontSize: '18px' }}> Save</span>
+                        <FaSave />
+                        <span style={{ fontSize: '17px' }}> Save</span>
                     </button>
                 </div>
             ) : (
