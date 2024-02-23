@@ -228,7 +228,7 @@ const PostList = ({ posts }) => {
                 </Link>
                 {post.user_id === userContext.state?.user_id && (
                     <MoreButtonWithDialog>
-                      <EditButton label="Edit post" initialContent={post.content}/>
+                      <EditButton label="Edit post" initialContent={post.content} resource="post" id={post.post_id}/>
                     </ MoreButtonWithDialog>
                 )}
               </div>
