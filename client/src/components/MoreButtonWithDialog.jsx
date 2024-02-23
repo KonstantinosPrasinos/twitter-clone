@@ -13,22 +13,6 @@ const MoreButtonWithDialog = ({ children }) => {
     const collapseDialogFunction = () => {
         setIsDialogOpen(true);
     };
-    
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (!buttonRef.current.contains(event.target)) {
-                setIsDialogOpen(false);
-            }
-        };
-
-        if (isDialogOpen) {
-            document.addEventListener('click', handleOutsideClick);
-        }
-
-        return () => {
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, [isDialogOpen]);
 
     return (
         <div>
