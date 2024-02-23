@@ -3,7 +3,7 @@ import { FaEdit, FaRegEdit, FaRegSave} from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 import useLogout from "../hooks/useLogout.jsx";
 
-const EditButton = ({ label, initialContent, onUpdate }) => {
+const EditButton = ({ label, initialContent, id,resource }) => {
     const alertContext = useContext(AlertContext);
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(initialContent);
@@ -15,11 +15,32 @@ const EditButton = ({ label, initialContent, onUpdate }) => {
     const handleInputChange = (event) => {
         setEditedContent(event.target.value);
     };
-    const handleUpdateClick = () => {
-        onUpdate(editedContent);
-        setIsEditing(false);
-        setEditedContent(''); 
-    };
+    const handleUpdateClick = useCallback(async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${resource}/edit/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ new_content: editedContent }),
+                credentials: 'include'
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                alertContext.addAlert(responseData.message);
+            } else {
+                alertContext.addAlert(responseData.message);
+                if (response.status === 401) await logout();
+            }
+        } catch (error) {
+            alertContext.addAlert('Error editing post. Please try again later.', 'error');
+        } finally {
+            setIsEditing(false);
+            setEditedContent('');
+        }
+    }, [editedContent, resource,id, alertContext]);
     return (
         <div>
             {isEditing ? (
@@ -34,7 +55,7 @@ const EditButton = ({ label, initialContent, onUpdate }) => {
                         className="Save-Button"  
                         onClick={handleUpdateClick}>
                         <FaRegSave />
-                        <span style={{ fontSize: '17px' }}> Save</span>
+                        <span style={{ fontSize: '19px' }}> Save</span>
                     </button>
                 </div>
             ) : (
