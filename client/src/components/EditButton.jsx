@@ -40,7 +40,7 @@ const EditButton = ({ label, initialContent, id,resource }) => {
                 if (response.status === 401) await logout();
             }
         } catch (error) {
-            alertContext.addAlert('Error editing post. Please try again later.', 'error');
+            alertContext.addAlert('Error editing post. Please try again later.');
         } finally {
             setIsEditing(false);
             setEditedContent('');
@@ -57,10 +57,10 @@ const EditButton = ({ label, initialContent, id,resource }) => {
                         onChange={handleInputChange} 
                     />
                     <button
-                        className="Save-Button"  
+                        className="Edit-Button Save-Button"  
                         onClick={handleUpdateClick}>
                         <FaRegSave />
-                        <span style={{ fontSize: '19px' }}> Save</span>
+                        <span style={{ fontSize: '18px' }}> Save</span>
                     </button>
                 </div>
             ) : (
