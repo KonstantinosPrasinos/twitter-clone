@@ -1,14 +1,13 @@
 import React, { useCallback,useContext,useState } from 'react';
-import { FaEdit, FaRegEdit  } from "react-icons/fa";
+import { FaEdit, FaRegEdit, FaRegSave} from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 import useLogout from "../hooks/useLogout.jsx";
 
-const EditButton = ({ label, onUpdate }) => {
+const EditButton = ({ label, initialContent, onUpdate }) => {
     const alertContext = useContext(AlertContext);
     const [isEditing, setIsEditing] = useState(false);
-    const [editedContent, setEditedContent] = useState('');
+    const [editedContent, setEditedContent] = useState(initialContent);
     const [isHovered, setIsHovered] = useState(false);
-    const [isClicked, setIsClicked] = useState(false);
     const {logout} = useLogout();
     const handleEditClick = () => {
         setIsEditing(true);
@@ -27,10 +26,16 @@ const EditButton = ({ label, onUpdate }) => {
                 <div>
                     <input 
                         type="text" 
+                        className="search-input"
                         value={editedContent} 
                         onChange={handleInputChange} 
                     />
-                    <button onClick={handleUpdateClick}>Save</button>
+                    <button
+                        className="Save-Button"  
+                        onClick={handleUpdateClick}>
+                        <FaRegSave />
+                        <span style={{ fontSize: '17px' }}> Save</span>
+                    </button>
                 </div>
             ) : (
                 <button 
@@ -41,7 +46,7 @@ const EditButton = ({ label, onUpdate }) => {
                     onMouseUp={() => setIsClicked(false)}
                     onClick={handleEditClick}
                 >
-                    {isClicked ? <FaEdit /> : isHovered ? <FaEdit/> : <FaRegEdit />}
+                    {isEditing ? <FaEdit /> : isHovered ? <FaEdit/> : <FaRegEdit />}
                     <span style={{ fontSize: '17px' }}>{label || 'Edit'}</span>
                 </button>
             )}
