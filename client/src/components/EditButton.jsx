@@ -2,6 +2,7 @@ import React, { useCallback,useContext,useState } from 'react';
 import { FaEdit, FaRegEdit, FaRegSave} from "react-icons/fa";
 import {AlertContext} from "../context/AlertContext.jsx";
 import useLogout from "../hooks/useLogout.jsx";
+import  {withinLimits}  from '../functions/withinLimits.js';
 
 const EditButton = ({ label, initialContent, id,resource }) => {
     const alertContext = useContext(AlertContext);
@@ -17,6 +18,10 @@ const EditButton = ({ label, initialContent, id,resource }) => {
     };
     const handleUpdateClick = useCallback(async () => {
         try {
+            if (!withinLimits(editedContent, 1, 280)) {
+                alertContext.addAlert('Edited content must be between 1 and 280 characters.');
+                return;
+            }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${resource}/edit/${id}`, {
                 method: 'PUT',
                 headers: {
