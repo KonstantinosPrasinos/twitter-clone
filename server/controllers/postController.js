@@ -272,7 +272,7 @@ const replyPost = async (req, res) => {
 
 const editPost = async (req, res) => {
     const post_id = parseInt(req.params.post_id, 10);
-    const  autheticatedUserId = parseInt(req.user.user_id, 10);
+    const  autheticatedUserId = parseInt(req.user.userId, 10);
     const {new_content} = req.body;
     try{
         if (!post_id || !new_content) {
