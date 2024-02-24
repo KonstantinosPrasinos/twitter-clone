@@ -4,6 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import PostList from './PostList.jsx';
 import UserList from './UserList.jsx';
 import Tabs from './Tabs.jsx';
+import useLogout from '../hooks/useLogout.jsx';
 import {AlertContext} from "../context/AlertContext.jsx";
 import { useNavigate } from 'react-router-dom';
 const maxQueryLength = 50;
@@ -15,6 +16,7 @@ const Search = ({customStyle,maxResults}) => {
     const [error,setError] = useState(null);
     const [activeTab, setActiveTab] = useState('Users');
     const navigate = useNavigate();
+    const {logout} = useLogout();
     const alertContext = useContext(AlertContext);
     const handleInput = (e) =>
     {
@@ -56,8 +58,9 @@ const Search = ({customStyle,maxResults}) => {
             if (!response.ok) {
               if (response.status === 401) {
                 alertContext.addAlert('User session has expired. Please sign in');
+                await logout();
               } else {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                alertContext.addAlert(response.error);
               }
             }
             const data = await response.json();
@@ -65,7 +68,6 @@ const Search = ({customStyle,maxResults}) => {
             setError(null)
         } 
         catch (error) {
-            console.error('Error during search:', error);
             alertContext.addAlert('An error occurred during the search. Please try again later.');
         }
     };
