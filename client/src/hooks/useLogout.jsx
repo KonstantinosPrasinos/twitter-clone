@@ -1,7 +1,9 @@
 import { useCallback,useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../context/UserContext';
+import {AlertContext} from '../context/AlertContext';
 const useLogout = () => {
+  const alertContext = useContext(AlertContext);
   const navigate  = useNavigate();
   const userContext = useContext(UserContext);
   const logout = useCallback(async () => {
@@ -16,10 +18,10 @@ const useLogout = () => {
         navigate('/Login');
       } else {
         const errorData = await response.json();
-        console.error('Logout failed:', errorData);
+        alertContext.AddAlert(errorData.error);
       }
     } catch (error) {
-      console.error('Error during logout:', error);
+      alertContext.AddAlert('Error during logout', error);
     }
   }, []);
   return { logout };
