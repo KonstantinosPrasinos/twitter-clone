@@ -133,6 +133,13 @@ const UserProfile = () => {
             alertContext.addAlert('Failed to unfollow user.');
         }
     };
+
+    const handleEditProfileClick = () => {
+    history.push({
+        pathname: "/user/edit-profile",
+        state: { user_id: user_id, userData: userData },
+    });
+};
     
     
       
