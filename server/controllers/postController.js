@@ -287,9 +287,8 @@ const editPost = async (req, res) => {
             return res.status(400).json({ success: false, message: "There is no post with this post ID" });
         }
 
-        
         if(post.user_id !== autheticatedUserId){
-            return res.status(400).json({ success: false, message: "You are not authorized to edit this post" });
+            return res.status(403).json({ success: false, message: "You are not authorized to edit this post" });
         }
 
         //update the post
