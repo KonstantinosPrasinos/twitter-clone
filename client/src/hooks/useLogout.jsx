@@ -13,15 +13,15 @@ const useLogout = () => {
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
       });
-      if (response.ok) {
+      if (response.ok || response.status===401) {
         userContext.dispatch({type: 'REMOVE_USER'});
         navigate('/Login');
       } else {
         const errorData = await response.json();
-        alertContext.AddAlert(errorData.error);
+        alertContext.addAlert(errorData.error);
       }
     } catch (error) {
-      alertContext.AddAlert('Error during logout', error);
+      alertContext.addAlert('Error during logout', error);
     }
   }, []);
   return { logout };
