@@ -272,6 +272,7 @@ const replyPost = async (req, res) => {
 
 const editPost = async (req, res) => {
     const post_id = parseInt(req.params.post_id, 10);
+    const  autheticatedUserId = parseInt(req.user.user_id, 10);
     const {new_content} = req.body;
     try{
         if (!post_id || !new_content) {
@@ -285,6 +286,13 @@ const editPost = async (req, res) => {
         if (!post) {
             return res.status(400).json({ success: false, message: "There is no post with this post ID" });
         }
+
+        
+        if(post.user_id !== autheticatedUserId){
+            return res.status(400).json({ success: false, message: "You are not authorized to edit this post" });
+        }
+
+        //update the post
 
         const updatedPost = await prisma.posts.update({
             where: { post_id: post_id },
