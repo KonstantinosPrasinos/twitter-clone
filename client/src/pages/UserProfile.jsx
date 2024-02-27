@@ -68,6 +68,8 @@ const UserProfile = () => {
         } finally {
             setIsLoading(false);
         }
+        
+
     };
 
     const handleFollowerClick = (event) => {
@@ -134,12 +136,7 @@ const UserProfile = () => {
         }
     };
 
-    const handleEditProfileClick = () => {
-    history.push({
-        pathname: "/user/edit-profile",
-        state: { user_id: user_id, userData: userData },
-    });
-};
+    
     
     
       
