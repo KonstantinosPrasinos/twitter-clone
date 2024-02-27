@@ -2,6 +2,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const createPost = async (req,res) => {
     const {userId,postContent} = req.body;
+    const authUserId = parseInt(req.user.userId,10);
+
+    if(userId !== authUserId){
+        return res.status(403).json({ error: 'You are not authorized to create a post for this user.' });
+    }
 
     if (postContent)
     {
@@ -58,6 +63,11 @@ const deletePost = async (req,res) => {
 
 const likePost = async (req, res) => {
     const { user_id, post_id } = req.body;
+    const authUserId = parseInt(req.user.userId,10);
+
+    if (user_id !== authUserId) {
+        return res.status(403).json({ success: false, message: "You are not authorized to like this post." });
+    }
   
     try {
         if (!user_id || !post_id) {
@@ -109,6 +119,7 @@ const likePost = async (req, res) => {
   const unlikePost = async (req, res) => {
     const post_id = parseInt(req.params.post_id, 10);
     const authenticatedUserId = req.user.userId;
+    
   
     try {
         if (!post_id) {
@@ -156,6 +167,13 @@ const likePost = async (req, res) => {
   
 const repostPost = async (req, res) => {
     const { user_id, post_id } = req.body;
+    const authUserId = parseInt(req.user.userId,10);
+
+    if (user_id !== authUserId) {
+        return res.status(403).json({ success: false, message: "You are not authorized to unlike this post." });
+    }
+    
+
     try{
         if (!user_id || !post_id) {
             return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
@@ -256,6 +274,12 @@ const unrepostPost = async (req, res) => {
 
 const replyPost = async (req, res) => {
     const { user_id, post_id, content } = req.body;
+    const authUserId = parseInt(req.user.userId,10);
+
+    if (user_id !== authUserId) {
+        return res.status(403).json({ success: false, message: "You are not authorized to reply to this post." });
+    }
+
     try{
         if (!user_id || !post_id) {
             return res.status(400).json({ success: false, message: "User ID and Post ID are required." });
@@ -313,6 +337,11 @@ const unreplyPost = async (req, res) => {
         if (!replyExists) {
             return res.status(404).json({ success: false, message: "Reply not found." });
         }
+
+        if (replyExists.user_id !== authenticatedUserId){ 
+            return res.status(403).json({ success: false, message: "You are not authorized to unreply to this post." }); 
+        }
+
         // Delete the reply
         await prisma.replies.delete({
             where: { reply_id: reply_id },
