@@ -151,7 +151,7 @@ const UserProfile = () => {
                             <h2>{params.username}</h2>
                         </div>
                         <div>
-                            <EditProfileButton />
+                            <EditProfileButton user_id={user_id} />
                         </div>
                     </div>
                     <div className={"Horizontal-Flex-Container Space-Between"}>

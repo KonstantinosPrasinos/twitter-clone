@@ -485,9 +485,38 @@ const editProfile = async (req,res) => {
         await prisma.$disconnect();
     }
 };
+
+const getUserData = async (req, res) => {
+    
+    const {user_id} = req.params;
+    
+  
+    try {
+      const user = await prisma.users.findUnique({
+        where: { user_id: parseInt(user_id) },
+        select: {
+          username: true,
+          email: true,
+        },
+      });
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found." });
+      }
+  
+      res.status(200).json({ success: true, user: { username: user.username, email: user.email } });
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+
+
     
 
 
 
-module.exports = {getUserProfile, followUser, unfollowUser,editProfile};
+module.exports = {getUserProfile, followUser, unfollowUser,editProfile,getUserData};
 
