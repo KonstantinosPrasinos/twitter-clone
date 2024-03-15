@@ -1,14 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const createPost = async (req,res) => {
-    const {userId,postContent} = req.body;
-
+    const {postContent} = req.body;
+    const authUserId = parseInt(req.user.userId); // only logged in user can compose a post for his/her account
     if (postContent)
     {
         try{
             const newPost = await prisma.posts.create({
                 data: {
-                  user_id: userId,
+                  user_id: authUserId,
                   content: postContent,
                 },
             });
