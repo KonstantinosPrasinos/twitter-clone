@@ -102,7 +102,7 @@ const Search = ({customStyle,maxResults}) => {
         type="text"
         value={searchQuery}
         onChange={handleInput}
-        placeholder="Search Τσίου... "
+        placeholder="Search EchoTexts... "
       />
     
       <button disabled={!withinLimits(searchQuery, minQueryLength, maxQueryLength)} onClick={handleButtonSearch} >
