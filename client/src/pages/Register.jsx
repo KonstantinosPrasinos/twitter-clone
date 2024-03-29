@@ -73,7 +73,7 @@ const Register = () => {
 
     return (
         <div className={"Panel Vertical-Flex-Container"}>
-            <h2>ΤΣΙΟΥ</h2>
+            <h2>Create your account</h2>
             <form onSubmit={handleRegister} className={"Vertical-Flex-Container"} id={"register-form"}>
                 <label className={"Vertical-Flex-Container"}>
                     <span>Username</span>
