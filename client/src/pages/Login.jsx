@@ -53,7 +53,8 @@ const Login = () => {
 
     return (
         <div className={"Panel Vertical-Flex-Container"}>
-            <h2>Login to TSIOY</h2>
+            <h2>EchoTexts</h2>
+            <h3>Sign in to your account</h3>
             <form className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                 <label htmlFor="Username">Username or Email</label>
                 <input value={username} onChange={(e) => setUsername(e.target.value)} type="username" id="username"
