@@ -51,22 +51,9 @@ const Login = () => {
         navigate("/Register");
     };
 
-    return (
-        <div className="Vertical-Flex-Container">           
-            <svg viewBox="0 0 600 150">
-                    <symbol id="s-text">
-                        <text textAnchor="middle" x="50%" y="80%"  fontSize="130px">EchoTexts</text>
-                    </symbol>
-                    <g className = "g-ants">
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                    </g>
-            </svg>
+    return (  
             <div className={"Panel Vertical-Flex-Container"}>
-                <h3>Sign in to your account</h3>
+                <h2>Login to TSIOY</h2>
                 <form className={"Vertical-Flex-Container"} onSubmit={handleLogin}>
                     <label htmlFor="Username">Username or Email</label>
                     <input value={username} onChange={(e) => setUsername(e.target.value)} type="username" id="username"
@@ -74,11 +61,10 @@ const Login = () => {
                     <label htmlFor="Password">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password"
                         name="password" required/>
-                    <button type="Login">Continue</button>
+                    <button type="Login">Log In</button>
                 </form>
                 <button onClick={handleClick}>Don't have an account register here.</button>
             </div>
-        </div>
         );
 }
 

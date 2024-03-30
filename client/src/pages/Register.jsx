@@ -72,21 +72,8 @@ const Register = () => {
     }
 
     return (
-        <div className="Vertical-Flex-Container">  
-            <svg viewBox="0 0 600 150">
-                    <symbol id="s-text">
-                        <text  textAnchor="middle" x="50%" y="80%"  fontSize="130px">EchoTexts</text>
-                    </symbol>
-                    <g className = "g-ants">
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                        <use xlinkHref="#s-text" className="text-copy"></use>
-                    </g>
-            </svg>
         <div className={"Panel Vertical-Flex-Container"}>
-            <h3>Create your account</h3>
+            <h2>ΤΣΙΟΥ</h2>
             <form onSubmit={handleRegister} className={"Vertical-Flex-Container"} id={"register-form"}>
                 <label className={"Vertical-Flex-Container"}>
                     <span>Username</span>
@@ -109,7 +96,6 @@ const Register = () => {
             <div className={"register-or-tag"}>or</div>
             <button onClick={handleLogin}>Already have an account? Log in here</button>
         </div>
-    </div>
     );
 };
 
