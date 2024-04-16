@@ -1,7 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-const createFeed = async (req, res) => {
+const createFeed = async (prisma,req, res) => {
 
   const authenticatedUserId = req.user.userId;
   const userID = parseInt(req.params.user_id, 10);
