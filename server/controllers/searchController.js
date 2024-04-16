@@ -1,6 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const searchController = async (req,res) => {
+
+const searchController = async (prisma,req,res) => {
     const {searchQuery} = req.query;
     if (searchQuery)
     {
