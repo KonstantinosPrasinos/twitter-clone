@@ -1,12 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
 const util = require('util');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const {appConfig} = require('../config/app-config');
+const jwt = require('jsonwebtoken');
 const compareAsync = util.promisify(bcrypt.compare);
-const prisma = new PrismaClient();
-
-async function findUserByCredential(credential) {
+async function findUserByCredential(prisma,credential) {
   if (credential)
   {
     try {
@@ -27,6 +24,7 @@ async function findUserByCredential(credential) {
   else console.error("credential given is undefined");
 }
 const maxTokenAge = 8 * 60 * 60 * 1000; //8 hours
+
 function createToken(user) {
   const payload = {
     userId: user.user_id,
@@ -38,10 +36,10 @@ function createToken(user) {
   return jwt.sign(payload, appConfig.secretKey, options);
 }
 
-const login_post = async (req, res) => {
+const login_post = async (prisma, req, res) => {
   const { username, password } = req.body;
   try {
-    const userFound = await findUserByCredential(username);
+    const userFound = await findUserByCredential(prisma,username);
     if (userFound) 
     {
       const isMatch = await compareAsync(password, userFound.password_hash);
@@ -77,7 +75,7 @@ const login_post = async (req, res) => {
     await prisma.$disconnect();
   }
 }
-const logoutController = (req, res) => {
+const logoutController = (req,res) => {
   try {
     const options = {
       expires: new Date(0),

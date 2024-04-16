@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-const createPost = async (req,res) => {
+const createPost = async (prisma,req,res) => {
     const {postContent} = req.body;
     const authUserId = parseInt(req.user.userId); // only logged in user can compose a post for his/her account
     if (postContent)
@@ -24,7 +22,7 @@ const createPost = async (req,res) => {
     }
 
 }
-const deletePost = async (req,res) => {
+const deletePost = async (prisma,req,res) => {
     try
     {
         const postId = parseInt(req.params.postId);
@@ -56,7 +54,7 @@ const deletePost = async (req,res) => {
     }
 };
 
-const likePost = async (req, res) => {
+const likePost = async (prisma,req, res) => {
     const { user_id, post_id } = req.body;
   
     try {
@@ -106,7 +104,7 @@ const likePost = async (req, res) => {
     }
 };
 
-  const unlikePost = async (req, res) => {
+  const unlikePost = async (prisma,req, res) => {
     const post_id = parseInt(req.params.post_id, 10);
     const authenticatedUserId = req.user.userId;
   
@@ -154,7 +152,7 @@ const likePost = async (req, res) => {
     }
 };
   
-const repostPost = async (req, res) => {
+const repostPost = async (prisma,req, res) => {
     const { user_id, post_id } = req.body;
     try{
         if (!user_id || !post_id) {
@@ -204,7 +202,7 @@ const repostPost = async (req, res) => {
     }
 };
 
-const unrepostPost = async (req, res) => {
+const unrepostPost = async (prisma, req, res) => {
     const post_id = parseInt(req.params.post_id, 10);
     const authenticatedUserId = req.user.userId;
   
@@ -254,7 +252,7 @@ const unrepostPost = async (req, res) => {
     }
 };
 
-const replyPost = async (req, res) => {
+const replyPost = async (prisma, req, res) => {
     const { user_id, post_id, content } = req.body;
     try{
         if (!user_id || !post_id) {
@@ -294,7 +292,7 @@ const replyPost = async (req, res) => {
 };
 
 
-const unreplyPost = async (req, res) => {
+const unreplyPost = async (prisma,req, res) => {
     
     const reply_id = parseInt(req.params.reply_id, 10);
     const authenticatedUserId = req.user.userId;

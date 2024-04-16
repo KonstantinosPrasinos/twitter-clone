@@ -1,8 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-
-const getUserProfile = async (req, res) => {
+const getUserProfile = async (prisma, req, res) => {
     const {user_id} = req.params;
     if (!user_id) return res.status(400).json({success: false, message: "User id required."})
 
@@ -305,7 +301,7 @@ const getUserProfile = async (req, res) => {
 }
 
 
-const followUser = async (req,res) => {
+const followUser = async (prisma, req,res) => {
     //follower -> logged in user
     //following -> user that the logged in user wants to follow
     const {follower_user_id, following_username } = req.body;
@@ -363,7 +359,7 @@ const followUser = async (req,res) => {
 
 }
 
-const unfollowUser = async (req, res) => {
+const unfollowUser = async (prisma, req, res) => {
     //follower -> logged in user
     //following -> user that the logged-in user wants to unfollow
     const following_username = req.params.username;
@@ -415,7 +411,7 @@ const unfollowUser = async (req, res) => {
     }
 };
 
-const checkFollowRelationship = async (req, res) => {
+const checkFollowRelationship = async (prisma, req, res) => {
     const { user_id } = req.params;
     const follower_user_id = req.user.userId; // Assuming user data is stored in req.user
 
