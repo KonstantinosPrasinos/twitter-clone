@@ -58,10 +58,9 @@ const Search = ({customStyle,maxResults}) => {
             if (!response.ok) {
               if (response.status === 401) {
                 alertContext.addAlert('User session has expired. Please sign in');
-                await useLogout();
+                await logout();
               } else {
                 throw new Error(`HTTP error! Status: ${response.status}`);
-                await logout();
               }
             }
             const data = await response.json();
