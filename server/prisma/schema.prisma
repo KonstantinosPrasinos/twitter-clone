@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = fs.prisma.appConfig?.connectionString ?? env("DATABASE_URL")
 }
 
 model followers {
