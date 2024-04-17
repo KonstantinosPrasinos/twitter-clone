@@ -1,5 +1,6 @@
 const createPost = async (prisma,req,res) => {
     const {postContent} = req.body;
+    console.log(postContent);
     const authUserId = parseInt(req.user.userId); // only logged in user can compose a post for his/her account
     if (postContent)
     {
