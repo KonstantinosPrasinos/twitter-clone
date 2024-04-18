@@ -6,7 +6,7 @@ describe('Authentication Integration Tests', () => {
   beforeAll(async () => {
     const loginResponse = await supertest(app)
       .post('/api/login')
-      .send({ username: 'MERLINa', password: '$ecurePassw0rd' });
+      .send({ username: 'example_user', password: 'securepassword' });
     authToken = loginResponse.body.token;
   });
   test('should respond with a 200 status code for successful login', async () => {
